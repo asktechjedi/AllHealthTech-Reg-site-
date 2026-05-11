@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  name        String
+  date        DateTime
+  endDate     DateTime?
+  location    String
+  venue       String?
+  description String
+  bannerUrl   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  ticketTypes   TicketType[]
+  registrations Registration[]
+  agendaItems   AgendaItem[]
+  speakers      Speaker[]
+}
+
+model TicketType {
+  id          String   @id @default(cuid())
+  eventId     String
+  name        String
+  price       Int
+  currency    String   @default("INR")
+  description String
+  features    String[]
+  capacity    Int?
+  soldCount   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  event         Event          @relation(fields: [eventId], references: [id])
+  registrations Registration[]
+}
+
+model Registration {
+  id                   String             @id @default(cuid())
+  ticketId             String             @unique
+  eventId              String
+  ticketTypeId         String
+
+  attendeeName         String
+  attendeeEmail        String
+  attendeePhone        String
+  organization         String?
+  role                 String?
+
+  paymentStatus        PaymentStatus      @default(PENDING)
+  paymentTransactionId String?
+  razorpayOrderId      String?
+  razorpayPaymentId    String?
+  razorpaySignature    String?
+  amountPaid           Int?
+
+  status               RegistrationStatus @default(PENDING)
+  cancelledAt          DateTime?
+  refundId             String?
+  refundStatus         RefundStatus?
+
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  event      Event      @relation(fields: [eventId], references: [id])
+  ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
+
+  @@index([attendeeEmail])
+  @@index([ticketId])
+  @@index([attendeeEmail, ticketId])
+}
+
+model Speaker {
+  id           String   @id @default(cuid())
+  eventId      String
+  name         String
+  title        String
+  organization String
+  biography    String
+  photoUrl     String?
+  linkedinUrl  String?
+  twitterUrl   String?
+  isFeatured   Boolean  @default(false)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  event       Event        @relation(fields: [eventId], references: [id])
+  agendaItems AgendaItem[]
+}
+
+model AgendaItem {
+  id           String    @id @default(cuid())
+  eventId      String
+  title        String
+  description  String?
+  startTime    DateTime
+  endTime      DateTime
+  track        String?
+  location     String?
+  speakerId    String?
+  displayOrder Int       @default(0)
+  createdAt    DateTime  @default(now())
+
+  event   Event    @relation(fields: [eventId], references: [id])
+  speaker Speaker? @relation(fields: [speakerId], references: [id])
+
+  @@index([eventId, startTime])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum RefundStatus {
+  INITIATED
+  PROCESSED
+  FAILED
+}

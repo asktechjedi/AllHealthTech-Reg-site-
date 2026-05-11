@@ -1,0 +1,19 @@
+{
+  "name": "allhealthtech-event-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "lint": "npm run lint --workspaces",
+    "format": "npm run format --workspaces"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
