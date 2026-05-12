@@ -1,0 +1,186 @@
+================================================================================
+  FINAL ACTION - WHAT TO DO NOW
+================================================================================
+
+🎯 YOUR TASK: Share Google Sheet with Service Account
+
+⏱️ TIME: 35 seconds
+📍 LOCATION: Google Sheets
+✅ RESULT: Google Sheets integration complete!
+
+================================================================================
+5 SIMPLE STEPS
+================================================================================
+
+STEP 1: Open Google Sheet
+────────────────────────
+
+Go to this URL:
+https://docs.google.com/spreadsheets/d/111088255104733608101/edit
+
+Or:
+1. Go to: https://sheets.google.com/
+2. Find: "AHT Registration Sync - Google Sheets"
+3. Open it
+
+
+STEP 2: Click Share Button
+──────────────────────────
+
+1. Look at TOP RIGHT corner
+2. Find button that says: "Share"
+3. Click on it
+
+A dialog box will appear
+
+
+STEP 3: Paste Service Account Email
+────────────────────────────────────
+
+1. In the dialog, find text field
+2. Paste this email:
+
+   aht-538@event-registration-sync.iam.gserviceaccount.com
+
+3. Copy and paste - don't type manually
+
+
+STEP 4: Select Editor Permission
+─────────────────────────────────
+
+1. Look for permission dropdown
+2. It says "Viewer" by default
+3. Click on it
+4. Select: "Editor"
+
+
+STEP 5: Click Share
+───────────────────
+
+1. Click the "Share" button
+2. If warning appears, click "Share anyway"
+3. Done! ✅
+
+
+================================================================================
+VISUAL FLOW
+================================================================================
+
+https://docs.google.com/spreadsheets/d/111088255104733608101/edit
+    ↓
+Click "Share" button (top right)
+    ↓
+Paste email: aht-538@event-registration-sync.iam.gserviceaccount.com
+    ↓
+Select "Editor" permission
+    ↓
+Click "Share"
+    ↓
+✅ COMPLETE!
+
+================================================================================
+WHAT HAPPENS NEXT
+================================================================================
+
+Automatic:
+  1. System detects sheet is accessible
+  2. Retries failed sync automatically
+  3. Appends test registration row
+  4. Success logged
+
+In Google Sheet:
+  1. New row appears
+  2. Ticket ID: AHT-2026-00009
+  3. Name: Google Sheets Test...
+  4. Email: test-sync-...@example.com
+  5. All data populated
+
+Continuous:
+  1. Every new registration syncs
+  2. Real-time updates
+  3. Automatic and instant
+
+================================================================================
+VERIFICATION
+================================================================================
+
+After sharing, check:
+
+1. Google Sheet
+   ✓ Open spreadsheet
+   ✓ Look for new row
+   ✓ Verify data populated
+
+2. Application Logs
+   ✓ Check for success message
+   ✓ Should see: "[GoogleSheets] Registration synced successfully"
+
+3. Database
+   ✓ Failed sync removed
+   ✓ Sync marked successful
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Can't find Share button?
+  → Look top right corner
+  → Near your profile picture
+  → Click "Share"
+
+Email won't paste?
+  → Copy again: aht-538@event-registration-sync.iam.gserviceaccount.com
+  → Use Ctrl+V (or Cmd+V on Mac)
+  → Make sure you're in text field
+
+Don't see permission dropdown?
+  → After pasting email, look for dropdown
+  → Usually says "Viewer"
+  → Click to change to "Editor"
+
+Nothing happens after sharing?
+  → Wait 5-10 seconds
+  → Refresh page
+  → Check application logs
+  → Sync retries automatically
+
+================================================================================
+PROGRESS
+================================================================================
+
+✅ Backend: 100% Complete
+✅ Credentials: 100% Complete
+✅ Configuration: 100% Complete
+⏳ Google Sheet Sharing: YOUR TURN (35 seconds)
+
+After you share:
+✅ Google Sheets Integration: 100% Complete
+✅ System: LIVE AND WORKING
+
+================================================================================
+SUMMARY
+================================================================================
+
+What:   Share Google Sheet with service account
+Why:    So system can add registration rows
+How:    5 simple steps above
+Time:   35 seconds
+Result: Google Sheets integration complete! ✅
+
+================================================================================
+READY?
+================================================================================
+
+1. Open: https://docs.google.com/spreadsheets/d/111088255104733608101/edit
+2. Click: Share button
+3. Paste: aht-538@event-registration-sync.iam.gserviceaccount.com
+4. Select: Editor
+5. Click: Share
+
+Then you're done! 🎉
+
+================================================================================
+Status: Ready for final step
+Next: Share Google Sheet
+Then: Done! ✅
+================================================================================

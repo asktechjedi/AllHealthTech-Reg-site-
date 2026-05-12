@@ -1,5 +1,10 @@
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
+// Security: Warn if not using HTTPS in production
+if (import.meta.env.PROD && API_BASE.startsWith('http://')) {
+  console.warn('WARNING: API is not using HTTPS in production. Data transmission is not encrypted.')
+}
+
 export async function apiFetch(path, options) {
   let res
   try {

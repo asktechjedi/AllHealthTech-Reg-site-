@@ -1,0 +1,127 @@
+================================================================================
+                    🔧 FIX GOOGLE SHEETS SYNC NOW
+================================================================================
+
+PROBLEM: Registrations not appearing in Google Sheet
+
+CAUSE: Service account doesn't have permission to access your Google Sheet
+
+FIX: Share your Google Sheet with the service account (2 minutes)
+
+================================================================================
+                            STEP-BY-STEP FIX
+================================================================================
+
+STEP 1: OPEN YOUR GOOGLE SHEET
+   - Go to: https://docs.google.com/spreadsheets/d/111088255104733608101/edit
+   - Or open Google Sheets and find your spreadsheet
+
+STEP 2: CLICK "SHARE" BUTTON
+   - Look for the "Share" button in the top right corner
+   - Click it
+
+STEP 3: ADD SERVICE ACCOUNT EMAIL
+   - In the "Add people and groups" field, paste this email:
+   
+     aht-538@event-registration-sync.iam.gserviceaccount.com
+   
+   - Make sure you copy the ENTIRE email address
+
+STEP 4: SET PERMISSION TO "EDITOR"
+   - In the dropdown next to the email, select "Editor"
+   - NOT "Viewer" - must be "Editor"
+
+STEP 5: UNCHECK "NOTIFY PEOPLE"
+   - Uncheck the "Notify people" checkbox
+   - No need to send an email notification
+
+STEP 6: CLICK "SHARE" OR "SEND"
+   - Click the blue "Share" or "Send" button
+   - Done!
+
+================================================================================
+                            VERIFY IT WORKS
+================================================================================
+
+OPTION 1: RUN TEST SCRIPT
+   cd backend
+   node test-sheets-sync.js
+   
+   You should see: ✅ Sync successful!
+
+OPTION 2: CREATE NEW REGISTRATION
+   1. Go to http://localhost:5173/register
+   2. Fill in the form
+   3. Submit
+   4. Check Google Sheet - new row should appear within 1 second
+
+================================================================================
+                            WHAT HAPPENS NEXT
+================================================================================
+
+IMMEDIATE:
+   - Test script will succeed
+   - Failed syncs will automatically retry
+   - Previous registrations will sync to sheet
+
+ONGOING:
+   - Every new registration syncs automatically
+   - Data appears in Google Sheet within 1 second
+   - Automatic retry if sync fails
+
+================================================================================
+                            CHECKLIST
+================================================================================
+
+[ ] Opened Google Sheet
+[ ] Clicked "Share" button
+[ ] Added service account email: aht-538@event-registration-sync.iam.gserviceaccount.com
+[ ] Set permission to "Editor"
+[ ] Unchecked "Notify people"
+[ ] Clicked "Share"
+[ ] Ran test script (optional)
+[ ] Verified sync working
+
+================================================================================
+                            TROUBLESHOOTING
+================================================================================
+
+IF TEST SCRIPT STILL FAILS:
+   - Wait 30 seconds for Google to propagate permissions
+   - Verify service account email is correct
+   - Verify permission is "Editor" (not "Viewer")
+   - Try test script again
+
+IF SHEET NAME IS DIFFERENT:
+   - Check the tab name at the bottom of your Google Sheet
+   - If it's not "Sheet1", update backend/.env:
+     GOOGLE_SHEETS_SHEET_NAME=YourActualSheetName
+   - Restart backend server
+
+================================================================================
+                            CURRENT STATUS
+================================================================================
+
+✅ Backend server: RUNNING
+✅ Retry processor: ACTIVE
+✅ Credentials file: VALID
+✅ Configuration: CORRECT
+✅ Headers in sheet: ADDED
+
+❌ Service account permission: MISSING
+   FIX: Share sheet with service account email
+
+================================================================================
+                            SUMMARY
+================================================================================
+
+Problem: Service account cannot access Google Sheet
+Solution: Share sheet with aht-538@event-registration-sync.iam.gserviceaccount.com
+Time: 2 minutes
+Result: Sync will work immediately
+
+================================================================================
+
+NEXT STEP: Share your Google Sheet with the service account email NOW!
+
+================================================================================

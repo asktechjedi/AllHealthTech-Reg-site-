@@ -7,10 +7,9 @@ const HomePage = lazy(() => import('./pages/HomePage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const AgendaPage = lazy(() => import('./pages/AgendaPage'))
 const SpeakersPage = lazy(() => import('./pages/SpeakersPage'))
-const PricingPage = lazy(() => import('./pages/PricingPage'))
+
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
-const CheckRegistrationPage = lazy(() => import('./pages/CheckRegistrationPage'))
 const PoliciesPage = lazy(() => import('./pages/PoliciesPage'))
 
 function PageFallback() {
@@ -30,10 +29,10 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/agenda" element={<AgendaPage />} />
           <Route path="/speakers" element={<SpeakersPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
+
           <Route path="/register" element={<RegistrationPage />} />
+          <Route path="/registration/success" element={<RegistrationPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/check-registration" element={<CheckRegistrationPage />} />
           <Route path="/policies" element={<PoliciesPage />} />
         </Route>
       </Routes>

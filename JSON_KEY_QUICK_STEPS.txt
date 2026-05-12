@@ -1,0 +1,185 @@
+================================================================================
+  HOW TO GET JSON KEY - QUICK STEPS
+================================================================================
+
+🎯 GOAL: Download JSON key from Google Cloud Console
+
+================================================================================
+5 QUICK STEPS
+================================================================================
+
+STEP 1: Open Google Cloud Console
+────────────────────────────────
+
+1. Go to: https://console.cloud.google.com/
+2. Sign in with your Google account
+3. Wait for page to load
+
+
+STEP 2: Select Your Project
+────────────────────────────
+
+1. Click the dropdown at top left (Project Selector)
+2. Look for: "AHT Registration Sync - Google Sheets"
+3. Click on it
+
+
+STEP 3: Go to Credentials
+──────────────────────────
+
+1. In left sidebar, click: "APIs & Services"
+2. Click: "Credentials"
+
+
+STEP 4: Find Service Account
+─────────────────────────────
+
+1. Look for: "Service Accounts" section
+2. Find: "aht-538"
+3. Click on it
+
+
+STEP 5: Download JSON Key
+──────────────────────────
+
+1. Click: "Keys" tab
+2. Click: "Add Key" → "Create new key"
+3. Choose: "JSON"
+4. Click: "Create"
+5. JSON file downloads automatically
+
+
+STEP 6: Save File
+──────────────────
+
+1. Rename file to: google-sheets-credentials.json
+2. Move to: backend/credentials/
+3. Full path: backend/credentials/google-sheets-credentials.json
+
+
+✅ DONE!
+
+================================================================================
+VISUAL FLOW
+================================================================================
+
+https://console.cloud.google.com/
+    ↓
+Select Project: "AHT Registration Sync - Google Sheets"
+    ↓
+APIs & Services → Credentials
+    ↓
+Service Accounts → "aht-538"
+    ↓
+Keys tab
+    ↓
+Add Key → Create new key → JSON
+    ↓
+Download JSON file
+    ↓
+Rename to: google-sheets-credentials.json
+    ↓
+Move to: backend/credentials/
+    ↓
+✅ Complete!
+
+================================================================================
+WHAT YOU'LL SEE
+================================================================================
+
+Google Cloud Console looks like this:
+
+┌─────────────────────────────────────────────────────────┐
+│ Google Cloud Console                                    │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│ [Project Selector ▼]  AHT Registration Sync...         │
+│                                                         │
+│ Left Sidebar:                                           │
+│ • APIs & Services                                       │
+│   • Library                                             │
+│   • Credentials  ← Click here                           │
+│   • OAuth consent screen                                │
+│                                                         │
+│ Main Area:                                              │
+│ • Service Accounts                                      │
+│   • aht-538  ← Click here                               │
+│                                                         │
+│ Service Account Details:                                │
+│ • Details tab                                           │
+│ • Permissions tab                                       │
+│ • Keys tab  ← Click here                                │
+│                                                         │
+│ Keys Section:                                           │
+│ • Add Key ▼                                             │
+│   • Create new key                                      │
+│     • JSON  ← Select this                               │
+│     • P12                                               │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+
+================================================================================
+FILE LOCATION
+================================================================================
+
+After downloading, save the file here:
+
+Windows:
+  D:\ATsite\backend\credentials\google-sheets-credentials.json
+
+Mac/Linux:
+  /path/to/project/backend/credentials/google-sheets-credentials.json
+
+================================================================================
+VERIFICATION
+================================================================================
+
+After saving the file, verify:
+
+1. File exists:
+   ls -la backend/credentials/google-sheets-credentials.json
+
+2. File is readable:
+   cat backend/credentials/google-sheets-credentials.json
+
+3. File contains JSON:
+   Should start with: {
+   Should contain: "client_email"
+   Should contain: "private_key"
+
+================================================================================
+SECURITY REMINDER
+================================================================================
+
+⚠️ IMPORTANT - DO NOT:
+
+❌ Share the JSON file
+❌ Commit to Git
+❌ Post online
+❌ Email to anyone
+❌ Put in public places
+
+✅ DO:
+
+✅ Keep it secure
+✅ Store locally only
+✅ Add to .gitignore
+✅ Use only for this app
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+After you have the JSON file:
+
+1. ✅ JSON file in backend/credentials/
+2. ⏳ Share Google Sheet with service account
+3. ⏳ Verify sync works
+
+Then you're done! 🎉
+
+================================================================================
+TIME: 5 minutes
+DIFFICULTY: Easy
+STATUS: Ready to proceed
+================================================================================

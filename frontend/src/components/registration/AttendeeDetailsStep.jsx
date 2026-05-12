@@ -54,7 +54,7 @@ export default function AttendeeDetailsStep() {
       organization: fields.organization.trim() || undefined,
       role: fields.role.trim() || undefined,
     })
-    setStep('review')
+    setStep('success')
   }
 
   return (

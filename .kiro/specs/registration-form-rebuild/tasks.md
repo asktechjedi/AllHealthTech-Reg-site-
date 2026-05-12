@@ -1,0 +1,309 @@
+# Implementation Plan: Registration Form Rebuild
+
+## Overview
+
+Implement the complete rebuild of the AllHealthTech event platform registration system by removing the existing multi-step registration, pricing, and payment components and replacing them with a simplified single-form registration system. This plan focuses on component removal, database schema updates, new form creation, and maintaining data integrity throughout the transition.
+
+## Tasks
+
+- [x] 1. Analyze and document existing system components
+  - [x] 1.1 Audit all registration-related frontend components and their dependencies
+    - Document TicketSelectionStep, PaymentStep, ReviewStep, StepIndicator usage
+    - Map component import/export relationships
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 16.1_
+  - [x] 1.2 Audit all payment-related backend routes and services
+    - Document /api/payments/* endpoints and their usage
+    - Map payment service function dependencies
+    - _Requirements: 1.6, 1.7, 16.1_
+  - [x] 1.3 Document current registration flow and state management
+    - Map Zustand store structure and state transitions
+    - Document multi-step navigation logic
+    - _Requirements: 14.1, 14.2, 14.3, 16.2_
+
+- [x] 2. Update database schema for new registration fields
+  - [x] 2.1 Create Prisma migration to add new optional fields to Registration table
+    - Add dietaryRestrictions TEXT column
+    - Add accessibilityNeeds TEXT column
+    - _Requirements: 9.1, 9.2_
+  - [x] 2.2 Create default ticket type for simplified registrations
+    - Ensure at least one active ticket type exists for auto-assignment
+    - _Requirements: 4.4, 9.3_
+  - [x] 2.3 Run migration and verify schema changes
+    - Test migration on development database
+    - Verify existing data integrity is maintained
+    - _Requirements: 9.4, 9.5, 20.1, 20.2_
+
+- [x] 3. Remove existing registration components from frontend
+  - [x] 3.1 Remove TicketSelectionStep component and its imports
+    - Delete frontend/src/components/registration/TicketSelectionStep.jsx
+    - Update import statements in RegistrationPage.jsx
+    - _Requirements: 1.1, 1.8_
+  - [x] 3.2 Remove PaymentStep component and its imports
+    - Delete frontend/src/components/registration/PaymentStep.jsx
+    - Remove payment-related dependencies
+    - _Requirements: 1.2, 1.8_
+  - [x] 3.3 Remove ReviewStep component and its imports
+    - Delete frontend/src/components/registration/ReviewStep.jsx
+    - Update registration flow logic
+    - _Requirements: 1.3, 1.8_
+  - [x] 3.4 Remove StepIndicator component and its imports
+    - Delete frontend/src/components/registration/StepIndicator.jsx
+    - Remove step navigation logic
+    - _Requirements: 1.4, 1.8_
+  - [x] 3.5 Remove PricingPage component and route
+    - Delete frontend/src/pages/PricingPage.jsx
+    - Update router configuration
+    - Remove navigation links to pricing page
+    - _Requirements: 1.5, 11.1, 11.3_
+
+- [x] 4. Remove payment-related backend components
+  - [x] 4.1 Remove payment routes and middleware
+    - Delete backend/src/routes/payments.js
+    - Remove payment route registration from main app
+    - _Requirements: 1.6_
+  - [x] 4.2 Remove payment service functions
+    - Remove createOrder, verifySignature, initiateRefund from paymentService.js
+    - Keep file structure but remove payment-specific functions
+    - _Requirements: 1.7_
+  - [x] 4.3 Update registration route to remove payment dependencies
+    - Remove payment initiation logic from registration creation
+    - Remove payment verification steps
+    - _Requirements: 4.1, 4.2, 4.5_
+
+- [x] 5. Create new SimpleRegistrationForm component
+  - [x] 5.1 Create base SimpleRegistrationForm component structure
+    - Create frontend/src/components/registration/SimpleRegistrationForm.jsx
+    - Implement form layout with grid system for responsive design
+    - _Requirements: 2.1, 2.9, 13.4, 13.5_
+  - [x] 5.2 Implement required form fields with validation
+    - Add attendeeName input with required validation
+    - Add attendeeEmail input with email format validation
+    - Add attendeePhone input with length validation
+    - _Requirements: 2.2, 2.3, 2.4, 3.1, 3.2, 3.3_
+  - [x] 5.3 Implement optional form fields
+    - Add organization input field
+    - Add role/job title input field
+    - Add dietaryRestrictions textarea field
+    - Add accessibilityNeeds textarea field
+    - _Requirements: 2.5, 2.6, 2.7, 2.8_
+  - [x] 5.4 Implement client-side form validation
+    - Add real-time validation feedback
+    - Display inline error messages
+    - Clear errors when fields are corrected
+    - Prevent submission with invalid data
+    - _Requirements: 3.4, 3.5, 3.6, 3.7_
+
+- [x] 6. Update backend registration processing
+  - [x] 6.1 Modify POST /api/registrations endpoint for simplified flow
+    - Remove payment processing logic
+    - Auto-set status to 'CONFIRMED' and paymentStatus to 'PAID'
+    - Add validation for new optional fields
+    - _Requirements: 4.1, 4.2, 4.5_
+  - [x] 6.2 Implement duplicate email prevention
+    - Check for existing registrations by email before creation
+    - Return 409 Conflict error for duplicate emails
+    - Include descriptive error message
+    - _Requirements: 5.1, 5.2, 5.3_
+  - [x] 6.3 Update registration creation to use default ticket type
+    - Query for active default ticket type
+    - Assign default ticket type to all new registrations
+    - _Requirements: 4.4, 9.3_
+  - [x] 6.4 Optimize registration processing performance
+    - Ensure single API call completes registration
+    - Target 500ms response time for registration creation
+    - _Requirements: 4.5, 4.6, 12.3_
+
+- [x] 7. Update Zustand store for simplified state management
+  - [x] 7.1 Remove multi-step navigation state
+    - Remove currentStep state and setStep actions
+    - Remove step-related state management
+    - _Requirements: 14.1_
+  - [x] 7.2 Remove payment and ticket selection state
+    - Remove selectedTicket state and actions
+    - Remove payment-related state variables
+    - _Requirements: 14.2, 14.3_
+  - [x] 7.3 Add simplified registration state management
+    - Add registrationData state for form management
+    - Add isSubmitting state for loading indication
+    - Maintain confirmedTicketId for success display
+    - _Requirements: 14.4, 14.5, 14.6_
+
+- [x] 8. Update RegistrationPage to use new component
+  - [x] 8.1 Replace multi-step logic with single form
+    - Remove step switching logic
+    - Remove StepIndicator usage
+    - Update page layout for single form display
+    - _Requirements: 2.1, 11.2_
+  - [x] 8.2 Implement form submission handling
+    - Connect form to API endpoint
+    - Handle success and error responses
+    - Navigate to success page on completion
+    - _Requirements: 6.1, 10.4_
+  - [x] 8.3 Update page styling and layout
+    - Maintain existing visual design consistency
+    - Apply blue/green gradient theme
+    - Ensure responsive design across devices
+    - _Requirements: 13.1, 13.2, 13.3, 13.5_
+
+- [x] 9. Create registration success page
+  - [x] 9.1 Create RegistrationSuccess component
+    - Display success message with Ticket_ID
+    - Show event details and attendee information
+    - Include instructions for future access
+    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+  - [x] 9.2 Add support contact information
+    - Display contact details for registration questions
+    - Provide clear next steps for attendees
+    - _Requirements: 6.5_
+
+- [x] 10. Update email confirmation system
+  - [x] 10.1 Modify confirmation email template for new registration flow
+    - Update email content to reflect simplified registration
+    - Include new optional fields (dietary restrictions, accessibility needs)
+    - Maintain existing email format and branding
+    - _Requirements: 7.2, 7.3, 7.4_
+  - [x] 10.2 Ensure email sending works with auto-confirmed registrations
+    - Trigger email sending after successful registration creation
+    - Handle email failures gracefully without affecting registration
+    - Maintain 60-second sending target
+    - _Requirements: 7.1, 7.5, 7.6_
+
+- [x] 11. Update registration lookup functionality
+  - [x] 11.1 Verify lookup works with new registration format
+    - Test lookup with auto-confirmed registrations
+    - Ensure backward compatibility with existing registrations
+    - _Requirements: 8.1, 8.2, 8.5, 20.2_
+  - [x] 11.2 Update lookup display for new fields
+    - Include dietary restrictions and accessibility needs in lookup results
+    - Maintain existing lookup functionality and error handling
+    - _Requirements: 8.3, 8.4_
+
+- [x] 12. Implement comprehensive error handling
+  - [x] 12.1 Add frontend error handling for registration submission
+    - Handle network errors with retry options
+    - Display user-friendly error messages
+    - Handle validation errors from backend
+    - _Requirements: 10.1, 10.2, 10.3, 10.4_
+  - [x] 12.2 Add backend error handling and logging
+    - Implement proper error responses with status codes
+    - Log errors with timestamps and request details
+    - Handle database connection failures
+    - _Requirements: 10.1, 10.2, 10.5_
+
+- [x] 13. Update navigation and routing
+  - [x] 13.1 Remove pricing page from navigation
+    - Update main navigation menu
+    - Remove pricing page route from router
+    - Update any internal links pointing to pricing
+    - _Requirements: 11.1, 11.3, 11.5_
+  - [x] 13.2 Verify registration page routing
+    - Ensure registration link navigates to new single form
+    - Test all navigation paths work correctly
+    - _Requirements: 11.2, 11.4_
+
+- [x] 14. Implement accessibility features
+  - [x] 14.1 Add ARIA labels and accessibility attributes
+    - Add proper labels for all form fields
+    - Implement ARIA descriptions for validation errors
+    - Ensure proper heading hierarchy
+    - _Requirements: 17.1, 17.4_
+  - [x] 14.2 Implement keyboard navigation support
+    - Ensure all interactive elements are keyboard accessible
+    - Add clear focus indicators
+    - Test tab order and navigation flow
+    - _Requirements: 17.2, 17.3_
+  - [x] 14.3 Test with screen readers and assistive technologies
+    - Verify error messages are announced properly
+    - Test form completion with screen reader
+    - Ensure WCAG 2.1 AA compliance
+    - _Requirements: 17.5, 17.6_
+
+- [x] 15. Implement security measures
+  - [x] 15.1 Add input validation and sanitization
+    - Validate all form inputs on backend
+    - Sanitize data to prevent injection attacks
+    - Use parameterized queries for database operations
+    - _Requirements: 18.1, 18.3_
+  - [x] 15.2 Implement rate limiting and CSRF protection
+    - Add rate limiting to registration endpoint
+    - Implement CSRF tokens for form submissions
+    - Log security events and failed attempts
+    - _Requirements: 18.2, 18.4, 18.5_
+  - [x] 15.3 Ensure HTTPS encryption for data transmission
+    - Verify all API calls use HTTPS
+    - Ensure form data is encrypted in transit
+    - _Requirements: 18.6_
+
+- [ ] 16. Performance optimization and testing
+  - [ ] 16.1 Optimize frontend performance
+    - Implement lazy loading for registration page
+    - Optimize bundle size by removing unused components
+    - Add optimistic UI updates for better perceived performance
+    - _Requirements: 12.1, 12.2, 12.4, 12.5_
+  - [ ] 16.2 Test registration performance under load
+    - Verify 3-second registration completion target
+    - Test API response times under normal load
+    - Monitor database query performance
+    - _Requirements: 12.3_
+
+- [ ] 17. Create migration documentation
+  - [ ] 17.1 Document all removed components and files
+    - Create comprehensive list of deleted files
+    - Document API changes and removed endpoints
+    - _Requirements: 16.1, 16.2_
+  - [ ] 17.2 Create before-and-after flow documentation
+    - Document old vs new registration process
+    - Include database schema changes
+    - Provide rollback instructions if needed
+    - _Requirements: 16.3, 16.4, 16.5_
+
+- [ ] 18. Implement registration analytics
+  - [ ] 18.1 Add registration tracking and metrics
+    - Log successful registrations with timestamps
+    - Track form completion times
+    - Monitor error rates and types
+    - _Requirements: 15.1, 15.3, 15.4_
+  - [ ] 18.2 Create analytics dashboard for registration metrics
+    - Display registration conversion rates
+    - Show error analysis and trends
+    - Compare with previous multi-step system performance
+    - _Requirements: 15.2, 15.5_
+
+- [ ] 19. Add data export functionality
+  - [ ] 19.1 Create registration data export API endpoint
+    - Implement CSV export for registration data
+    - Include all fields including new dietary/accessibility fields
+    - Add proper authentication and authorization
+    - _Requirements: 19.1, 19.2, 19.5_
+  - [ ] 19.2 Create export interface for event organizers
+    - Add export functionality to admin interface
+    - Include registration timestamps and Ticket_IDs
+    - Support filtering and date range selection
+    - _Requirements: 19.3, 19.4_
+
+- [x] 20. Final testing and validation
+  - [x] 20.1 Conduct end-to-end testing of new registration flow
+    - Test complete registration process from form to confirmation
+    - Verify email sending and lookup functionality
+    - Test error scenarios and edge cases
+    - _Requirements: All requirements validation_
+  - [x] 20.2 Verify backward compatibility with existing data
+    - Test lookup functionality with old registrations
+    - Ensure existing Ticket_IDs remain accessible
+    - Verify cancellation works for existing paid registrations
+    - _Requirements: 20.1, 20.2, 20.3, 20.4, 20.5_
+  - [x] 20.3 Performance and security validation
+    - Conduct security testing for input validation
+    - Verify rate limiting and CSRF protection
+    - Test performance under expected load
+    - _Requirements: 18.*, 12.*_
+
+## Notes
+
+- Tasks are ordered to minimize system downtime and maintain data integrity
+- Database migrations should be tested thoroughly before production deployment
+- Component removal should be done carefully to avoid breaking existing functionality
+- All changes should be version controlled with clear commit messages
+- Consider feature flags for gradual rollout of the new registration system
+- Backup existing registration data before making schema changes
+- Test email functionality in staging environment before production deployment

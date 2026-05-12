@@ -1,11 +1,24 @@
+import { useScrollAnimation } from '../../hooks/useScrollAnimation'
+
 const sponsors = Array.from({ length: 8 }, (_, i) => ({ id: i + 1, name: `Sponsor ${i + 1}` }))
 
-function SponsorCard({ name }) {
+function SponsorCard({ name, index }) {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 })
+  const delays = [0, 50, 100, 150, 200, 250, 300, 350]
+  
   return (
-    <div className="group flex items-center justify-center rounded-2xl border border-gray-100 bg-white p-6 shadow-card hover:shadow-elegant hover:border-brand-200 transition-all duration-200 aspect-[3/2]">
-      {/* Placeholder logo mark */}
-      <div className="flex flex-col items-center gap-2 opacity-40 group-hover:opacity-70 transition-opacity duration-200">
-        <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center">
+    <div 
+      ref={ref}
+      className={`group flex items-center justify-center rounded-[var(--radius-xl)] border border-[var(--eventor-dark-700)] bg-[var(--eventor-dark-800)] p-6 shadow-[var(--shadow-eventor-md)] hover:shadow-[var(--shadow-eventor-blue)] hover:border-[var(--eventor-primary-light)] transition-all duration-[var(--transition-eventor-normal)] aspect-[3/2] ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+      style={{
+        transitionDelay: `${delays[index]}ms`,
+        transitionDuration: '600ms',
+        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+    >
+      {/* Placeholder logo mark with Eventor styling */}
+      <div className="flex flex-col items-center gap-2 opacity-40 group-hover:opacity-100 transition-opacity duration-[var(--transition-eventor-normal)]">
+        <div className="w-10 h-10 rounded-[var(--radius-lg)] bg-[var(--eventor-primary)] flex items-center justify-center shadow-[var(--shadow-eventor-sm)]">
           <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M1 11V5C1 3.9 1.8 3 2.9 3H5C6.1 3 7 3.9 7 5V7.5H1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M7 7.5V11" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
@@ -14,32 +27,37 @@ function SponsorCard({ name }) {
             <path d="M10 7.5H17" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
           </svg>
         </div>
-        <span className="text-xs font-semibold text-gray-400 tracking-wide">{name}</span>
+        <span className="text-xs font-[var(--font-secondary)] font-semibold text-[var(--eventor-gray-100)] tracking-wide">{name}</span>
       </div>
     </div>
   )
 }
 
 export default function SponsorsSection() {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3 })
+  
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-[var(--eventor-dark-900)] py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Proudly Supported By</p>
-          <h2 className="text-2xl font-bold text-dark-900">Our Sponsors &amp; Partners</h2>
+        {/* Header with Eventor styling */}
+        <div 
+          ref={headerRef}
+          className={`text-center mb-12 transition-all duration-700 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        >
+          <p className="text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[var(--eventor-primary-light)] mb-2">Proudly Supported By</p>
+          <h2 className="text-2xl font-[var(--font-primary)] font-bold text-[var(--eventor-white)]">Our Sponsors &amp; Partners</h2>
         </div>
 
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {sponsors.map((s) => (
-            <SponsorCard key={s.id} name={s.name} />
+          {sponsors.map((s, index) => (
+            <SponsorCard key={s.id} name={s.name} index={index} />
           ))}
         </div>
 
-        <p className="text-center text-gray-400 text-sm mt-8">
+        <p className="text-center text-[var(--eventor-gray-100)] font-[var(--font-secondary)] text-sm mt-8">
           Interested in sponsoring?{' '}
-          <a href="/contact" className="text-brand-600 font-semibold hover:underline">
+          <a href="/contact" className="text-[var(--eventor-primary-light)] font-semibold hover:underline transition-colors">
             Get in touch
           </a>
         </p>

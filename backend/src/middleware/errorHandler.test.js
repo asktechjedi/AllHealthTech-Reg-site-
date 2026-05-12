@@ -73,7 +73,13 @@ describe('errorHandler middleware', () => {
     errorHandler(err, makeReq('POST', '/api/registrations'), makeRes(), next);
 
     expect(console.error).toHaveBeenCalledOnce();
-    const logged = JSON.parse(console.error.mock.calls[0][0]);
+    // Parse the log entry - now includes [ERROR] prefix
+    const logCall = console.error.mock.calls[0];
+    const logPrefix = logCall[0]; // '[ERROR]'
+    const logJson = logCall[1]; // JSON string
+    
+    expect(logPrefix).toBe('[ERROR]');
+    const logged = JSON.parse(logJson);
     expect(logged.method).toBe('POST');
     expect(logged.url).toBe('/api/registrations');
     expect(logged.statusCode).toBe(500);

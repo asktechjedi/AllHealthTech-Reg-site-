@@ -53,6 +53,8 @@ model Registration {
   attendeePhone        String
   organization         String?
   role                 String?
+  dietaryRestrictions  String?
+  accessibilityNeeds   String?
 
   paymentStatus        PaymentStatus      @default(PENDING)
   paymentTransactionId String?
@@ -132,4 +134,34 @@ enum RefundStatus {
   INITIATED
   PROCESSED
   FAILED
+}
+
+model FailedSync {
+  id                String   @id @default(cuid())
+  registrationId    String
+  registrationData  Json     // Store the registration data for retry
+  error             String
+  errorType         String   // 'TRANSIENT' or 'PERMANENT'
+  retryCount        Int      @default(0)
+  nextRetryTime     DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([nextRetryTime])
+  @@index([registrationId])
+}
+
+model DeadLetterSync {
+  id                String   @id @default(cuid())
+  registrationId    String
+  registrationData  Json     // Store the registration data for manual review
+  error             String
+  errorType         String   // Type of error that caused permanent failure
+  retryCount        Int      // Number of retries attempted
+  lastAttemptTime   DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([registrationId])
+  @@index([createdAt])
 }
