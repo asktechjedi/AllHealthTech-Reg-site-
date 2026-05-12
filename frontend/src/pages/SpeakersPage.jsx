@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { apiFetch } from '../lib/api'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import ErrorMessage from '../components/ui/ErrorMessage'
+import AnimatedSection from '../components/ui/AnimatedSection'
 import { XIcon, LinkedInIcon, TwitterIcon } from '../components/icons'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 function SpeakerModal({ speaker, onClose }) {
   if (!speaker) return null
@@ -95,11 +97,19 @@ function SpeakerModal({ speaker, onClose }) {
   )
 }
 
-function SpeakerCard({ speaker, onClick }) {
+function SpeakerCard({ speaker, onClick, index }) {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 })
+  const delays = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450]
+  
   return (
     <button
+      ref={ref}
       onClick={onClick}
-      className="group text-left bg-white rounded-[var(--radius-xl)] border border-[#E8F0FF] overflow-hidden hover:shadow-xl hover:border-[#3B82F6] hover:-translate-y-1 transition-all duration-[var(--transition-eventor-normal)] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:ring-offset-2 focus:ring-offset-[#F5F9FF]"
+      className={`group text-left bg-white rounded-[var(--radius-xl)] border border-[#E8F0FF] overflow-hidden hover:shadow-xl hover:border-[#3B82F6] hover:-translate-y-1 transition-all duration-[var(--transition-eventor-normal)] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:ring-offset-2 focus:ring-offset-[#F5F9FF] ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+      style={{
+        transitionDelay: `${delays[index % 10]}ms`,
+        transitionDuration: '600ms',
+      }}
     >
       {/* Photo */}
       <div className="aspect-square bg-[#F5F9FF] overflow-hidden relative">
@@ -146,27 +156,71 @@ export default function SpeakersPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF]">
-      {/* Hero header with bright styling */}
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Layer 1: base — white to light sky blue */}
       <div
-        className="bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF] py-20 px-4 sm:px-6 lg:px-8"
+        className="fixed inset-0"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #F0F7FF 30%, #DBEAFE 60%, #BFDBFE 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 2: ambient blue radial orbs */}
+      <div
+        className="fixed inset-0 pointer-events-none"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 800px 600px at 75% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
-            radial-gradient(ellipse 600px 400px at 25% 70%, rgba(139,92,246,0.06) 0%, transparent 60%)
+            radial-gradient(ellipse 900px 700px at 80% 20%, rgba(59,130,246,0.14) 0%, transparent 65%),
+            radial-gradient(ellipse 700px 500px at 10% 80%, rgba(96,165,250,0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 500px 400px at 50% 50%, rgba(147,197,253,0.10) 0%, transparent 55%)
           `,
         }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <span className="inline-block text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[#3B82F6] mb-3">AllHealthTech 2025</span>
-          <h1 className="text-4xl sm:text-5xl font-[var(--font-primary)] font-black text-[#1F2937] mb-3">Our Speakers</h1>
-          <p className="text-[#6B7280] opacity-90 font-[var(--font-secondary)] text-lg max-w-xl">
-            30+ visionaries from clinical practice, research, policy, and industry — all under one roof.
-          </p>
-        </div>
-      </div>
+        aria-hidden="true"
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      {/* Layer 3: top-right blue bloom */}
+      <div
+        className="fixed top-0 right-0 w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at top right, rgba(93,169,233,0.20) 0%, transparent 60%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 4: bottom-left blue bloom */}
+      <div
+        className="fixed bottom-0 left-0 w-[500px] h-[400px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at bottom left, rgba(56,149,240,0.13) 0%, transparent 60%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 5: subtle grain */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '180px 180px',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Hero header with bright styling */}
+      <AnimatedSection animation="fadeUp" duration={800}>
+        <div className="relative z-10 py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <span className="inline-block text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[#3B82F6] mb-3">AllHealthTech 2025</span>
+            <h1 className="text-4xl sm:text-5xl font-[var(--font-primary)] font-black text-[#1F2937] mb-3">Our Speakers</h1>
+            <p className="text-[#6B7280] opacity-90 font-[var(--font-secondary)] text-lg max-w-xl">
+              30+ visionaries from clinical practice, research, policy, and industry — all under one roof.
+            </p>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-0">
         {loading && (
           <div className="flex justify-center py-20">
             <LoadingSpinner size="lg" />
@@ -175,8 +229,8 @@ export default function SpeakersPage() {
         {error && <ErrorMessage message={error} onRetry={() => location.reload()} />}
         {!loading && !error && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {speakers.map((s) => (
-              <SpeakerCard key={s.id} speaker={s} onClick={() => setSelected(s)} />
+            {speakers.map((s, index) => (
+              <SpeakerCard key={s.id} speaker={s} onClick={() => setSelected(s)} index={index} />
             ))}
           </div>
         )}

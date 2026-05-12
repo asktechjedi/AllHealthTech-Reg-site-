@@ -109,7 +109,7 @@
   }
   
   body {
-    background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 50%, #F5F3FF 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #F0F7FF 30%, #DBEAFE 60%, #BFDBFE 100%);
     color: var(--eventor-white);
     font-family: var(--font-secondary);
     font-size: var(--text-base);
@@ -117,6 +117,9 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    /* Performance optimization */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
   
   /* Eventor Typography Hierarchy */
@@ -555,6 +558,24 @@
   
   .animate-eventor-slide-up {
     animation: eventor-slide-up 0.6s ease-out;
+  }
+
+  /* Performance optimization utilities */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
   }
 }
 

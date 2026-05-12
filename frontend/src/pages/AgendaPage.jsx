@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { apiFetch } from '../lib/api'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import ErrorMessage from '../components/ui/ErrorMessage'
+import AnimatedSection from '../components/ui/AnimatedSection'
 import { ClockIcon, MapPinIcon } from '../components/icons'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 function fmt(d) {
   return new Date(d).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -25,9 +27,19 @@ function TrackBadge({ track }) {
   )
 }
 
-function AgendaItem({ item }) {
+function AgendaItem({ item, index }) {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 })
+  const delays = [0, 100, 200, 300]
+  
   return (
-    <div className="group flex flex-col sm:flex-row gap-5 bg-gradient-to-br from-white to-[#F5F9FF] rounded-[var(--radius-xl)] border border-[#E8F0FF] border-l-4 border-l-[#3B82F6] p-6 shadow-lg hover:shadow-xl hover:border-l-[#0EA5E9] hover:-translate-y-0.5 transition-all duration-[var(--transition-eventor-normal)]">
+    <div 
+      ref={ref}
+      className={`group flex flex-col sm:flex-row gap-5 bg-gradient-to-br from-white to-[#F5F9FF] rounded-[var(--radius-xl)] border border-[#E8F0FF] border-l-4 border-l-[#3B82F6] p-6 shadow-lg hover:shadow-xl hover:border-l-[#0EA5E9] hover:-translate-y-0.5 transition-all duration-[var(--transition-eventor-normal)] ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
+      style={{
+        transitionDelay: `${delays[index % 4]}ms`,
+        transitionDuration: '600ms',
+      }}
+    >
       {/* Time column with blue styling */}
       <div className="sm:w-28 flex-shrink-0">
         <div className="flex items-center gap-1.5 text-[#3B82F6] font-[var(--font-secondary)] font-bold text-sm mb-0.5">
@@ -98,25 +110,69 @@ export default function AgendaPage() {
   }, {})
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF]">
-      {/* Hero header with bright styling */}
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Layer 1: base — white to light sky blue */}
       <div
-        className="bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF] py-20 px-4 sm:px-6 lg:px-8"
+        className="fixed inset-0"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #F0F7FF 30%, #DBEAFE 60%, #BFDBFE 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 2: ambient blue radial orbs */}
+      <div
+        className="fixed inset-0 pointer-events-none"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 800px 600px at 75% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
-            radial-gradient(ellipse 600px 400px at 25% 70%, rgba(139,92,246,0.06) 0%, transparent 60%)
+            radial-gradient(ellipse 900px 700px at 80% 20%, rgba(59,130,246,0.14) 0%, transparent 65%),
+            radial-gradient(ellipse 700px 500px at 10% 80%, rgba(96,165,250,0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 500px 400px at 50% 50%, rgba(147,197,253,0.10) 0%, transparent 55%)
           `,
         }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <span className="inline-block text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[#3B82F6] mb-3">Programme</span>
-          <h1 className="text-4xl sm:text-5xl font-[var(--font-primary)] font-black text-[#1F2937] mb-3">Conference Agenda</h1>
-          <p className="text-[#6B7280] opacity-90 font-[var(--font-secondary)] text-lg max-w-xl">Three days of keynotes, workshops, and networking.</p>
-        </div>
-      </div>
+        aria-hidden="true"
+      />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Layer 3: top-right blue bloom */}
+      <div
+        className="fixed top-0 right-0 w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at top right, rgba(93,169,233,0.20) 0%, transparent 60%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 4: bottom-left blue bloom */}
+      <div
+        className="fixed bottom-0 left-0 w-[500px] h-[400px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at bottom left, rgba(56,149,240,0.13) 0%, transparent 60%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 5: subtle grain */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '180px 180px',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Hero header with bright styling */}
+      <AnimatedSection animation="fadeUp" duration={800}>
+        <div className="relative z-10 py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <span className="inline-block text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[#3B82F6] mb-3">Programme</span>
+            <h1 className="text-4xl sm:text-5xl font-[var(--font-primary)] font-black text-[#1F2937] mb-3">Conference Agenda</h1>
+            <p className="text-[#6B7280] opacity-90 font-[var(--font-secondary)] text-lg max-w-xl">Three days of keynotes, workshops, and networking.</p>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-0">
         {loading && (
           <div className="flex justify-center py-20">
             <LoadingSpinner size="lg" />
@@ -166,8 +222,8 @@ export default function AgendaPage() {
                   <div className="h-px flex-1 bg-[#E8F0FF]" />
                 </div>
                 <div className="flex flex-col gap-3">
-                  {dayItems.map((item) => (
-                    <AgendaItem key={item.id} item={item} />
+                  {dayItems.map((item, index) => (
+                    <AgendaItem key={item.id} item={item} index={index} />
                   ))}
                 </div>
               </div>

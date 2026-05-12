@@ -43,7 +43,7 @@ function FooterLogo() {
 export default function Footer() {
   return (
     <footer className="bg-[var(--eventor-dark-800)] text-[var(--eventor-gray-100)] border-t border-[var(--eventor-dark-700)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand column with Eventor styling */}
           <div className="md:col-span-2">
