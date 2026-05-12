@@ -1,3 +1,4 @@
+import './config/env.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -10,6 +11,7 @@ import speakersRouter from './routes/speakers.js';
 import agendaRouter from './routes/agenda.js';
 import registrationsRouter from './routes/registrations.js';
 import contactRouter from './routes/contact.js';
+import paymentsRouter from './routes/payments.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -59,6 +61,7 @@ app.use('/api/speakers', speakersRouter);
 app.use('/api/agenda', agendaRouter);
 app.use('/api/registrations', registrationsRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/payments', paymentsRouter);
 
 // Global error handler (must be last)
 app.use(errorHandler);

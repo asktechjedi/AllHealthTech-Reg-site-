@@ -8,8 +8,8 @@ export default function RegistrationPage() {
   const location = useLocation()
   const confirmedTicketId = useRegistrationStore((s) => s.confirmedTicketId)
   
-  // Show success page if we're on the success route or if we have a confirmed ticket ID
-  const isSuccess = location.pathname === '/registration/success' || confirmedTicketId
+  // Show success only while the current session still has a confirmed ticket.
+  const isSuccess = Boolean(confirmedTicketId)
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -84,7 +84,7 @@ export default function RegistrationPage() {
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Modern registration card with subtle shadow */}
           <div className="bg-white rounded-2xl border border-[#E8F0FF] shadow-lg p-8 sm:p-10">
-            {isSuccess ? <SuccessStep /> : <SimpleRegistrationForm />}
+            {isSuccess ? <SuccessStep /> : <SimpleRegistrationForm key={location.key} />}
           </div>
         </div>
       </AnimatedSection>
