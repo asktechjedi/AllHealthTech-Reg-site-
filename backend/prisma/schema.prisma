@@ -8,38 +8,36 @@ datasource db {
 }
 
 model Event {
-  id          String    @id @default(cuid())
-  name        String
-  date        DateTime
-  endDate     DateTime?
-  location    String
-  venue       String?
-  description String
-  bannerUrl   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  ticketTypes   TicketType[]
-  registrations Registration[]
+  id            String         @id @default(cuid())
+  name          String
+  date          DateTime
+  endDate       DateTime?
+  location      String
+  venue         String?
+  description   String
+  bannerUrl     String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   agendaItems   AgendaItem[]
+  registrations Registration[]
   speakers      Speaker[]
+  ticketTypes   TicketType[]
 }
 
 model TicketType {
-  id          String   @id @default(cuid())
-  eventId     String
-  name        String
-  price       Int
-  currency    String   @default("INR")
-  description String
-  features    String[]
-  capacity    Int?
-  soldCount   Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-
-  event         Event          @relation(fields: [eventId], references: [id])
+  id            String         @id @default(cuid())
+  eventId       String
+  name          String
+  price         Int
+  currency      String         @default("INR")
+  description   String
+  features      String[]
+  capacity      Int?
+  soldCount     Int            @default(0)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
   registrations Registration[]
+  event         Event          @relation(fields: [eventId], references: [id])
 }
 
 model Registration {
@@ -47,7 +45,6 @@ model Registration {
   ticketId             String             @unique
   eventId              String
   ticketTypeId         String
-
   attendeeName         String
   attendeeEmail        String
   attendeePhone        String
@@ -55,24 +52,20 @@ model Registration {
   role                 String?
   dietaryRestrictions  String?
   accessibilityNeeds   String?
-
   paymentStatus        PaymentStatus      @default(PENDING)
   paymentTransactionId String?
   razorpayOrderId      String?
   razorpayPaymentId    String?
   razorpaySignature    String?
   amountPaid           Int?
-
   status               RegistrationStatus @default(PENDING)
   cancelledAt          DateTime?
   refundId             String?
   refundStatus         RefundStatus?
-
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
-
-  event      Event      @relation(fields: [eventId], references: [id])
-  ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
+  event                Event              @relation(fields: [eventId], references: [id])
+  ticketType           TicketType         @relation(fields: [ticketTypeId], references: [id])
 
   @@index([attendeeEmail])
   @@index([ticketId])
@@ -80,7 +73,7 @@ model Registration {
 }
 
 model Speaker {
-  id           String   @id @default(cuid())
+  id           String       @id @default(cuid())
   eventId      String
   name         String
   title        String
@@ -89,16 +82,15 @@ model Speaker {
   photoUrl     String?
   linkedinUrl  String?
   twitterUrl   String?
-  isFeatured   Boolean  @default(false)
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-
-  event       Event        @relation(fields: [eventId], references: [id])
-  agendaItems AgendaItem[]
+  isFeatured   Boolean      @default(false)
+  displayOrder Int          @default(0)
+  createdAt    DateTime     @default(now())
+  agendaItems  AgendaItem[]
+  event        Event        @relation(fields: [eventId], references: [id])
 }
 
 model AgendaItem {
-  id           String    @id @default(cuid())
+  id           String   @id @default(cuid())
   eventId      String
   title        String
   description  String?
@@ -107,13 +99,42 @@ model AgendaItem {
   track        String?
   location     String?
   speakerId    String?
-  displayOrder Int       @default(0)
-  createdAt    DateTime  @default(now())
-
-  event   Event    @relation(fields: [eventId], references: [id])
-  speaker Speaker? @relation(fields: [speakerId], references: [id])
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  event        Event    @relation(fields: [eventId], references: [id])
+  speaker      Speaker? @relation(fields: [speakerId], references: [id])
 
   @@index([eventId, startTime])
+}
+
+model FailedSync {
+  id               String   @id @default(cuid())
+  registrationId   String
+  registrationData Json
+  error            String
+  errorType        String
+  retryCount       Int      @default(0)
+  nextRetryTime    DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([nextRetryTime])
+  @@index([registrationId])
+}
+
+model DeadLetterSync {
+  id               String   @id @default(cuid())
+  registrationId   String
+  registrationData Json
+  error            String
+  errorType        String
+  retryCount       Int
+  lastAttemptTime  DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([registrationId])
+  @@index([createdAt])
 }
 
 enum PaymentStatus {
@@ -134,34 +155,4 @@ enum RefundStatus {
   INITIATED
   PROCESSED
   FAILED
-}
-
-model FailedSync {
-  id                String   @id @default(cuid())
-  registrationId    String
-  registrationData  Json     // Store the registration data for retry
-  error             String
-  errorType         String   // 'TRANSIENT' or 'PERMANENT'
-  retryCount        Int      @default(0)
-  nextRetryTime     DateTime
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@index([nextRetryTime])
-  @@index([registrationId])
-}
-
-model DeadLetterSync {
-  id                String   @id @default(cuid())
-  registrationId    String
-  registrationData  Json     // Store the registration data for manual review
-  error             String
-  errorType         String   // Type of error that caused permanent failure
-  retryCount        Int      // Number of retries attempted
-  lastAttemptTime   DateTime
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@index([registrationId])
-  @@index([createdAt])
 }
