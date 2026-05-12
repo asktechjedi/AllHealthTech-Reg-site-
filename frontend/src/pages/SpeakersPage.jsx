@@ -220,7 +220,7 @@ export default function SpeakersPage() {
         </div>
       </AnimatedSection>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-12">
         {loading && (
           <div className="flex justify-center py-20">
             <LoadingSpinner size="lg" />

@@ -123,7 +123,7 @@ export default function AboutPage() {
         </div>
       </AnimatedSection>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-0 space-y-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 space-y-20">
         {/* Mission with bright styling */}
         <AnimatedSection animation="fadeUp" duration={800}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -209,7 +209,7 @@ export default function AboutPage() {
         {/* Timeline with bright styling */}
         <AnimatedSection animation="fadeUp" duration={800}>
           <div>
-            <div className="text-center">
+            <div className="text-center mb-14">
               <span className="text-xs font-[var(--font-secondary)] font-bold uppercase tracking-[0.1em] mb-3 text-[#3B82F6] inline-block">Our Journey</span>
               <h2 className="text-4xl font-[var(--font-primary)] font-bold text-[#1F2937] leading-tight">Six Years of Impact</h2>
             </div>

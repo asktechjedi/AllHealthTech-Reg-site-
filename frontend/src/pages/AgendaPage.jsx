@@ -172,7 +172,7 @@ export default function AgendaPage() {
         </div>
       </AnimatedSection>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-0">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12">
         {loading && (
           <div className="flex justify-center py-20">
             <LoadingSpinner size="lg" />
