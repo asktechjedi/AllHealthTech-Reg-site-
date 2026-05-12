@@ -1,25 +1,25 @@
 import { create } from 'zustand'
 
 const initialState = {
-  currentStep: 'ticket', // 'ticket' | 'details' | 'review' | 'payment' | 'success'
-  selectedTicket: null,  // ticket type object or null
-  attendeeDetails: null, // attendee form data or null
-  confirmedTicketId: null, // string or null (set after payment)
+  registrationData: null, // form data for registration
+  isSubmitting: false, // loading state for form submission
+  confirmedTicketId: null, // string or null (set after successful registration)
+  attendeeDetails: null, // attendee information for success display
 }
 
 const useRegistrationStore = create((set) => ({
   ...initialState,
 
-  setStep: (step) => set({ currentStep: step }),
+  setRegistrationData: (data) => set({ registrationData: data }),
 
-  setSelectedTicket: (ticket) => set({ selectedTicket: ticket }),
-
-  setAttendeeDetails: (details) => set({ attendeeDetails: details }),
+  setSubmitting: (loading) => set({ isSubmitting: loading }),
 
   setConfirmedTicketId: (id) => set({ confirmedTicketId: id }),
 
-  // Clears confirmedTicketId and resets payment-sensitive data
-  clearPaymentData: () => set({ confirmedTicketId: null }),
+  setAttendeeDetails: (details) => set({ attendeeDetails: details }),
+
+  // Legacy function for compatibility - no-op since we don't have payment data anymore
+  clearPaymentData: () => {},
 
   // Resets entire store to initial state
   reset: () => set({ ...initialState }),

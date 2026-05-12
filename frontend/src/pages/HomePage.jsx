@@ -10,7 +10,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <StatsCounter />
-      <HighlightsSection />
+      {/* <HighlightsSection /> */}
       <FeaturedSpeakers />
       <AgendaPreview />
       <SponsorsSection />

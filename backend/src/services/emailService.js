@@ -16,11 +16,25 @@ const transporter = nodemailer.createTransport({
  * @param {string} registration.ticketId
  * @param {string} registration.attendeeName
  * @param {string} registration.attendeeEmail
+ * @param {string} [registration.organization]
+ * @param {string} [registration.role]
+ * @param {string} [registration.dietaryRestrictions]
+ * @param {string} [registration.accessibilityNeeds]
  * @param {{ name: string }} registration.ticketType
  * @param {{ name: string, date: string|Date, location: string }} registration.event
  */
 export async function sendConfirmationEmail(registration) {
-  const { ticketId, attendeeName, attendeeEmail, ticketType, event } = registration;
+  const {
+    ticketId,
+    attendeeName,
+    attendeeEmail,
+    organization,
+    role,
+    dietaryRestrictions,
+    accessibilityNeeds,
+    ticketType,
+    event,
+  } = registration;
 
   const eventDate = new Date(event.date).toLocaleDateString('en-IN', {
     weekday: 'long',
@@ -28,6 +42,41 @@ export async function sendConfirmationEmail(registration) {
     month: 'long',
     day: 'numeric',
   });
+
+  // Build optional fields rows
+  let optionalFieldsRows = '';
+
+  if (organization) {
+    optionalFieldsRows += `
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Organization</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${organization}</td>
+          </tr>`;
+  }
+
+  if (role) {
+    optionalFieldsRows += `
+          <tr style="background: #f9fafb;">
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Role</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${role}</td>
+          </tr>`;
+  }
+
+  if (dietaryRestrictions) {
+    optionalFieldsRows += `
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Dietary Restrictions</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${dietaryRestrictions}</td>
+          </tr>`;
+  }
+
+  if (accessibilityNeeds) {
+    optionalFieldsRows += `
+          <tr style="background: #f9fafb;">
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Accessibility Needs</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${accessibilityNeeds}</td>
+          </tr>`;
+  }
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -37,13 +86,16 @@ export async function sendConfirmationEmail(registration) {
       </div>
       <div style="background: #f9fafb; padding: 32px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb;">
         <p style="font-size: 16px;">Dear <strong>${attendeeName}</strong>,</p>
-        <p>Your registration for <strong>${event.name}</strong> has been confirmed. Here are your ticket details:</p>
+        <p>Your registration for <strong>${event.name}</strong> has been confirmed. Here are your registration details:</p>
+
+        <!-- Ticket ID Highlight -->
+        <div style="background: #eff6ff; border-left: 4px solid #1e40af; padding: 16px; margin: 24px 0; border-radius: 4px;">
+          <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: bold; color: #1e40af; text-transform: uppercase;">Your Ticket ID</p>
+          <p style="margin: 0; font-family: monospace; font-size: 20px; font-weight: bold; color: #1e40af; letter-spacing: 2px;">${ticketId}</p>
+          <p style="margin: 8px 0 0 0; font-size: 12px; color: #1e40af;">Keep this ID safe — you'll need it for check-in</p>
+        </div>
 
         <table style="width: 100%; border-collapse: collapse; margin: 24px 0; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-          <tr style="background: #eff6ff;">
-            <td style="padding: 12px 16px; font-weight: bold; width: 40%; border-bottom: 1px solid #e5e7eb;">Ticket ID</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; font-family: monospace; font-size: 15px; color: #1e40af;">${ticketId}</td>
-          </tr>
           <tr>
             <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Event</td>
             <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${event.name}</td>
@@ -57,13 +109,43 @@ export async function sendConfirmationEmail(registration) {
             <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${event.location}</td>
           </tr>
           <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold;">Ticket Type</td>
-            <td style="padding: 12px 16px;">${ticketType.name}</td>
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Ticket Type</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${ticketType.name}</td>
           </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Name</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${attendeeName}</td>
+          </tr>
+          <tr style="background: #f9fafb;">
+            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Email</td>
+            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${attendeeEmail}</td>
+          </tr>${optionalFieldsRows}
         </table>
 
-        <p style="color: #6b7280; font-size: 14px;">Please keep this email as proof of your registration. You will need your Ticket ID to check in at the event.</p>
-        <p style="color: #6b7280; font-size: 14px;">We look forward to seeing you at <strong>${event.name}</strong>!</p>
+        <!-- Important Instructions -->
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0; border-radius: 4px;">
+          <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: bold; color: #92400e; text-transform: uppercase;">Important: Save This Email</p>
+          <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #92400e;">
+            <li style="margin-bottom: 8px;">Save this email for your records — it contains your ticket confirmation</li>
+            <li style="margin-bottom: 8px;">Print or screenshot this email to bring to the event</li>
+            <li style="margin-bottom: 8px;">You'll need your Ticket ID (${ticketId}) for check-in</li>
+            <li>Keep your Ticket ID in a safe place for easy reference</li>
+          </ul>
+        </div>
+
+        <!-- Support Contact -->
+        <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 16px; margin: 24px 0; border-radius: 4px;">
+          <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: bold; color: #166534; text-transform: uppercase;">Need Help?</p>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #166534;">If you have any questions about your registration or the event:</p>
+          <p style="margin: 8px 0; font-size: 14px; color: #166534;">
+            <strong>Email:</strong> <a href="mailto:support@allhealthtech.com" style="color: #059669; text-decoration: none;">support@allhealthtech.com</a>
+          </p>
+          <p style="margin: 8px 0; font-size: 14px; color: #166534;">
+            <strong>Phone:</strong> <a href="tel:+1-555-123-4567" style="color: #059669; text-decoration: none;">+1 (555) 123-4567</a>
+          </p>
+        </div>
+
+        <p style="color: #6b7280; font-size: 14px; margin-top: 24px;">We look forward to seeing you at <strong>${event.name}</strong>!</p>
       </div>
     </div>
   `;

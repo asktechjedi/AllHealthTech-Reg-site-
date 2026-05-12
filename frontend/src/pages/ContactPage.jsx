@@ -42,40 +42,45 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero header */}
+    <div className="min-h-screen bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF]">
+      {/* Hero header with bright styling */}
       <div
-        className="bg-dark-900 py-20 px-4 sm:px-6 lg:px-8"
-        style={{ backgroundImage: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(34,0,255,0.15) 0%, transparent 70%)' }}
+        className="bg-gradient-to-br from-[#E8F0FF] via-[#F0F4FF] to-[#F5F9FF] py-20 px-4 sm:px-6 lg:px-8"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 800px 600px at 75% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
+            radial-gradient(ellipse 600px 400px at 25% 70%, rgba(139,92,246,0.06) 0%, transparent 60%)
+          `,
+        }}
       >
         <div className="max-w-7xl mx-auto">
-          <span className="inline-block text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Get in Touch</span>
-          <h1 className="text-4xl sm:text-5xl font-black text-white mb-3">Contact Us</h1>
-          <p className="text-white/60 text-lg">Questions about the event? We're here to help.</p>
+          <span className="inline-block text-xs font-[var(--font-secondary)] font-bold uppercase tracking-widest text-[#3B82F6] mb-3">Get in Touch</span>
+          <h1 className="text-4xl sm:text-5xl font-[var(--font-primary)] font-black text-[#1F2937] mb-3">Contact Us</h1>
+          <p className="text-[#6B7280] opacity-90 font-[var(--font-secondary)] text-lg">Questions about the event? We're here to help.</p>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Info panel */}
+          {/* Info panel with bright styling */}
           <div className="lg:col-span-2 flex flex-col gap-5">
-            <div className="bg-dark-900 rounded-2xl p-7 text-white">
-              <h2 className="font-bold text-lg mb-1">AllHealthTech Events</h2>
-              <p className="text-white/50 text-sm mb-7">Organiser of India's premier health technology conference.</p>
+            <div className="bg-white border border-[#E8F0FF] rounded-[var(--radius-2xl)] p-7 text-[#1F2937] shadow-lg">
+              <h2 className="font-[var(--font-primary)] font-bold text-lg mb-1">AllHealthTech Events</h2>
+              <p className="text-[#6B7280] font-[var(--font-secondary)] text-sm mb-7">Organiser of India's premier health technology conference.</p>
               <div className="flex flex-col gap-5">
                 {INFO.map(({ icon: Icon, label, value, href }) => (
                   <div key={label} className="flex items-start gap-3.5">
-                    <div className="w-8 h-8 rounded-lg bg-brand-600/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Icon className="w-4 h-4 text-brand-400" />
+                    <div className="w-8 h-8 rounded-[var(--radius-md)] bg-[rgba(59,130,246,0.1)] border border-[#3B82F6] border-opacity-20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon className="w-4 h-4 text-[#3B82F6]" />
                     </div>
                     <div>
-                      <p className="text-white/40 text-xs font-semibold uppercase tracking-wide mb-0.5">{label}</p>
+                      <p className="text-[#6B7280] opacity-60 font-[var(--font-secondary)] text-xs font-semibold uppercase tracking-wide mb-0.5">{label}</p>
                       {href ? (
-                        <a href={href} className="text-white text-sm hover:text-brand-400 transition-colors">
+                        <a href={href} className="text-[#1F2937] font-[var(--font-secondary)] text-sm hover:text-[#3B82F6] transition-colors">
                           {value}
                         </a>
                       ) : (
-                        <p className="text-white text-sm">{value}</p>
+                        <p className="text-[#1F2937] font-[var(--font-secondary)] text-sm">{value}</p>
                       )}
                     </div>
                   </div>
@@ -83,26 +88,26 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="bg-ice-50 border border-ice-200 rounded-2xl p-6">
-              <p className="text-brand-700 font-semibold text-sm mb-1.5">Registration Queries</p>
-              <p className="text-brand-600/80 text-xs leading-relaxed">
-                For ticket-related questions, use the <strong>My Ticket</strong> page to look up your registration or contact us directly.
+            <div className="bg-[rgba(59,130,246,0.1)] border border-[#3B82F6] border-opacity-20 rounded-[var(--radius-2xl)] p-6">
+              <p className="text-[#3B82F6] font-[var(--font-secondary)] font-semibold text-sm mb-1.5">Registration Queries</p>
+              <p className="text-[#6B7280] font-[var(--font-secondary)] text-xs leading-relaxed">
+                For ticket-related questions, please contact us directly at <strong>info@allhealthtech.com</strong> with your Ticket ID.
               </p>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-card p-8">
-            <h2 className="font-bold text-dark-900 text-xl mb-6">Send a Message</h2>
+          {/* Form with bright styling */}
+          <div className="lg:col-span-3 bg-white rounded-[var(--radius-2xl)] border border-[#E8F0FF] shadow-lg p-8">
+            <h2 className="font-[var(--font-primary)] font-bold text-[#1F2937] text-xl mb-6">Send a Message</h2>
 
             {success && (
-              <div className="mb-5 rounded-xl bg-emerald-50 border border-emerald-200 p-4 flex items-center gap-3 text-emerald-700">
+              <div className="mb-5 rounded-[var(--radius-lg)] bg-[rgba(34,197,94,0.1)] border border-[#22C55E] border-opacity-20 p-4 flex items-center gap-3 text-[#22C55E]">
                 <CheckIcon className="w-5 h-5 flex-shrink-0" />
-                <p className="text-sm font-medium">Message sent! We'll get back to you within 24 hours.</p>
+                <p className="text-sm font-[var(--font-secondary)] font-medium">Message sent! We'll get back to you within 24 hours.</p>
               </div>
             )}
             {error && (
-              <div className="mb-5 rounded-xl bg-red-50 border border-red-200 p-4 text-red-700 text-sm">
+              <div className="mb-5 rounded-[var(--radius-lg)] bg-[rgba(239,68,68,0.1)] border border-[#EF4444] border-opacity-20 p-4 text-[#EF4444] font-[var(--font-secondary)] text-sm">
                 {error}
               </div>
             )}
@@ -126,14 +131,14 @@ export default function ContactPage() {
                 placeholder="Speaker nomination, sponsorship, general enquiry..." required
               />
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="message" className="text-sm font-medium text-dark-700">
-                  Message <span className="text-brand-600">*</span>
+                <label htmlFor="message" className="text-sm font-[var(--font-secondary)] font-medium text-[#1F2937]">
+                  Message <span className="text-[#3B82F6]">*</span>
                 </label>
                 <textarea
                   id="message" name="message" value={form.message}
                   onChange={handleChange} required rows={5}
                   placeholder="Tell us how we can help..."
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-dark-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 hover:border-brand-300 transition-all resize-none"
+                  className="w-full rounded-[var(--radius-lg)] border border-[#E8F0FF] bg-white px-4 py-3 text-[#1F2937] placeholder-[#9CA3AF] font-[var(--font-secondary)] text-sm focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:ring-opacity-20 focus:border-[#3B82F6] hover:border-[#E8F0FF] transition-all resize-none"
                 />
               </div>
               <Button type="submit" loading={submitting} className="w-full mt-1">
