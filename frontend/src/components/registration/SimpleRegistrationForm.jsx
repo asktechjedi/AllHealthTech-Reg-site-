@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useRegistrationStore from '../../stores/registrationStore.js'
 import Input from '../ui/Input.jsx'
 import Button from '../ui/Button.jsx'
 import ErrorMessage from '../ui/ErrorMessage.jsx'
 import { apiFetch } from '../../lib/api.js'
+import { checkRegistrationAvailability } from '../../lib/checkRegistrationAvailability.js'
 import { cleanupRazorpayOverlay, pinRazorpayOverlayToViewport } from '../../lib/razorpayOverlay.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_RE = /^[0-9+\-\s()]+$/
+const AVAILABILITY_DEBOUNCE_MS = 700
 const RAZORPAY_CHECKOUT_URL = 'https://checkout.razorpay.com/v1/checkout.js'
 
 const fieldsetClass =
@@ -63,6 +66,8 @@ function validate(fields) {
     errors.attendeePhone = 'Phone number is required.'
   } else if (fields.attendeePhone.trim().length < 7) {
     errors.attendeePhone = 'Phone number must be at least 7 characters.'
+  } else if (!PHONE_RE.test(fields.attendeePhone.trim())) {
+    errors.attendeePhone = 'Phone number can only contain numbers, +, -, spaces, and parentheses.'
   }
 
   if (fields.organization && fields.organization.trim().length > 100) {
@@ -92,6 +97,79 @@ export default function SimpleRegistrationForm() {
 
   const [errors, setErrors] = useState({})
   const [generalError, setGeneralError] = useState('')
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false)
+  const availabilityRequestId = useRef(0)
+  const debounceTimers = useRef({})
+
+  const applyAvailabilityResult = useCallback((result) => {
+    if (!result) return
+
+    setErrors((prev) => {
+      const next = { ...prev }
+      if (result.errors.email) {
+        next.attendeeEmail = result.errors.email
+      } else if (next.attendeeEmail?.includes('already registered')) {
+        delete next.attendeeEmail
+      }
+      if (result.errors.phone) {
+        next.attendeePhone = result.errors.phone
+      } else if (next.attendeePhone?.includes('already registered')) {
+        delete next.attendeePhone
+      }
+      return next
+    })
+  }, [])
+
+  const runAvailabilityCheck = useCallback(
+    async (overrides = {}) => {
+      const email = (overrides.attendeeEmail ?? fields.attendeeEmail).trim()
+      const phone = (overrides.attendeePhone ?? fields.attendeePhone).trim()
+
+      const emailReady = email && EMAIL_RE.test(email)
+      const phoneReady = phone && phone.length >= 7 && PHONE_RE.test(phone)
+
+      if (!emailReady && !phoneReady) {
+        return { available: true, emailAvailable: true, phoneAvailable: true, errors: {} }
+      }
+
+      const requestId = ++availabilityRequestId.current
+      setIsCheckingAvailability(true)
+
+      try {
+        const result = await checkRegistrationAvailability({
+          email: emailReady ? email : undefined,
+          phone: phoneReady ? phone : undefined,
+        })
+
+        if (requestId !== availabilityRequestId.current || !result) {
+          return result
+        }
+
+        applyAvailabilityResult(result)
+        return result
+      } catch {
+        return null
+      } finally {
+        if (requestId === availabilityRequestId.current) {
+          setIsCheckingAvailability(false)
+        }
+      }
+    },
+    [fields.attendeeEmail, fields.attendeePhone, applyAvailabilityResult]
+  )
+
+  const scheduleAvailabilityCheck = useCallback(
+    (fieldName) => {
+      if (debounceTimers.current[fieldName]) {
+        clearTimeout(debounceTimers.current[fieldName])
+      }
+
+      debounceTimers.current[fieldName] = setTimeout(() => {
+        runAvailabilityCheck()
+      }, AVAILABILITY_DEBOUNCE_MS)
+    },
+    [runAvailabilityCheck]
+  )
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -104,7 +182,42 @@ export default function SimpleRegistrationForm() {
     if (generalError) {
       setGeneralError('')
     }
+
+    if (name === 'attendeeEmail' || name === 'attendeePhone') {
+      if (isFieldReadyForAvailabilityCheck(name, value)) {
+        scheduleAvailabilityCheck(name)
+      }
+    }
   }
+
+  const isFieldReadyForAvailabilityCheck = (name, value) => {
+    const trimmed = value.trim()
+    if (name === 'attendeeEmail') {
+      return trimmed && EMAIL_RE.test(trimmed)
+    }
+    if (name === 'attendeePhone') {
+      return trimmed.length >= 7 && PHONE_RE.test(trimmed)
+    }
+    return false
+  }
+
+  const handleEmailBlur = () => {
+    if (debounceTimers.current.attendeeEmail) {
+      clearTimeout(debounceTimers.current.attendeeEmail)
+    }
+    runAvailabilityCheck()
+  }
+
+  const handlePhoneBlur = () => {
+    if (debounceTimers.current.attendeePhone) {
+      clearTimeout(debounceTimers.current.attendeePhone)
+    }
+    runAvailabilityCheck()
+  }
+
+  const hasDuplicateContactError =
+    errors.attendeeEmail?.includes('already registered') ||
+    errors.attendeePhone?.includes('already registered')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -112,6 +225,11 @@ export default function SimpleRegistrationForm() {
     const validationErrors = validate(fields)
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
+      return
+    }
+
+    const availability = await runAvailabilityCheck()
+    if (availability && !availability.available) {
       return
     }
 
@@ -135,6 +253,7 @@ export default function SimpleRegistrationForm() {
         body: JSON.stringify({
           attendeeName: submissionData.attendeeName,
           attendeeEmail: submissionData.attendeeEmail,
+          attendeePhone: submissionData.attendeePhone,
         }),
       })
 
@@ -216,11 +335,29 @@ export default function SimpleRegistrationForm() {
         errorMessage = 'Network error occurred. Please check your connection and try again.'
       } else if (error.message?.includes('timeout')) {
         errorMessage = 'Request timed out. Please try again.'
-      } else if (error.message?.includes('already registered')) {
-        errorMessage =
-          'This email is already registered for the event. Contact info@allhealthtech.com if you need assistance.'
+      } else if (
+        error.message?.includes('already registered') ||
+        error.message?.includes('phone number')
+      ) {
+        errorMessage = error.message.includes('phone')
+          ? error.message
+          : 'This email is already registered for the event. Contact info@allhealthtech.com if you need assistance.'
+        if (error.message.includes('email')) {
+          setErrors((prev) => ({
+            ...prev,
+            attendeeEmail: 'This email is already registered for the event.',
+          }))
+        }
+        if (error.message.includes('phone')) {
+          setErrors((prev) => ({
+            ...prev,
+            attendeePhone: 'This phone number is already registered for the event.',
+          }))
+        }
       } else if (error.message?.includes('validation')) {
         errorMessage = `Please check your information and try again. ${error.message}`
+      } else if (error.message?.includes('Too many requests')) {
+        errorMessage = 'Too many attempts. Please wait a minute and try again.'
       } else if (error.message?.includes('500') || error.message?.includes('503')) {
         errorMessage = 'Server error occurred. Our team has been notified. Please try again in a few minutes.'
       } else if (error.message && error.message.length < 200) {
@@ -291,6 +428,7 @@ export default function SimpleRegistrationForm() {
               required
               value={fields.attendeeEmail}
               onChange={handleChange}
+              onBlur={handleEmailBlur}
               placeholder="jane@example.com"
               error={errors.attendeeEmail}
               aria-required="true"
@@ -304,6 +442,7 @@ export default function SimpleRegistrationForm() {
               required
               value={fields.attendeePhone}
               onChange={handleChange}
+              onBlur={handlePhoneBlur}
               placeholder="+91 98765 43210"
               error={errors.attendeePhone}
               aria-required="true"
@@ -400,12 +539,20 @@ export default function SimpleRegistrationForm() {
             type="submit"
             variant="primary"
             size="lg"
-            loading={isSubmitting}
-            disabled={isSubmitting}
+            loading={isSubmitting || isCheckingAvailability}
+            disabled={isSubmitting || isCheckingAvailability || hasDuplicateContactError}
             className="w-full"
-            aria-label={isSubmitting ? 'Processing registration payment, please wait' : 'Pay and complete registration'}
+            aria-label={
+              isSubmitting || isCheckingAvailability
+                ? 'Processing registration payment, please wait'
+                : 'Pay and complete registration'
+            }
           >
-            {isSubmitting ? 'Processing...' : 'Pay Rs. 2,999 & Complete Registration'}
+            {isCheckingAvailability
+              ? 'Checking availability...'
+              : isSubmitting
+                ? 'Processing...'
+                : 'Pay Rs. 2,999 & Complete Registration'}
           </Button>
         </div>
 
