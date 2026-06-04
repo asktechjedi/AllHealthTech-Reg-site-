@@ -8,15 +8,16 @@ import errorHandler from '../middleware/errorHandler.js';
 
 vi.mock('../middleware/rateLimit.js', () => ({
   registrationLimiter: (req, res, next) => next(),
+  availabilityCheckLimiter: (req, res, next) => next(),
 }));
 
 process.env.RAZORPAY_KEY_SECRET = 'test_secret';
 const originalGoogleSheetsEnv = {
   GOOGLE_SHEETS_ID: process.env.GOOGLE_SHEETS_ID,
-  GOOGLE_SHEETS_CREDENTIALS_PATH: process.env.GOOGLE_SHEETS_CREDENTIALS_PATH,
+  GOOGLE_SHEETS_CREDENTIALS_JSON: process.env.GOOGLE_SHEETS_CREDENTIALS_JSON,
 };
 delete process.env.GOOGLE_SHEETS_ID;
-delete process.env.GOOGLE_SHEETS_CREDENTIALS_PATH;
+delete process.env.GOOGLE_SHEETS_CREDENTIALS_JSON;
 
 const app = express();
 app.use(express.json());
@@ -41,8 +42,8 @@ describe('Registration Security Tests', () => {
     if (originalGoogleSheetsEnv.GOOGLE_SHEETS_ID) {
       process.env.GOOGLE_SHEETS_ID = originalGoogleSheetsEnv.GOOGLE_SHEETS_ID;
     }
-    if (originalGoogleSheetsEnv.GOOGLE_SHEETS_CREDENTIALS_PATH) {
-      process.env.GOOGLE_SHEETS_CREDENTIALS_PATH = originalGoogleSheetsEnv.GOOGLE_SHEETS_CREDENTIALS_PATH;
+    if (originalGoogleSheetsEnv.GOOGLE_SHEETS_CREDENTIALS_JSON) {
+      process.env.GOOGLE_SHEETS_CREDENTIALS_JSON = originalGoogleSheetsEnv.GOOGLE_SHEETS_CREDENTIALS_JSON;
     }
     await prisma.$disconnect();
   });
@@ -268,6 +269,56 @@ describe('Registration Security Tests', () => {
     });
   });
 
+  describe('Duplicate registration', () => {
+    it('should reject duplicate phone numbers for active registrations', async () => {
+      const payment = paymentFields('order_phone_dup', 'pay_phone_dup');
+
+      const firstResponse = await request(app)
+        .post('/api/registrations')
+        .send({
+          attendeeName: 'First User',
+          attendeeEmail: 'phone-dup-first@example.com',
+          attendeePhone: '+91 98765 43210',
+          ...payment,
+        });
+
+      expect(firstResponse.status).toBe(201);
+
+      const secondResponse = await request(app)
+        .post('/api/registrations')
+        .send({
+          attendeeName: 'Second User',
+          attendeeEmail: 'phone-dup-second@example.com',
+          attendeePhone: '9876543210',
+          ...paymentFields('order_phone_dup_2', 'pay_phone_dup_2'),
+        });
+
+      expect(secondResponse.status).toBe(409);
+      expect(secondResponse.body.code).toBe('DUPLICATE_PHONE');
+    });
+
+    it('should expose availability via check-availability endpoint', async () => {
+      await request(app)
+        .post('/api/registrations')
+        .send({
+          attendeeName: 'Availability Check User',
+          attendeeEmail: 'availability-check@example.com',
+          attendeePhone: '+91 80000 11111',
+          ...paymentFields('order_avail', 'pay_avail'),
+        });
+
+      const response = await request(app).get('/api/registrations/check-availability').query({
+        email: 'availability-check@example.com',
+        phone: '8000011111',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body.available).toBe(false);
+      expect(response.body.emailAvailable).toBe(false);
+      expect(response.body.phoneAvailable).toBe(false);
+    });
+  });
+
   describe('Payment Verification', () => {
     it('should reject registration without Razorpay payment fields', async () => {
       const response = await request(app)
@@ -326,7 +377,7 @@ describe('Registration Security Tests', () => {
         .send({
           attendeeName: 'Second User',
           attendeeEmail: 'second-payment@example.com',
-          attendeePhone: '1234567890',
+          attendeePhone: '9876543210',
           ...reusedPayment,
         });
 

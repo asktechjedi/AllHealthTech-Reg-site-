@@ -25,6 +25,17 @@ export const registrationLimiter = rateLimit({
   },
 });
 
+/** Live email/phone uniqueness checks while filling the form (higher limit than POST). */
+export const availabilityCheckLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json(rateLimitResponse);
+  },
+});
+
 export const paymentLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,

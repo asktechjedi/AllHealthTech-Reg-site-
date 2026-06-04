@@ -76,7 +76,40 @@ app.listen(PORT, async () => {
   console.log(`Backend running on port ${PORT}`);
   
   // Start Google Sheets retry processor if configured
-  if (process.env.GOOGLE_SHEETS_ID && process.env.GOOGLE_SHEETS_CREDENTIALS_PATH) {
+  const {
+    isGoogleSheetsConfigured,
+    getGoogleSheetsConfig,
+    verifyGoogleSheetsAccess,
+    getGoogleSheetsServiceAccountEmail,
+  } = await import('./services/googleSheetsService.js');
+
+  if (isGoogleSheetsConfigured()) {
+
+    const access = await verifyGoogleSheetsAccess();
+    if (access.ok) {
+      console.log('[GoogleSheets] Connected to spreadsheet', {
+        title: access.title,
+        spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+        sheetTabs: access.sheetTabs,
+        configuredTab: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations',
+      });
+      if (!access.sheetTabs.includes(process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations')) {
+        console.warn(
+          '[GoogleSheets] GOOGLE_SHEETS_SHEET_NAME does not match any tab. Update .env to one of:',
+          access.sheetTabs.join(', ')
+        );
+      }
+    } else {
+      const serviceAccount = getGoogleSheetsServiceAccountEmail();
+      console.error('[GoogleSheets] Cannot access spreadsheet — registrations will not sync until fixed.');
+      console.error('[GoogleSheets]', access.message);
+      if (serviceAccount) {
+        console.error(
+          `[GoogleSheets] Share your sheet with this email as Editor: ${serviceAccount}`
+        );
+      }
+    }
+
     try {
       const { startRetryProcessor } = await import('./services/retryManager.js');
       
@@ -86,11 +119,7 @@ app.listen(PORT, async () => {
         backoffMultiplier: parseInt(process.env.GOOGLE_SHEETS_BACKOFF_MULTIPLIER || '2'),
       };
       
-      const googleSheetsConfig = {
-        spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-        sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations',
-        credentialsPath: process.env.GOOGLE_SHEETS_CREDENTIALS_PATH,
-      };
+      const googleSheetsConfig = getGoogleSheetsConfig();
       
       startRetryProcessor(retryConfig, googleSheetsConfig);
       console.log('[GoogleSheets] Retry processor started');

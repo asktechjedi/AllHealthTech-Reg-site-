@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -48,19 +47,58 @@ export const REGISTRATION_SHEET_COLUMNS = [
   'registrationTimestamp',
 ];
 
+export function isGoogleSheetsConfigured() {
+  return Boolean(
+    process.env.GOOGLE_SHEETS_ID?.trim() &&
+    process.env.GOOGLE_SHEETS_CREDENTIALS_JSON?.trim()
+  );
+}
+
+export function getGoogleSheetsConfig() {
+  return {
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations',
+  };
+}
+
+export function getGoogleSheetsServiceAccountEmail() {
+  try {
+    const credentialsJson = process.env.GOOGLE_SHEETS_CREDENTIALS_JSON?.trim();
+    if (!credentialsJson) return null;
+    return JSON.parse(credentialsJson).client_email ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** @returns {{ ok: true, title: string, sheetTabs: string[] } | { ok: false, message: string }} */
+export async function verifyGoogleSheetsAccess() {
+  const { spreadsheetId } = getGoogleSheetsConfig();
+  try {
+    const auth = await getGoogleSheetsAuth();
+    const sheets = google.sheets({ version: 'v4', auth });
+    const meta = await sheets.spreadsheets.get({ spreadsheetId });
+    return {
+      ok: true,
+      title: meta.data.properties?.title ?? '(untitled)',
+      sheetTabs: meta.data.sheets?.map((s) => s.properties?.title).filter(Boolean) ?? [],
+    };
+  } catch (error) {
+    return { ok: false, message: formatGoogleSheetsError(error) };
+  }
+}
+
 /**
  * Get authenticated Google Sheets client
- * @param {string} credentialsPath - Path to service account credentials JSON file
  * @returns {Promise<Object>} Authenticated sheets API client
  */
-async function getGoogleSheetsAuth(credentialsPath) {
+async function getGoogleSheetsAuth() {
   try {
-    let credentials;
-    if (process.env.GOOGLE_SHEETS_CREDENTIALS_JSON) {
-      credentials = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS_JSON);
-    } else {
-      credentials = JSON.parse(fs.readFileSync(credentialsPath, 'utf8'));
+    const credentialsJson = process.env.GOOGLE_SHEETS_CREDENTIALS_JSON?.trim();
+    if (!credentialsJson) {
+      throw new Error('GOOGLE_SHEETS_CREDENTIALS_JSON is not configured');
     }
+    const credentials = JSON.parse(credentialsJson);
     const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
@@ -161,21 +199,16 @@ function isTransientError(error) {
  * @param {Object} config - Configuration object
  * @param {string} config.spreadsheetId - Google Sheets spreadsheet ID
  * @param {string} config.sheetName - Sheet name (default: "Registrations")
- * @param {string} config.credentialsPath - Path to service account credentials
  * @returns {Promise<void>}
  * @throws {TransientSyncError} If error is transient and should be retried
  * @throws {PermanentSyncError} If error is permanent and should not be retried
  */
 export async function syncRegistrationToSheets(registration, config) {
-  const {
-    spreadsheetId,
-    sheetName = 'Registrations',
-    credentialsPath,
-  } = config;
+  const { spreadsheetId, sheetName = 'Registrations' } = config;
 
   try {
     // Step 1: Authenticate with Google Sheets API
-    const auth = await getGoogleSheetsAuth(credentialsPath);
+    const auth = await getGoogleSheetsAuth();
     const sheets = google.sheets({ version: 'v4', auth });
 
     // Step 2: Map registration data to sheet row
@@ -202,13 +235,41 @@ export async function syncRegistrationToSheets(registration, config) {
       updatedRows: response.data.updates.updatedRows,
     });
   } catch (error) {
-    // Classify error and throw appropriate error type
+    const message = formatGoogleSheetsError(error);
     if (isTransientError(error)) {
-      throw new TransientSyncError(error.message);
+      throw new TransientSyncError(message);
     } else {
-      throw new PermanentSyncError(error.message);
+      throw new PermanentSyncError(message);
     }
   }
+}
+
+function formatGoogleSheetsError(error) {
+  const apiMessage = error.response?.data?.error?.message || error.message;
+  const isPermissionDenied =
+    error.code === 403 ||
+    error.status === 403 ||
+    apiMessage?.includes('permission') ||
+    apiMessage?.includes('PERMISSION_DENIED');
+
+  if (!isPermissionDenied) {
+    return apiMessage;
+  }
+
+  let serviceAccountEmail = 'your service account';
+  try {
+    const credentialsJson = process.env.GOOGLE_SHEETS_CREDENTIALS_JSON?.trim();
+    if (credentialsJson) {
+      serviceAccountEmail = JSON.parse(credentialsJson).client_email || serviceAccountEmail;
+    }
+  } catch {
+    // Keep default label if credentials cannot be parsed for logging.
+  }
+
+  return (
+    `${apiMessage}. Share the spreadsheet (ID: ${process.env.GOOGLE_SHEETS_ID}) with ` +
+    `${serviceAccountEmail} as Editor, or update GOOGLE_SHEETS_ID to a sheet this account can access.`
+  );
 }
 
 /**
@@ -217,14 +278,10 @@ export async function syncRegistrationToSheets(registration, config) {
  * @returns {Promise<void>}
  */
 export async function initializeGoogleSheet(config) {
-  const {
-    spreadsheetId,
-    sheetName = 'Registrations',
-    credentialsPath,
-  } = config;
+  const { spreadsheetId, sheetName = 'Registrations' } = config;
 
   try {
-    const auth = await getGoogleSheetsAuth(credentialsPath);
+    const auth = await getGoogleSheetsAuth();
     const sheets = google.sheets({ version: 'v4', auth });
 
     // Check if sheet has headers

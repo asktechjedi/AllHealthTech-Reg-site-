@@ -1,22 +1,20 @@
 import '../src/config/env.js';
 import prisma from '../src/lib/prisma.js';
-import { syncRegistrationToSheets } from '../src/services/googleSheetsService.js';
+import {
+  syncRegistrationToSheets,
+  isGoogleSheetsConfigured,
+  getGoogleSheetsConfig,
+} from '../src/services/googleSheetsService.js';
 
 const args = new Set(process.argv.slice(2));
 const includeConfirmedPaid = args.has('--include-confirmed-paid');
 
 function requireGoogleSheetsConfig() {
-  const config = {
-    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-    sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations',
-    credentialsPath: process.env.GOOGLE_SHEETS_CREDENTIALS_PATH,
-  };
-
-  if (!config.spreadsheetId || !config.credentialsPath) {
-    throw new Error('GOOGLE_SHEETS_ID and GOOGLE_SHEETS_CREDENTIALS_PATH must be configured');
+  if (!isGoogleSheetsConfigured()) {
+    throw new Error('GOOGLE_SHEETS_ID and GOOGLE_SHEETS_CREDENTIALS_JSON must be configured');
   }
 
-  return config;
+  return getGoogleSheetsConfig();
 }
 
 async function syncPayload(label, id, registrationData, googleSheetsConfig) {

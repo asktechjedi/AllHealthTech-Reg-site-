@@ -2,15 +2,30 @@ import { Router } from 'express';
 import { z } from 'zod';
 import prisma from '../lib/prisma.js';
 import validate from '../middleware/validate.js';
-import { registrationLimiter } from '../middleware/rateLimit.js';
+import { availabilityCheckLimiter, registrationLimiter } from '../middleware/rateLimit.js';
 import { generateTicketId } from '../services/ticketService.js';
 import { sendConfirmationEmail } from '../services/emailService.js';
 import {
   REGISTRATION_AMOUNT_PAISE,
   verifyRazorpaySignature,
 } from '../services/paymentService.js';
+import {
+  checkRegistrationAvailability,
+  getAvailabilityConflictResponse,
+} from '../services/registrationAvailability.js';
 
 const router = Router();
+
+const checkAvailabilityQuerySchema = z.object({
+  email: z.string().trim().email('Invalid email format').toLowerCase().optional(),
+  phone: z
+    .string()
+    .trim()
+    .min(7, 'Phone number must be at least 7 characters')
+    .max(20, 'Phone number must be less than 20 characters')
+    .regex(/^[0-9+\-\s()]+$/, 'Invalid phone number format')
+    .optional(),
+});
 
 const createRegistrationSchema = z.object({
   // Sanitize and validate name: trim, max length, no special characters that could be XSS
@@ -63,6 +78,41 @@ const createRegistrationSchema = z.object({
   razorpay_signature: z.string().min(1, 'Razorpay signature is required').trim(),
 });
 
+router.get('/check-availability', availabilityCheckLimiter, async (req, res, next) => {
+  try {
+    const parsed = checkAvailabilityQuerySchema.safeParse(req.query);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: parsed.error.errors[0]?.message ?? 'Invalid query parameters',
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    const { email, phone } = parsed.data;
+    if (!email && !phone) {
+      return res.status(400).json({
+        error: 'Provide email and/or phone query parameters',
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    const availability = await checkRegistrationAvailability({
+      attendeeEmail: email,
+      attendeePhone: phone,
+    });
+
+    return res.json({
+      success: true,
+      available: availability.available,
+      emailAvailable: availability.emailAvailable,
+      phoneAvailable: availability.phoneAvailable,
+      errors: availability.errors,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post(
   '/',
   registrationLimiter,
@@ -82,19 +132,13 @@ router.post(
         razorpay_signature,
       } = req.body;
 
-      // Check for duplicate email registration
-      const existingRegistration = await prisma.registration.findFirst({
-        where: {
-          attendeeEmail,
-          status: { not: 'CANCELLED' },
-        },
+      const availabilityConflict = await getAvailabilityConflictResponse({
+        attendeeEmail,
+        attendeePhone,
       });
 
-      if (existingRegistration) {
-        return res.status(409).json({
-          error: 'This email is already registered for the event',
-          code: 'DUPLICATE_EMAIL',
-        });
+      if (availabilityConflict) {
+        return res.status(availabilityConflict.statusCode).json(availabilityConflict.body);
       }
 
       const isPaymentValid = verifyRazorpaySignature({
@@ -173,21 +217,18 @@ router.post(
  */
 async function syncRegistrationToGoogleSheets(registration) {
   // Skip if Google Sheets is not configured
-  if (!process.env.GOOGLE_SHEETS_ID || !process.env.GOOGLE_SHEETS_CREDENTIALS_PATH) {
+  const { isGoogleSheetsConfigured, getGoogleSheetsConfig, syncRegistrationToSheets, TransientSyncError, PermanentSyncError } =
+    await import('../services/googleSheetsService.js');
+
+  if (!isGoogleSheetsConfigured()) {
     console.log('[Registration] Google Sheets sync is not configured, skipping');
     return;
   }
 
   try {
-    // Lazy load Google Sheets modules
-    const { syncRegistrationToSheets, TransientSyncError, PermanentSyncError } = await import('../services/googleSheetsService.js');
     const { queueFailedSync } = await import('../services/retryManager.js');
 
-    const googleSheetsConfig = {
-      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-      sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME || 'Registrations',
-      credentialsPath: process.env.GOOGLE_SHEETS_CREDENTIALS_PATH,
-    };
+    const googleSheetsConfig = getGoogleSheetsConfig();
 
     await syncRegistrationToSheets(registration, googleSheetsConfig);
   } catch (error) {
