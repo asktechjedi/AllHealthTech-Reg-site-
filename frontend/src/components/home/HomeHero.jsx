@@ -18,15 +18,18 @@ const metaItems = [
   { icon: LockIcon, label: 'Invite-only gathering' },
 ]
 
+/** Matches fixed navbar height (h-24) */
+const HERO_NAV_OFFSET = 'pt-24'
+
 export default function HomeHero() {
   return (
-    <section className="relative min-h-[min(92vh,920px)] overflow-hidden text-[var(--text-on-dark)]">
+    <section className="relative min-h-dvh w-full min-w-0 overflow-hidden text-[var(--text-on-dark)]">
       {/* Background */}
-      <div className="absolute inset-0" aria-hidden="true">
+      <div className="absolute inset-0 min-h-dvh" aria-hidden="true">
         <img
           src={heroBackground}
           alt=""
-          className="h-full w-full scale-105 object-cover object-[center_42%] sm:object-[62%_center] lg:object-[78%_center]"
+          className="h-full min-h-dvh w-full object-cover object-[center_42%] sm:object-[62%_center] lg:object-[78%_center]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(0,8,74,0.94)_0%,rgba(0,14,122,0.82)_38%,rgba(0,14,122,0.45)_58%,rgba(0,8,74,0.2)_78%,rgba(0,8,74,0.55)_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,8,74,0.88)_0%,rgba(0,8,74,0.25)_28%,transparent_55%)]" />
@@ -38,8 +41,10 @@ export default function HomeHero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[min(92vh,920px)] max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-1 flex-col justify-center pb-8 pt-28 sm:pt-32 lg:max-w-2xl lg:pt-36">
+      <div
+        className={`relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl min-w-0 flex-col px-4 sm:px-6 lg:px-8 ${HERO_NAV_OFFSET}`}
+      >
+        <div className="flex min-h-0 flex-1 flex-col justify-center pb-6 lg:max-w-2xl">
           <motion.div {...fadeUp(0)}>
             <Eyebrow variant="dark">All Health Tech presents</Eyebrow>
           </motion.div>
