@@ -7,8 +7,8 @@ import AnimatedSection from '../components/ui/AnimatedSection'
 import { MailIcon, PhoneIcon, MapPinIcon, ClockIcon, CheckIcon } from '../components/icons'
 
 const INFO = [
-  { icon: MailIcon, label: 'Email', value: 'info@allhealthtech.com', href: 'mailto:info@allhealthtech.com' },
-  { icon: PhoneIcon, label: 'Phone', value: '+91 98765 43210', href: 'tel:+919876543210' },
+  { icon: MailIcon, label: 'Email', value: 'maklabs@allhealthtech.com', href: 'mailto:maklabs@allhealthtech.com' },
+  { icon: PhoneIcon, label: 'Phone', value: '+91 99007 41100', href: 'tel:+919900741100' },
   { icon: MapPinIcon, label: 'Venue', value: 'Bangalore, venue TBC', href: null },
   { icon: ClockIcon, label: 'Office Hours', value: 'Mon–Fri, 9 AM – 6 PM IST', href: null },
 ]
@@ -92,7 +92,7 @@ export default function ContactPage() {
               <p className="mb-1 text-xs font-semibold text-[var(--color-blue-deep)]">Registration Queries</p>
               <p className="text-[11px] leading-relaxed text-[var(--text-secondary)]">
                 For ticket-related questions, contact us at{' '}
-                <strong className="text-[var(--text-primary)]">info@allhealthtech.com</strong> with your Ticket ID.
+                <strong className="text-[var(--text-primary)]">maklabs@allhealthtech.com</strong> with your Ticket ID.
               </p>
             </div>
           </AnimatedSection>

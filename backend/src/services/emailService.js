@@ -133,10 +133,10 @@ export async function sendConfirmationEmail(registration) {
           <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: bold; color: #166534; text-transform: uppercase;">Need Help?</p>
           <p style="margin: 0 0 8px 0; font-size: 14px; color: #166534;">If you have any questions about your registration or the event:</p>
           <p style="margin: 8px 0; font-size: 14px; color: #166534;">
-            <strong>Email:</strong> <a href="mailto:support@allhealthtech.com" style="color: #059669; text-decoration: none;">support@allhealthtech.com</a>
+            <strong>Email:</strong> <a href="mailto:maklabs@allhealthtech.com" style="color: #059669; text-decoration: none;">maklabs@allhealthtech.com</a>
           </p>
           <p style="margin: 8px 0; font-size: 14px; color: #166534;">
-            <strong>Phone:</strong> <a href="tel:+1-555-123-4567" style="color: #059669; text-decoration: none;">+1 (555) 123-4567</a>
+            <strong>Phone:</strong> <a href="tel:+919900741100" style="color: #059669; text-decoration: none;">+91 99007 41100</a>
           </p>
         </div>
 

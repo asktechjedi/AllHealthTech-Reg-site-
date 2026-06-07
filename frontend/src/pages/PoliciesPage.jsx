@@ -9,7 +9,7 @@ const POLICIES = [
     content: [
       'AllHealthTech Events ("we", "us") is committed to protecting your personal information. When you register, we collect your name, email, phone number, and organisation. This data is used solely to process your registration, send event communications, and improve future events.',
       'We do not sell or share your personal data with third parties for marketing. We may share limited information with our payment processor (Razorpay) and email provider strictly to facilitate transactions. All data transfers are encrypted using TLS.',
-      'You may request access to, correction of, or deletion of your data at any time by emailing info@allhealthtech.com. We retain registration data for 3 years for compliance purposes.',
+      'You may request access to, correction of, or deletion of your data at any time by emailing maklabs@allhealthtech.com. We retain registration data for 3 years for compliance purposes.',
     ],
   },
   {
@@ -28,7 +28,7 @@ const POLICIES = [
     updated: 'January 1, 2026',
     content: [
       'All ticket purchases for AllHealth X Tech are final and non-refundable. Once registration is completed, cancellations, no-shows, or changes in personal circumstances will not qualify for a refund.',
-      'Tickets are non-transferable and valid only for the registered attendee. To request a correction to your registration details, email info@allhealthtech.com with your Ticket ID.',
+      'Tickets are non-transferable and valid only for the registered attendee. To request a correction to your registration details, email maklabs@allhealthtech.com with your Ticket ID.',
       'If AllHealthTech Events cancels or significantly reschedules the conference, registered attendees will be notified of the available options by email.',
     ],
   },

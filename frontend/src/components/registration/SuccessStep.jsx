@@ -113,19 +113,19 @@ export default function SuccessStep() {
           <div className="flex items-center gap-2.5 text-[var(--text-primary)]">
             <MailIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-bridge)]" />
             <a
-              href="mailto:info@allhealthtech.com"
+              href="mailto:maklabs@allhealthtech.com"
               className="font-medium text-[var(--color-blue-deep)] transition-colors hover:text-[var(--color-navy)]"
             >
-              info@allhealthtech.com
+              maklabs@allhealthtech.com
             </a>
           </div>
           <div className="flex items-center gap-2.5 text-[var(--text-primary)]">
             <PhoneIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-bridge)]" />
             <a
-              href="tel:+919876543210"
+              href="tel:+919900741100"
               className="font-medium text-[var(--color-blue-deep)] transition-colors hover:text-[var(--color-navy)]"
             >
-              +91 98765 43210
+              +91 99007 41100
             </a>
           </div>
         </div>
