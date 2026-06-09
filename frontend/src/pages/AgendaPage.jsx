@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react'
-import { apiFetch } from '../lib/api'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
-import ErrorMessage from '../components/ui/ErrorMessage'
+import { useMemo, useState } from 'react'
 import PageHero from '../components/ui/PageHero'
 import CTABand from '../components/ui/CTABand'
 import Badge from '../components/ui/Badge'
 import { ClockIcon, MapPinIcon } from '../components/icons'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { linkBtn } from '../components/ui/buttonClasses'
+import { getEventData } from '../lib/eventData'
 
 const filterActive = linkBtn.filterActive
 
@@ -93,17 +91,8 @@ function AgendaItem({ item, index }) {
 }
 
 export default function AgendaPage() {
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
   const [activeTrack, setActiveTrack] = useState(null)
-
-  useEffect(() => {
-    apiFetch('/api/agenda')
-      .then(setItems)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
-  }, [])
+  const items = useMemo(() => getEventData().agendaItems, [])
 
   const tracks = [...new Set(items.map((i) => i.track).filter(Boolean))]
   const filtered = activeTrack ? items.filter((i) => i.track === activeTrack) : items
@@ -126,59 +115,50 @@ export default function AgendaPage() {
       />
 
       <div className="mx-auto max-w-4xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
-        {loading && (
-          <div className="flex justify-center py-20">
-            <LoadingSpinner size="lg" />
-          </div>
-        )}
-        {error && <ErrorMessage message={error} onRetry={() => window.location.reload()} />}
-
-        {!loading && !error && (
-          <>
-            {tracks.length > 0 && (
-              <div className="mb-10 flex flex-wrap gap-2">
+        <>
+          {tracks.length > 0 && (
+            <div className="mb-10 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveTrack(null)}
+                className={activeTrack === null ? filterActive : filterInactive}
+              >
+                All Sessions
+              </button>
+              {tracks.map((t) => (
                 <button
+                  key={t}
                   type="button"
-                  onClick={() => setActiveTrack(null)}
-                  className={activeTrack === null ? filterActive : filterInactive}
+                  onClick={() => setActiveTrack(t)}
+                  className={activeTrack === t ? filterActive : filterInactive}
                 >
-                  All Sessions
+                  {t}
                 </button>
-                {tracks.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setActiveTrack(t)}
-                    className={activeTrack === t ? filterActive : filterInactive}
-                  >
-                    {t}
-                  </button>
+              ))}
+            </div>
+          )}
+
+          {Object.entries(grouped).map(([date, dayItems]) => (
+            <div key={date} className="mb-10">
+              <div className="mb-5 flex items-center gap-4">
+                <div className="h-px flex-1 bg-[var(--color-mist)]" />
+                <span className="px-2 text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)]">
+                  {date}
+                </span>
+                <div className="h-px flex-1 bg-[var(--color-mist)]" />
+              </div>
+              <div className="flex flex-col gap-3">
+                {dayItems.map((item, index) => (
+                  <AgendaItem key={item.id} item={item} index={index} />
                 ))}
               </div>
-            )}
+            </div>
+          ))}
 
-            {Object.entries(grouped).map(([date, dayItems]) => (
-              <div key={date} className="mb-10">
-                <div className="mb-5 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-[var(--color-mist)]" />
-                  <span className="px-2 text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)]">
-                    {date}
-                  </span>
-                  <div className="h-px flex-1 bg-[var(--color-mist)]" />
-                </div>
-                <div className="flex flex-col gap-3">
-                  {dayItems.map((item, index) => (
-                    <AgendaItem key={item.id} item={item} index={index} />
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {Object.keys(grouped).length === 0 && (
-              <div className="py-16 text-center text-sm text-[var(--text-muted)]">No sessions found.</div>
-            )}
-          </>
-        )}
+          {Object.keys(grouped).length === 0 && (
+            <div className="py-16 text-center text-sm text-[var(--text-muted)]">No sessions found.</div>
+          )}
+        </>
       </div>
 
       <CTABand
