@@ -1,0 +1,21 @@
+{
+  "name": "AllHealthTech",
+  "short_name": "AHT",
+  "description": "India's Leading HealthTech Event Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0023FD",
+  "background_color": "#FAF3FF",
+  "icons": [
+    {
+      "src": "/favicon_AHT/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon_AHT/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
