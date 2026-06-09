@@ -19,7 +19,7 @@ describe('paymentService', () => {
     process.env.RAZORPAY_KEY_SECRET = 'test_secret';
   });
 
-  it('creates registration orders for INR 1', async () => {
+  it('creates registration orders for INR 2999', async () => {
     createOrderMock.mockResolvedValue({ id: 'order_123' });
     const { createRegistrationOrder } = await import('./paymentService.js');
 
@@ -29,7 +29,7 @@ describe('paymentService', () => {
     });
 
     expect(createOrderMock).toHaveBeenCalledWith({
-      amount: 100,
+      amount: 299900,
       currency: 'INR',
       receipt: expect.stringMatching(/^reg_/),
       notes: {
