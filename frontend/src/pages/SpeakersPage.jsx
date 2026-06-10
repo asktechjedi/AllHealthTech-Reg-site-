@@ -5,14 +5,6 @@ import { XIcon, LinkedInIcon, TwitterIcon } from '../components/icons'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { getEventData } from '../lib/eventData'
 
-function fmtSessionDate(d) {
-  return new Date(d).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })
-}
-
-function fmtSessionTime(d) {
-  return new Date(d).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
-}
-
 function SpeakerModal({ speaker, onClose }) {
   if (!speaker) return null
 
@@ -77,27 +69,12 @@ function SpeakerModal({ speaker, onClose }) {
             <p className="text-sm italic text-[var(--text-muted)]">Biography coming soon.</p>
           )}
 
-          {speaker.sessions?.length > 0 && (
-            <div className="mt-6 border-t border-[var(--color-mist)] pt-5">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                Sessions
-              </h3>
-              <div className="mt-3 space-y-3">
-                {speaker.sessions.map((session) => (
-                  <div key={session.id} className="rounded-[var(--radius-md)] bg-[var(--color-ice)] p-3">
-                    <p className="text-sm font-semibold text-[var(--text-primary)]">{session.title}</p>
-                    <p className="mt-1 text-xs text-[var(--text-secondary)]">
-                      {fmtSessionDate(session.startTime)} · {fmtSessionTime(session.startTime)}
-                      {session.location ? ` · ${session.location}` : ''}
-                    </p>
-                    {session.track && (
-                      <p className="mt-1 text-xs font-medium text-[var(--color-blue-deep)]">{session.track}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <div className="mt-6 border-t border-[var(--color-mist)] pt-5">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-muted)]">
+              Sessions
+            </h3>
+            <p className="mt-3 text-sm italic text-[var(--text-muted)]">Agenda coming soon.</p>
+          </div>
 
           {(speaker.linkedinUrl || speaker.twitterUrl) && (
             <div className="mt-6 flex gap-3 border-t border-[var(--color-mist)] pt-5">

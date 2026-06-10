@@ -98,6 +98,8 @@ export default function SimpleRegistrationForm() {
   const [errors, setErrors] = useState({})
   const [generalError, setGeneralError] = useState('')
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false)
+  const [refundAcknowledged, setRefundAcknowledged] = useState(false)
+  const [refundError, setRefundError] = useState('')
   const availabilityRequestId = useRef(0)
   const debounceTimers = useRef({})
 
@@ -225,6 +227,11 @@ export default function SimpleRegistrationForm() {
     const validationErrors = validate(fields)
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
+      return
+    }
+
+    if (!refundAcknowledged) {
+      setRefundError('Please acknowledge the no-refund policy before completing registration.')
       return
     }
 
@@ -372,6 +379,15 @@ export default function SimpleRegistrationForm() {
 
   const handleRetry = () => {
     setGeneralError('')
+  }
+
+  const handleRefundAcknowledgementChange = (e) => {
+    const checked = e.target.checked
+    setRefundAcknowledged(checked)
+
+    if (checked && refundError) {
+      setRefundError('')
+    }
   }
 
   return (
@@ -534,13 +550,48 @@ export default function SimpleRegistrationForm() {
           </p>
         </div>
 
+        <div
+          className={[
+            'rounded-[var(--radius-card)] border p-5 transition-colors',
+            refundError
+              ? 'border-[var(--color-danger,#d14343)] bg-[rgba(209,67,67,0.06)]'
+              : 'border-[var(--color-mist)] bg-[var(--color-warm-white)]',
+          ].join(' ')}
+        >
+          <p className="text-sm font-semibold text-[var(--text-primary)]">Important before payment</p>
+          <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+            All registrations are final and non-refundable. Please review your details carefully before completing payment.
+          </p>
+          <label className="mt-4 flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              name="refundAcknowledgement"
+              checked={refundAcknowledged}
+              onChange={handleRefundAcknowledgementChange}
+              className="mt-1 h-4 w-4 rounded border border-[var(--color-mist)] text-[var(--color-blue-core)] focus:ring-[var(--color-focus-ring)]"
+              aria-describedby="refund-policy-note"
+              aria-invalid={refundError ? 'true' : 'false'}
+            />
+            <span id="refund-policy-note" className="text-sm leading-6 text-[var(--text-primary)]">
+              I understand that this registration is non-refundable.
+            </span>
+          </label>
+          {refundError && (
+            <p className="mt-3 text-sm text-[var(--color-danger,#d14343)]" role="alert">
+              {refundError}
+            </p>
+          )}
+        </div>
+
         <div className="pt-2">
           <Button
             type="submit"
             variant="primary"
             size="lg"
             loading={isSubmitting || isCheckingAvailability}
-            disabled={isSubmitting || isCheckingAvailability || hasDuplicateContactError}
+            disabled={
+              isSubmitting || isCheckingAvailability || hasDuplicateContactError || !refundAcknowledged
+            }
             className="w-full"
             aria-label={
               isSubmitting || isCheckingAvailability

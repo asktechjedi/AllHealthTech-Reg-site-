@@ -156,7 +156,7 @@ export default function AgendaPage() {
           ))}
 
           {Object.keys(grouped).length === 0 && (
-            <div className="py-16 text-center text-sm text-[var(--text-muted)]">No sessions found.</div>
+            <div className="py-16 text-center text-sm text-[var(--text-muted)]">Agenda coming soon.</div>
           )}
         </>
       </div>

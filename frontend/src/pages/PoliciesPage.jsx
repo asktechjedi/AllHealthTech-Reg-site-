@@ -27,7 +27,7 @@ const POLICIES = [
     title: 'No Refund Policy',
     updated: 'January 1, 2026',
     content: [
-      'All ticket purchases for AllHealth X Tech are final and non-refundable. Once registration is completed, cancellations, no-shows, or changes in personal circumstances will not qualify for a refund.',
+      'All ticket purchases for AllHealth X Tech are final and non-refundable. Please review your details carefully before completing your registration.',
       'Tickets are non-transferable and valid only for the registered attendee. To request a correction to your registration details, email maklabs@allhealthtech.com with your Ticket ID.',
       'If AllHealthTech Events cancels or significantly reschedules the conference, registered attendees will be notified of the available options by email.',
     ],
