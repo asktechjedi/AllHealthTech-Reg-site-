@@ -7,6 +7,7 @@ import ErrorMessage from '../ui/ErrorMessage.jsx'
 import { apiFetch } from '../../lib/api.js'
 import { checkRegistrationAvailability } from '../../lib/checkRegistrationAvailability.js'
 import { cleanupRazorpayOverlay, pinRazorpayOverlayToViewport } from '../../lib/razorpayOverlay.js'
+import { analytics, logEvent } from '../../firebase.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_RE = /^[0-9+\-\s()]+$/
@@ -224,9 +225,12 @@ export default function SimpleRegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    logEvent(analytics, 'register_button_clicked')
+
     const validationErrors = validate(fields)
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
+      logEvent(analytics, 'registration_validation_failed')
       return
     }
 
@@ -290,6 +294,7 @@ export default function SimpleRegistrationForm() {
           modal: {
             ondismiss: () => {
               cleanupRazorpayOverlay()
+              logEvent(analytics, 'payment_cancelled')
               reject(new Error('Payment was cancelled. Your registration was not created.'))
             },
           },
@@ -297,6 +302,9 @@ export default function SimpleRegistrationForm() {
 
         checkout.on('payment.failed', (response) => {
           cleanupRazorpayOverlay()
+          logEvent(analytics, 'payment_failed', {
+            reason: response.error?.description || 'unknown',
+          })
           reject(new Error(response.error?.description || 'Payment failed. Your registration was not created.'))
         })
 
@@ -322,6 +330,9 @@ export default function SimpleRegistrationForm() {
         throw new Error('Payment succeeded, but registration could not be confirmed. Please contact support.')
       }
 
+      logEvent(analytics, 'registration_complete', {
+        ticket_id: response.ticketId,
+      })
       setConfirmedTicketId(response.ticketId)
       setAttendeeDetails({
         attendeeName: submissionData.attendeeName,
