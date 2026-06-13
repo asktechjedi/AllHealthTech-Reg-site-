@@ -67,8 +67,14 @@ export default function HomeHero() {
             {...fadeUp(0.14)}
             className="mt-7 max-w-lg text-[clamp(1.05rem,2.2vw,1.35rem)] leading-[1.6] text-[var(--color-frost)]"
           >
-            A curated, closed-room gathering where healthcare builders, investors, and operators share
-            what is actually working — not another panel on the future.
+            Bringing together Health &amp; Tech ecosystem
+          </motion.p>
+
+          <motion.p
+            {...fadeUp(0.18)}
+            className="mt-3 max-w-lg text-[clamp(1.05rem,2.2vw,1.35rem)] leading-[1.6] text-[var(--color-frost)]"
+          >
+            A curated, closed-room gathering of the people building healthtech's future.
           </motion.p>
 
           <motion.div {...fadeUp(0.22)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">

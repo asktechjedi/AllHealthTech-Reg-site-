@@ -39,7 +39,7 @@ export default function StatsCounter() {
             </h2>
           </div>
           <p className="max-w-2xl text-lg leading-[1.65] text-[var(--text-secondary)]">
-            AllHealth X Tech is an invite-only gathering for real conversations across healthcare. Leaders, investors, operators, and decision-makers exchange what is actually working today.
+            All Health X Tech Summit is an invite-only gathering for real conversations across healthcare. Leaders, investors, operators, and decision-makers exchange what is actually working today.
           </p>
         </div>
 

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import Logo from '../ui/Logo'
-import { TwitterIcon, LinkedInIcon, InstagramIcon } from '../icons'
+import { LinkedInIcon, InstagramIcon, YouTubeIcon } from '../icons'
 
 const links = {
   Event: [
@@ -11,14 +11,13 @@ const links = {
   Attendees: [
     { to: '/register', label: 'Register' },
     { to: '/contact', label: 'Contact' },
-    { to: '/policies', label: 'Policies' },
   ],
 }
 
 const socials = [
-  { icon: TwitterIcon, href: '#', label: 'Twitter / X' },
-  { icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
-  { icon: InstagramIcon, href: '#', label: 'Instagram' },
+  { icon: LinkedInIcon, href: 'https://www.linkedin.com/company/allhealthtech/', label: 'LinkedIn' },
+  { icon: InstagramIcon, href: 'https://www.instagram.com/Allhealthtech_', label: 'Instagram' },
+  { icon: YouTubeIcon, href: 'https://www.youtube.com/channel/UCF9ZOlU6SM8Vf8A0U0Mpa-Q', label: 'YouTube' },
 ]
 
 export default function Footer() {
@@ -37,6 +36,8 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[rgba(250,243,255,0.15)] bg-[var(--color-blue-deep)] text-[var(--text-on-dark)] transition-all duration-300 hover:border-[var(--color-bridge)] hover:bg-[var(--color-blue-core)]"
                 >
                   <Icon className="h-4 w-4" />
@@ -68,20 +69,29 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-[rgba(250,243,255,0.12)] pt-6 text-xs sm:flex-row">
           <p className="text-[var(--color-frost)]">
-            © {new Date().getFullYear()} AllHealthTech Events. All rights reserved.
+            © {new Date().getFullYear()}{' '}
+            <a
+              href="https://allhealthtech.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-300 hover:text-[var(--text-on-dark)]"
+            >
+              AllHealthTech
+            </a>{' '}
+            Events. All rights reserved.
           </p>
           <div className="flex gap-5">
             <NavLink
-              to="/policies"
+              to="/privacy-policy"
               className="text-[var(--color-frost)] transition-colors duration-300 hover:text-[var(--text-on-dark)]"
             >
               Privacy Policy
             </NavLink>
             <NavLink
-              to="/policies"
+              to="/terms"
               className="text-[var(--color-frost)] transition-colors duration-300 hover:text-[var(--text-on-dark)]"
             >
-              Terms of Service
+              Terms &amp; Conditions
             </NavLink>
           </div>
         </div>

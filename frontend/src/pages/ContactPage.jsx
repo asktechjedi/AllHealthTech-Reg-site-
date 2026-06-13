@@ -57,7 +57,7 @@ export default function ContactPage() {
           <AnimatedSection animation="slideRight" duration={800} delay={200} className="flex flex-col gap-4 lg:col-span-2">
             <div className="rounded-[var(--radius-card)] border border-[var(--color-mist)] bg-[var(--color-warm-white)] p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-1 font-[var(--font-display)] text-base font-normal text-[var(--text-primary)]">
-                AllHealth X Tech
+                All Health X Tech Summit
               </h2>
               <p className="mb-4 text-xs text-[var(--text-secondary)]">
                 A curated, closed-room healthtech gathering.

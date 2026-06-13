@@ -68,7 +68,7 @@ export default function SuccessStep() {
         <h3 className={sectionLabelClass}>Event Details</h3>
         <div className="flex items-center gap-2.5 text-sm text-[var(--text-primary)]">
           <CalendarIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-bridge)]" />
-          <span>AllHealth X Tech · July 2026</span>
+          <span>All Health X Tech Summit · July 2026</span>
         </div>
         <div className="flex items-center gap-2.5 text-sm text-[var(--text-primary)]">
           <MapPinIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-bridge)]" />

@@ -16,7 +16,7 @@ export default function RegistrationPage() {
         <div className="px-4 pb-4 pt-28 text-center sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
             <Eyebrow variant="light" accent className="mx-auto mb-4">
-              AllHealth X Tech
+              All Health X Tech Summit
             </Eyebrow>
             <h1 className="font-[var(--font-display)] text-4xl font-normal tracking-tight text-[var(--text-primary)] sm:text-5xl">
               Register to Attend

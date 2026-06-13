@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRightIcon } from '../icons'
+import { ArrowRightIcon, BuildingIcon, ChartIcon, NetworkIcon, BrainIcon, UserIcon, LockIcon } from '../icons'
 
 const differences = [
   {
@@ -41,7 +41,30 @@ export default function AgendaPreview() {
               Designed for conversations that would not happen on a public stage.
             </h2>
           </div>
-          <div className="flex items-end">
+          <div className="flex flex-col justify-between gap-8">
+            <div>
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                Who&apos;s in the room
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { Icon: BuildingIcon, label: 'Hospital Leaders' },
+                  { Icon: ChartIcon, label: 'Investors & Capital' },
+                  { Icon: NetworkIcon, label: 'Startup Founders' },
+                  { Icon: BrainIcon, label: 'Clinical Researchers' },
+                  { Icon: UserIcon, label: 'Operators' },
+                  { Icon: LockIcon, label: 'Invite-only' },
+                ].map(({ Icon, label }) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[var(--color-mist)] bg-white px-3 py-1.5 text-sm font-medium text-[var(--text-secondary)]"
+                  >
+                    <Icon className="h-3.5 w-3.5 text-[var(--color-blue-deep)]" />
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
             <p className="max-w-xl text-lg leading-[1.65] text-[var(--text-secondary)]">
               The format is practical, founder-aware, hospital-aware, and capital-aware. It is built around the friction points that decide whether healthtech scales.
             </p>

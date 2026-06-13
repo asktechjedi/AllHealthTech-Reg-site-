@@ -21,10 +21,10 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen">
       <PageHero
-        eyebrow="About AHT"
+        eyebrow={<>About <a href="https://allhealthtech.com" target="_blank" rel="noopener noreferrer" className="underline decoration-dotted transition-colors hover:opacity-80">AHT</a></>}
         accentEyebrow
         title="We do not just report on healthtech. We bring the ecosystem together."
-        subtitle="All Health Tech is a platform focused on the insights, trends, and stories shaping the future of healthcare. AllHealth X Tech extends that mission into a curated closed-room gathering."
+        subtitle="All Health Tech is a platform focused on the insights, trends, and stories shaping the future of healthcare. All Health X Tech Summit extends that mission into a curated closed-room gathering."
         compact
       />
 
@@ -46,7 +46,7 @@ export default function AboutPage() {
 
       <CTABand
         variant="about"
-        eyebrow="AllHealth X Tech"
+        eyebrow="All Health X Tech Summit"
         title="A curated room for the people actively building healthcare's future."
         subtitle="Bangalore, July 2026. Limited seats. Curated participation. In partnership with HealthTech Alpha."
         primaryCta={{ to: '/register', label: 'Register to Attend' }}

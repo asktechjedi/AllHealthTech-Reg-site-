@@ -9,7 +9,15 @@ export default function SponsorsSection() {
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
-              About AHT
+              About{' '}
+              <a
+                href="https://allhealthtech.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-dotted transition-colors hover:opacity-80"
+              >
+                AHT
+              </a>
             </p>
             <h2 className="font-[var(--font-display)] text-[clamp(2rem,5vw,5rem)] font-normal leading-[0.98] text-[var(--text-primary)]">
               We do not just report on the ecosystem. We bring it together.
@@ -21,7 +29,7 @@ export default function SponsorsSection() {
               shaping the future of healthcare.
             </p>
             <p>
-              AllHealth X Tech extends that mission by bringing startups, hospitals, capital,
+              All Health X Tech Summit extends that mission by bringing startups, hospitals, capital,
               policy, and research into one focused room.
             </p>
             <p className="font-semibold text-[var(--text-primary)]">

@@ -10,7 +10,8 @@ const SpeakersPage = lazy(() => import('./pages/SpeakersPage'))
 
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
-const PoliciesPage = lazy(() => import('./pages/PoliciesPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
 
 function PageFallback() {
   return (
@@ -33,7 +34,8 @@ export default function App() {
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/registration/success" element={<RegistrationPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/policies" element={<PoliciesPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Route>
       </Routes>
     </Suspense>

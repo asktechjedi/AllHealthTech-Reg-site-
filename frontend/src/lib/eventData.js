@@ -1,6 +1,7 @@
 import drUmaPhoto from '../assets/AHT-Speaker-PIC/Dr Uma - Jhanvi Shah.jpg'
 import shivaniPhoto from '../assets/AHT-Speaker-PIC/Shivani Kulkarni_v1 - Jhanvi Shah.webp'
 import ujjvalaPhoto from '../assets/AHT-Speaker-PIC/Ujjvala Ballal Profile Pic - Jhanvi Shah.webp'
+import snehaPhoto from '../assets/AHT-Speaker-PIC/F367BAC2-E06B-47A8-9528-503B4F6BE464 - Jhanvi Shah.webp'
 
 const speakerRecords = [
   {
@@ -110,6 +111,29 @@ const speakerRecords = [
         achievement: 'Vice President, AIESEC India',
       },
     ],
+    awards: [],
+  },
+  {
+    id: 'speaker-sneha-bhonsle',
+    name: 'Sneha Bhonsle',
+    title: 'Founder',
+    organization: 'Benevolent Legal',
+    tagline: 'Healthcare and life sciences lawyer',
+    biography:
+      'Sneha Bhonsle is the Founder of Benevolent Legal and a healthcare and life sciences lawyer specializing in medical law, healthcare regulation, digital health, and data protection. She advises hospitals, healthcare professionals, and healthtech startups on regulatory, compliance, and medico-legal matters. With experience spanning healthcare, technology, and law, including a stint as Legal & Compliance Consultant at CARPL.ai, Sneha brings valuable insights into the evolving legal landscape of healthcare innovation.',
+    photoUrl: snehaPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 4,
+    expertise: ['Medical Law', 'Healthcare Regulation', 'Digital Health', 'Data Protection', 'Medico-Legal'],
+    highlights: [
+      { label: 'Current', value: 'Founder, Benevolent Legal' },
+      { label: 'Previously', value: 'Legal & Compliance Consultant, CARPL.ai' },
+      { label: 'Specialisation', value: 'Medical Law · Healthcare Regulation · Digital Health · Data Protection' },
+    ],
+    education: [],
     awards: [],
   },
 ]

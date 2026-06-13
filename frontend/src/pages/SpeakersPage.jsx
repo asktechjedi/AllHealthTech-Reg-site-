@@ -25,20 +25,7 @@ function SpeakerModal({ speaker, onClose }) {
         className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[var(--radius-card)] border border-[var(--color-mist)] bg-[var(--color-warm-white)] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative h-52 overflow-hidden rounded-t-[var(--radius-card)] bg-[var(--color-frost)]">
-          {speaker.photoUrl && (
-            <img
-              src={speaker.photoUrl}
-              alt={speaker.name}
-              className="absolute inset-0 h-full w-full object-cover opacity-50"
-              style={{ objectPosition: speaker.photoPosition || 'center' }}
-            />
-          )}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(255,254,249,0.95) 0%, transparent 60%)' }}
-            aria-hidden="true"
-          />
+        <div className="relative flex gap-5 rounded-t-[var(--radius-card)] bg-[var(--color-frost)] p-6">
           <button
             type="button"
             onClick={onClose}
@@ -47,18 +34,35 @@ function SpeakerModal({ speaker, onClose }) {
           >
             <XIcon className="h-4 w-4" />
           </button>
-          <div className="absolute bottom-5 left-6 right-6">
+
+          {speaker.photoUrl ? (
+            <div className="h-28 w-28 flex-shrink-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-mist)] shadow-md">
+              <img
+                src={speaker.photoUrl}
+                alt={speaker.name}
+                className="h-full w-full object-cover"
+                style={{ objectPosition: speaker.photoPosition || 'center top' }}
+              />
+            </div>
+          ) : (
+            <div className="flex h-28 w-28 flex-shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-mist)] bg-[var(--color-warm-white)]">
+              <span className="font-[var(--font-display)] text-4xl font-normal text-[var(--color-bridge)] opacity-40">
+                {speaker.name.charAt(0)}
+              </span>
+            </div>
+          )}
+
+          <div className="flex flex-col justify-center pr-10">
             {speaker.isFeatured && (
-              <Badge variant="accent" className="mb-2">
+              <Badge variant="accent" className="mb-2 self-start">
                 Featured Speaker
               </Badge>
             )}
             <h2 className="font-[var(--font-display)] text-xl font-normal leading-tight text-[var(--text-primary)]">
               {speaker.name}
             </h2>
-            <p className="mt-0.5 text-sm text-[var(--color-blue-deep)]">
-              {speaker.title} · {speaker.organization}
-            </p>
+            <p className="mt-1 text-sm font-medium text-[var(--color-blue-deep)]">{speaker.title}</p>
+            <p className="text-sm text-[var(--text-muted)]">{speaker.organization}</p>
           </div>
         </div>
 
@@ -167,7 +171,7 @@ export default function SpeakersPage() {
   return (
     <div className="min-h-screen bg-[var(--color-ice)]">
       <PageHero
-        eyebrow="AllHealth X Tech 2026"
+        eyebrow="All Health X Tech Summit 2026"
         title="Our Speakers"
         subtitle="Visionaries from clinical practice, research, policy, and industry — all under one roof."
         compact

@@ -54,6 +54,16 @@ export default function FeaturedSpeakers() {
           ))}
         </div>
       </div>
+
+      <div className="mx-auto mt-16 max-w-7xl">
+        <div className="overflow-hidden rounded-[var(--radius-card)] border border-[rgba(250,243,255,0.15)]">
+          <img
+            src="/AHT Photos.webp"
+            alt="Bringing the ecosystem together — All Health X Tech Summit 2026 partners and participants"
+            className="w-full object-cover"
+          />
+        </div>
+      </div>
     </section>
   )
 }
