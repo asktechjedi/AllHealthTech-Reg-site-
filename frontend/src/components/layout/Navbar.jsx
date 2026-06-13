@@ -60,7 +60,7 @@ export default function Navbar() {
         <NavLink
           to="/"
           className="group flex min-w-0 flex-shrink-0 items-center"
-          onClick={() => mobileMenuOpen && toggleMobileMenu()}
+          onClick={() => { window.scrollTo(0, 0); mobileMenuOpen && toggleMobileMenu() }}
         >
           <Logo variant="nav" theme={overHero ? 'dark' : 'light'} />
         </NavLink>
@@ -71,6 +71,7 @@ export default function Navbar() {
               <NavLink
                 to={to}
                 end={to === '/'}
+                onClick={() => window.scrollTo(0, 0)}
                 className={({ isActive }) => [
                   'relative rounded-[var(--radius-md)] px-3.5 py-2 text-sm font-medium transition-all duration-[var(--transition-fast)]',
                   linkClass(isActive),
@@ -93,7 +94,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <NavLink to="/register" className={registerClass}>
+          <NavLink to="/register" onClick={() => window.scrollTo(0, 0)} className={registerClass}>
             Register
           </NavLink>
           <button
@@ -121,7 +122,7 @@ export default function Navbar() {
                 <NavLink
                   to={to}
                   end={to === '/'}
-                  onClick={toggleMobileMenu}
+                  onClick={() => { window.scrollTo(0, 0); toggleMobileMenu() }}
                   className={({ isActive }) => [
                     'block rounded-[var(--radius-md)] px-4 py-2.5 text-sm font-medium transition-colors',
                     isActive
@@ -136,7 +137,7 @@ export default function Navbar() {
             <li className="mt-2">
               <NavLink
                 to="/register"
-                onClick={toggleMobileMenu}
+                onClick={() => { window.scrollTo(0, 0); toggleMobileMenu() }}
                 className={`block w-full text-center ${linkBtn.primaryMd} px-4 py-3`}
               >
                 Register
