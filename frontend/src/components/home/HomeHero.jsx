@@ -4,7 +4,7 @@ import Eyebrow from '../ui/Eyebrow'
 import MetaRow from '../ui/MetaRow'
 import { linkBtn } from '../ui/buttonClasses'
 import { ArrowRightIcon, MapPinIcon, CalendarIcon, LockIcon } from '../icons'
-import heroBackground from '../../assets/hero-background.png'
+import heroBackground from '../../assets/hero-background.webp'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
