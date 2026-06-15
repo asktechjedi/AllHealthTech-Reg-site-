@@ -167,27 +167,29 @@ router.post(
         });
       }
 
-      // Generate ticket ID and create registration
-      const ticketId = await generateTicketId(prisma);
-
-      const registration = await prisma.registration.create({
-        data: {
-          ticketId,
-          attendeeName,
-          attendeeEmail,
-          attendeePhone,
-          organization,
-          role,
-          dietaryRestrictions,
-          accessibilityNeeds,
-          status: 'CONFIRMED',
-          paymentStatus: 'PAID',
-          paymentTransactionId: razorpay_payment_id,
-          razorpayOrderId: razorpay_order_id,
-          razorpayPaymentId: razorpay_payment_id,
-          razorpaySignature: razorpay_signature,
-          amountPaid: REGISTRATION_AMOUNT_PAISE,
-        },
+      // Generate ticket ID and create registration in one atomic transaction
+      // so the count and insert can't race and produce duplicate IDs.
+      const registration = await prisma.$transaction(async (tx) => {
+        const ticketId = await generateTicketId(tx);
+        return tx.registration.create({
+          data: {
+            ticketId,
+            attendeeName,
+            attendeeEmail,
+            attendeePhone,
+            organization,
+            role,
+            dietaryRestrictions,
+            accessibilityNeeds,
+            status: 'CONFIRMED',
+            paymentStatus: 'PAID',
+            paymentTransactionId: razorpay_payment_id,
+            razorpayOrderId: razorpay_order_id,
+            razorpayPaymentId: razorpay_payment_id,
+            razorpaySignature: razorpay_signature,
+            amountPaid: REGISTRATION_AMOUNT_PAISE,
+          },
+        });
       });
 
       // Send confirmation email asynchronously (don't wait for it)

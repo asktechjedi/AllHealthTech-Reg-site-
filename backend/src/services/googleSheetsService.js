@@ -207,15 +207,26 @@ export async function syncRegistrationToSheets(registration, config) {
   const { spreadsheetId, sheetName = 'Registrations' } = config;
 
   try {
-    // Step 1: Authenticate with Google Sheets API
     const auth = await getGoogleSheetsAuth();
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // Step 2: Map registration data to sheet row
-    // Step 3: Prepare values for append
+    // Guard against duplicate rows: check if this ticketId already exists in column A.
+    // This handles the case where a sync timed out on our side but actually succeeded in Sheets,
+    // causing the retry manager to append the same row again.
+    const existing = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: `${sheetName}!A:A`,
+    });
+    const existingTicketIds = (existing.data.values || []).flat();
+    if (existingTicketIds.includes(registration.ticketId)) {
+      console.log('[GoogleSheets] Registration already in sheet, skipping duplicate sync', {
+        ticketId: registration.ticketId,
+      });
+      return;
+    }
+
     const values = [mapRegistrationToSheetValues(registration)];
 
-    // Step 4: Append row to sheet
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
       range: `${sheetName}!A:I`,
@@ -223,12 +234,10 @@ export async function syncRegistrationToSheets(registration, config) {
       resource: { values },
     });
 
-    // Step 5: Verify append was successful
     if (!response.data.updates || response.data.updates.updatedRows === 0) {
       throw new Error('Failed to append row to sheet');
     }
 
-    // Step 6: Log successful sync
     console.log('[GoogleSheets] Registration synced successfully', {
       registrationId: registration.id,
       ticketId: registration.ticketId,
