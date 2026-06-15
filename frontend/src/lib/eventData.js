@@ -2,6 +2,7 @@ import drUmaPhoto from '../assets/AHT-Speaker-PIC/Dr Uma - Jhanvi Shah.jpg'
 import shivaniPhoto from '../assets/AHT-Speaker-PIC/Shivani Kulkarni_v1 - Jhanvi Shah.webp'
 import ujjvalaPhoto from '../assets/AHT-Speaker-PIC/Ujjvala Ballal Profile Pic - Jhanvi Shah.webp'
 import snehaPhoto from '../assets/AHT-Speaker-PIC/F367BAC2-E06B-47A8-9528-503B4F6BE464 - Jhanvi Shah.webp'
+import drBhaskarPhoto from '../assets/AHT-Speaker-PIC/Dr Bhaskar - Jhanvi Shah.webp'
 
 const speakerRecords = [
   {
@@ -135,6 +136,39 @@ const speakerRecords = [
     ],
     education: [],
     awards: [],
+  },
+  {
+    id: 'speaker-dr-bhaskar-rajakumar',
+    name: 'Dr Bhaskar Rajakumar',
+    title: 'CEO, Centre of Excellence in Health Tech and Med Tech',
+    organization: 'Govt of Karnataka',
+    tagline: 'Evangelising med tech and health innovations, supporting AI driven solutions for Public Health, One Health and Climate Change.',
+    biography:
+      'A physician by academia, specialised in radiology with masters in business administration. With ~ 20 years across clinical, non-clinical and administrative fields, Dr Bhaskar\'s expertise spans across public health, healthcare administration, insurance, medical affairs, regulatory and pharmacovigilance, medical education, public policy, disaster management and healthcare innovation.\nHe is currently the CEO of Centre of Excellence in Health Tech and Med Tech, Govt of Karnataka and also serves as advisory for Bangalore Bio Innovation Centre, GoK and AI & Robotics Technology Park (ARTPARK), IISc. His present focus is on evangelising med tech and health innovations, supporting AI driven solutions for Public Health, One Health and Climate Change.\nHe is also Adjunct faculty at Rajiv Gandhi University of Medical Sciences, Karnataka and Post Graduate Institute of Medical Education and Research at Chandigarh, teaching healthcare informatics and related subjects.\nPrior to this he was working as the OSD to the Chief Commissioner, BBMP and was heading the Covid 19 Central War Room at BBMP.\nHis earlier startup \'Mediknit\' was focused on integration of future technologies in healthcare education, and worked with more than 1 million healthcare professionals across India, APAC, and USA. His work on healthcare and innovations have received multiple accolades and recognitions across the globe.\nHe has volunteered across the globe - including during the major disasters such as Tsunami in Tamil Nadu, Earth Quake in Nepal, Bomb blasts in Brussels etc.,\nPart of passion he is an avid runner with multiple marathons completed across the country and practices theatre.',
+    photoUrl: drBhaskarPhoto,
+    linkedinUrl: 'https://www.linkedin.com/in/drbhaskar/',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 5,
+    expertise: ['MedTech', 'HealthTech', 'Public Health', 'AI in Healthcare', 'Healthcare Innovation', 'Digital Health'],
+    highlights: [
+      { label: 'Current', value: 'CEO, Centre of Excellence in Health Tech and Med Tech, GoK' },
+      { label: 'Advisory', value: 'Bangalore Bio Innovation Centre · ARTPARK, IISc' },
+      { label: 'Faculty', value: 'RGUHS Karnataka · PGIMER Chandigarh' },
+      { label: 'Founder', value: 'Mediknit — 1M+ healthcare professionals across India, APAC & USA' },
+    ],
+    education: [
+      { degree: 'MBBS (Radiology specialisation)', institution: '', year: '', achievement: '' },
+      { degree: 'MBA', institution: '', year: '', achievement: '' },
+    ],
+    awards: [
+      'Top 100 Healthcare Leaders — Global Listing, 2018',
+      'Top 50 Smart Health Leaders — Global, 2018',
+      'Namma Bengaluru Healthcare Professional of the Year, 2021',
+      'Deccan Herald Covid Warrior Award, 2022',
+      'Covid Warrior Award — St Joseph\'s University, 2022',
+      'Speaker at multiple national and international conferences',
+    ],
   },
 ]
 
