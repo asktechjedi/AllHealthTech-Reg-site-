@@ -8,7 +8,7 @@ import Eyebrow from '../components/ui/Eyebrow'
 export default function RegistrationPage() {
   const location = useLocation()
   const confirmedTicketId = useRegistrationStore((s) => s.confirmedTicketId)
-  const isSuccess = Boolean(confirmedTicketId)
+  const isSuccess = Boolean(confirmedTicketId) && location.pathname === '/registration/success'
 
   return (
     <div className="min-h-screen bg-[var(--color-frost)]">
