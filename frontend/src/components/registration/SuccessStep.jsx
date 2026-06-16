@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import useRegistrationStore from '../../stores/registrationStore.js'
 import Button from '../ui/Button.jsx'
 import { CheckIcon, CalendarIcon, UserIcon, MapPinIcon, MailIcon, PhoneIcon, ClockIcon } from '../icons'
@@ -12,7 +11,6 @@ const sectionLabelClass =
   'mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]'
 
 export default function SuccessStep() {
-  const navigate = useNavigate()
   const { confirmedTicketId, attendeeDetails, clearPaymentData, reset } = useRegistrationStore()
 
   useEffect(() => {
@@ -23,14 +21,11 @@ export default function SuccessStep() {
 
   const handleDone = (e) => {
     e.preventDefault()
-    cleanupRazorpayOverlay()
-    reset()
-    navigate('/register', { replace: true })
+    window.location.href = '/register'
   }
 
   const handleBackHome = () => {
-    cleanupRazorpayOverlay()
-    reset()
+    window.location.href = '/'
   }
 
   return (
@@ -139,10 +134,7 @@ export default function SuccessStep() {
           type="button"
           variant="primary"
           className="flex-1"
-          onClick={() => {
-            handleBackHome()
-            navigate('/')
-          }}
+          onClick={handleBackHome}
         >
           Back to Home
         </Button>
