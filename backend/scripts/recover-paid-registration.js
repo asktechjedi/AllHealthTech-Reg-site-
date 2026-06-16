@@ -72,27 +72,37 @@ async function main() {
     );
   }
 
-  const ticketId = await generateTicketId(prisma);
-
-  const registration = await prisma.registration.create({
-    data: {
-      ticketId,
-      attendeeName: data.attendeeName,
-      attendeeEmail: data.attendeeEmail,
-      attendeePhone: data.attendeePhone,
-      organization: data.organization,
-      role: data.role,
-      dietaryRestrictions: data.dietaryRestrictions,
-      accessibilityNeeds: data.accessibilityNeeds,
-      status: 'CONFIRMED',
-      paymentStatus: 'PAID',
-      paymentTransactionId: data.razorpayPaymentId,
-      razorpayOrderId: data.razorpayOrderId,
-      razorpayPaymentId: data.razorpayPaymentId,
-      razorpaySignature: data.razorpaySignature,
-      amountPaid: REGISTRATION_AMOUNT_PAISE,
-    },
-  });
+  let registration;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      registration = await prisma.$transaction(async (tx) => {
+        const ticketId = await generateTicketId(tx);
+        return tx.registration.create({
+          data: {
+            ticketId,
+            attendeeName: data.attendeeName,
+            attendeeEmail: data.attendeeEmail,
+            attendeePhone: data.attendeePhone,
+            organization: data.organization,
+            role: data.role,
+            dietaryRestrictions: data.dietaryRestrictions,
+            accessibilityNeeds: data.accessibilityNeeds,
+            status: 'CONFIRMED',
+            paymentStatus: 'PAID',
+            paymentTransactionId: data.razorpayPaymentId,
+            razorpayOrderId: data.razorpayOrderId,
+            razorpayPaymentId: data.razorpayPaymentId,
+            razorpaySignature: data.razorpaySignature,
+            amountPaid: REGISTRATION_AMOUNT_PAISE,
+          },
+        });
+      }, { isolationLevel: 'Serializable' });
+      break;
+    } catch (err) {
+      if (err.code === 'P2034' && attempt < 3) continue;
+      throw err;
+    }
+  }
 
   console.log(`Recovered registration ${registration.id} with ticket ${registration.ticketId}`);
 

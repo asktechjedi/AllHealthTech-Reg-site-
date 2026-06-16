@@ -167,30 +167,40 @@ router.post(
         });
       }
 
-      // Generate ticket ID and create registration in one atomic transaction
-      // so the count and insert can't race and produce duplicate IDs.
-      const registration = await prisma.$transaction(async (tx) => {
-        const ticketId = await generateTicketId(tx);
-        return tx.registration.create({
-          data: {
-            ticketId,
-            attendeeName,
-            attendeeEmail,
-            attendeePhone,
-            organization,
-            role,
-            dietaryRestrictions,
-            accessibilityNeeds,
-            status: 'CONFIRMED',
-            paymentStatus: 'PAID',
-            paymentTransactionId: razorpay_payment_id,
-            razorpayOrderId: razorpay_order_id,
-            razorpayPaymentId: razorpay_payment_id,
-            razorpaySignature: razorpay_signature,
-            amountPaid: REGISTRATION_AMOUNT_PAISE,
-          },
-        });
-      });
+      // Generate ticket ID and create registration atomically under Serializable
+      // isolation so concurrent registrations can't read the same count and
+      // produce duplicate ticket IDs. Retry up to 3 times on serialization failure.
+      let registration;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          registration = await prisma.$transaction(async (tx) => {
+            const ticketId = await generateTicketId(tx);
+            return tx.registration.create({
+              data: {
+                ticketId,
+                attendeeName,
+                attendeeEmail,
+                attendeePhone,
+                organization,
+                role,
+                dietaryRestrictions,
+                accessibilityNeeds,
+                status: 'CONFIRMED',
+                paymentStatus: 'PAID',
+                paymentTransactionId: razorpay_payment_id,
+                razorpayOrderId: razorpay_order_id,
+                razorpayPaymentId: razorpay_payment_id,
+                razorpaySignature: razorpay_signature,
+                amountPaid: REGISTRATION_AMOUNT_PAISE,
+              },
+            });
+          }, { isolationLevel: 'Serializable' });
+          break;
+        } catch (err) {
+          if (err.code === 'P2034' && attempt < 3) continue;
+          throw err;
+        }
+      }
 
       // Send confirmation email asynchronously (don't wait for it)
       sendConfirmationEmail(registration).catch((err) =>
