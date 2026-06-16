@@ -110,20 +110,14 @@ async function getGoogleSheetsAuth() {
 }
 
 function formatRegistrationTimestamp(createdAt) {
-  if (!createdAt) {
-    return new Date().toISOString();
-  }
-
-  if (createdAt instanceof Date) {
-    return createdAt.toISOString();
-  }
-
-  const parsedDate = new Date(createdAt);
-  if (Number.isNaN(parsedDate.getTime())) {
+  const date = createdAt instanceof Date ? createdAt : new Date(createdAt ?? Date.now());
+  if (Number.isNaN(date.getTime())) {
     throw new PermanentSyncError(`Invalid registration timestamp: ${createdAt}`);
   }
-
-  return parsedDate.toISOString();
+  // Convert to IST (UTC+5:30)
+  const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+  const istDate = new Date(date.getTime() + IST_OFFSET_MS);
+  return istDate.toISOString().replace('Z', '+05:30');
 }
 
 /**
