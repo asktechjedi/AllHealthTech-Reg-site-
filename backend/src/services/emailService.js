@@ -3,7 +3,7 @@ import aws from '@aws-sdk/client-ses';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/allhealth-x-tech-logo.png');
+const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/png - aht-logo.png');
 
 const { SESClient } = aws;
 
@@ -81,17 +81,17 @@ export async function sendConfirmationEmail(registration) {
   }
 
   const html = `
-    <div style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF3FF; border-radius: 8px; overflow: hidden;">
+    <div style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFEF9; border-radius: 8px; overflow: hidden; border: 1px solid #D6CFFF;">
 
       <!-- HEADER -->
-      <div style="background: #000E7A; padding: 32px 40px; text-align: center; border-bottom: 3px solid #EB42FA;">
-        <img src="cid:logo" alt="AllHealthTech" height="60" style="display: block; margin: 0 auto 20px; height: 60px; width: auto;" />
-        <h1 style="color: #ffffff; margin: 0 0 6px; font-size: 19px; font-weight: 600; letter-spacing: -0.3px;">Registration Confirmed</h1>
-        <p style="color: #D6CFFF; margin: 0; font-size: 14px;">${eventName}</p>
+      <div style="background: #FAF3FF; padding: 32px 40px; text-align: center; border-bottom: 3px solid #EB42FA;">
+        <img src="cid:logo" alt="AllHealthTech" height="90" style="display: block; margin: 0 auto 20px; height: 90px; width: auto;" />
+        <h1 style="color: #000E7A; margin: 0 0 6px; font-size: 19px; font-weight: 700; letter-spacing: -0.3px;">Registration Confirmed</h1>
+        <p style="color: #0023FD; margin: 0; font-size: 13px; font-weight: 500;">${eventName}</p>
       </div>
 
       <!-- BODY -->
-      <div style="background: #FAF3FF; padding: 36px 40px;">
+      <div style="background: #FFFEF9; padding: 36px 40px;">
         <p style="font-size: 15px; margin: 0 0 6px; color: #00084A;">Dear <strong>${attendeeName}</strong>,</p>
         <p style="font-size: 14px; color: #1A2A8A; margin: 0 0 28px; line-height: 1.6;">Your registration for <strong>${eventName}</strong> is confirmed. Here are your details:</p>
 
