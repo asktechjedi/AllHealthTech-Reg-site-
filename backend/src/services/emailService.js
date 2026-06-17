@@ -3,7 +3,7 @@ import aws from '@aws-sdk/client-ses';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/allhealth-x-tech-logo-on-dark.png');
+const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/allhealth-x-tech-logo.png');
 
 const { SESClient } = aws;
 
@@ -85,8 +85,8 @@ export async function sendConfirmationEmail(registration) {
 
       <!-- HEADER -->
       <div style="background: #000E7A; padding: 32px 40px; text-align: center; border-bottom: 3px solid #EB42FA;">
-        <img src="cid:logo" alt="AllHealthTech" height="44" style="display: block; margin: 0 auto 20px; height: 44px; width: auto;" />
-        <h1 style="color: #ffffff; margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.3px;">Registration Confirmed</h1>
+        <img src="cid:logo" alt="AllHealthTech" height="60" style="display: block; margin: 0 auto 20px; height: 60px; width: auto;" />
+        <h1 style="color: #ffffff; margin: 0 0 6px; font-size: 19px; font-weight: 600; letter-spacing: -0.3px;">Registration Confirmed</h1>
         <p style="color: #D6CFFF; margin: 0; font-size: 14px;">${eventName}</p>
       </div>
 
