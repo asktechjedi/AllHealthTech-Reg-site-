@@ -44,109 +44,120 @@ export async function sendConfirmationEmail(registration) {
   if (organization) {
     optionalFieldsRows += `
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Organization</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${organization}</td>
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF; width: 38%;">Organization</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${organization}</td>
           </tr>`;
   }
 
   if (role) {
     optionalFieldsRows += `
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Role</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${role}</td>
+          <tr style="background: #FAF3FF;">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Role</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${role}</td>
           </tr>`;
   }
 
   if (dietaryRestrictions) {
     optionalFieldsRows += `
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Dietary Restrictions</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${dietaryRestrictions}</td>
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Dietary Restrictions</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${dietaryRestrictions}</td>
           </tr>`;
   }
 
   if (accessibilityNeeds) {
     optionalFieldsRows += `
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Accessibility Needs</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${accessibilityNeeds}</td>
+          <tr style="background: #FAF3FF;">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Accessibility Needs</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${accessibilityNeeds}</td>
           </tr>`;
   }
 
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-      <div style="background: linear-gradient(135deg, #1e40af, #059669); padding: 32px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: #fff; margin: 0; font-size: 24px;">Registration Confirmed!</h1>
-        <p style="color: #d1fae5; margin: 8px 0 0;">${eventName}</p>
-      </div>
-      <div style="background: #f9fafb; padding: 32px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb;">
-        <p style="font-size: 16px;">Dear <strong>${attendeeName}</strong>,</p>
-        <p>Your registration for <strong>${eventName}</strong> has been confirmed. Here are your registration details:</p>
+    <div style="font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF3FF; border-radius: 8px; overflow: hidden;">
 
-        <!-- Ticket ID Highlight -->
-        <div style="background: #eff6ff; border-left: 4px solid #1e40af; padding: 16px; margin: 24px 0; border-radius: 4px;">
-          <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: bold; color: #1e40af; text-transform: uppercase;">Your Ticket ID</p>
-          <p style="margin: 0; font-family: monospace; font-size: 20px; font-weight: bold; color: #1e40af; letter-spacing: 2px;">${ticketId}</p>
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #1e40af;">Keep this ID safe — you'll need it for check-in</p>
+      <!-- HEADER -->
+      <div style="background: #000E7A; padding: 32px 40px; text-align: center; border-bottom: 3px solid #EB42FA;">
+        <img src="https://allhealthtech.com/email-logo.png" alt="AllHealthTech" height="44" style="display: block; margin: 0 auto 20px; height: 44px; width: auto;" />
+        <h1 style="color: #ffffff; margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.3px;">Registration Confirmed</h1>
+        <p style="color: #D6CFFF; margin: 0; font-size: 14px;">${eventName}</p>
+      </div>
+
+      <!-- BODY -->
+      <div style="background: #FAF3FF; padding: 36px 40px;">
+        <p style="font-size: 15px; margin: 0 0 6px; color: #00084A;">Dear <strong>${attendeeName}</strong>,</p>
+        <p style="font-size: 14px; color: #1A2A8A; margin: 0 0 28px; line-height: 1.6;">Your registration for <strong>${eventName}</strong> is confirmed. Here are your details:</p>
+
+        <!-- Ticket ID -->
+        <div style="background: #EDE8FF; border-left: 4px solid #EB42FA; padding: 18px 20px; margin: 0 0 24px; border-radius: 6px;">
+          <p style="margin: 0 0 6px; font-size: 11px; font-weight: 700; color: #000E7A; text-transform: uppercase; letter-spacing: 1px;">Your Ticket ID</p>
+          <p style="margin: 0 0 6px; font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: 700; color: #00084A; letter-spacing: 3px;">${ticketId}</p>
+          <p style="margin: 0; font-size: 12px; color: #4B5BB0;">Keep this ID safe — you'll need it for check-in</p>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin: 24px 0; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <!-- Event Details -->
+        <table style="width: 100%; border-collapse: collapse; margin: 0 0 24px; background: #FFFEF9; border-radius: 8px; overflow: hidden; border: 1px solid #D6CFFF;">
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Event</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${eventName}</td>
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF; width: 38%;">Event</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventName}</td>
           </tr>
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Date</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${eventDate}</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Location</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${eventLocation}</td>
-          </tr>
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Ticket Type</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${ticketTypeName}</td>
+          <tr style="background: #FAF3FF;">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Date</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventDate}</td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Name</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${attendeeName}</td>
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Location</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventLocation}</td>
           </tr>
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Email</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${attendeeEmail}</td>
+          <tr style="background: #FAF3FF;">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Ticket Type</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${ticketTypeName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Name</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${attendeeName}</td>
+          </tr>
+          <tr style="background: #FAF3FF;">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Email</td>
+            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${attendeeEmail}</td>
           </tr>${optionalFieldsRows}
         </table>
 
-        <!-- Important Instructions -->
-        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0; border-radius: 4px;">
-          <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: bold; color: #92400e; text-transform: uppercase;">Important: Save This Email</p>
-          <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #92400e;">
-            <li style="margin-bottom: 8px;">Save this email for your records — it contains your ticket confirmation</li>
-            <li style="margin-bottom: 8px;">Print or screenshot this email to bring to the event</li>
-            <li style="margin-bottom: 8px;">You'll need your Ticket ID (${ticketId}) for check-in</li>
-            <li>Keep your Ticket ID in a safe place for easy reference</li>
+        <!-- Instructions -->
+        <div style="background: #EDE8FF; border-left: 4px solid #000E7A; padding: 16px 20px; margin: 0 0 20px; border-radius: 6px;">
+          <p style="margin: 0 0 10px; font-size: 11px; font-weight: 700; color: #000E7A; text-transform: uppercase; letter-spacing: 1px;">Important — Save This Email</p>
+          <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #1A2A8A; line-height: 1.9;">
+            <li>Bring this email (or a screenshot) to the event for check-in</li>
+            <li>Your Ticket ID <strong>${ticketId}</strong> is required at the entrance</li>
+            <li>This ticket is non-transferable</li>
           </ul>
         </div>
 
-        <!-- Support Contact -->
-        <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 16px; margin: 24px 0; border-radius: 4px;">
-          <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: bold; color: #166534; text-transform: uppercase;">Need Help?</p>
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #166534;">If you have any questions about your registration or the event:</p>
-          <p style="margin: 8px 0; font-size: 14px; color: #166534;">
-            <strong>Email:</strong> <a href="mailto:maklabs@allhealthtech.com" style="color: #059669; text-decoration: none;">maklabs@allhealthtech.com</a>
+        <!-- Help -->
+        <div style="background: #FFFEF9; border: 1px solid #D6CFFF; padding: 16px 20px; border-radius: 6px; margin: 0 0 28px;">
+          <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; color: #000E7A; text-transform: uppercase; letter-spacing: 1px;">Need Help?</p>
+          <p style="margin: 0 0 4px; font-size: 13px; color: #1A2A8A;">
+            <strong>Email:</strong> <a href="mailto:maklabs@allhealthtech.com" style="color: #000E7A; text-decoration: none;">maklabs@allhealthtech.com</a>
           </p>
-          <p style="margin: 8px 0; font-size: 14px; color: #166534;">
-            <strong>Phone:</strong> <a href="tel:+919900741100" style="color: #059669; text-decoration: none;">+91 99007 41100</a>
+          <p style="margin: 0; font-size: 13px; color: #1A2A8A;">
+            <strong>Phone:</strong> <a href="tel:+919900741100" style="color: #000E7A; text-decoration: none;">+91 99007 41100</a>
           </p>
         </div>
 
-        <p style="color: #6b7280; font-size: 14px; margin-top: 24px;">We look forward to seeing you at <strong>${eventName}</strong>!</p>
+        <p style="font-size: 13px; color: #4B5BB0; margin: 0;">We look forward to seeing you at <strong>${eventName}</strong>!</p>
       </div>
+
+      <!-- FOOTER -->
+      <div style="background: #00084A; padding: 20px 40px; text-align: center;">
+        <p style="margin: 0 0 4px; font-size: 12px; color: #D6CFFF;">© 2026 AllHealthTech. All rights reserved.</p>
+        <p style="margin: 0; font-size: 12px; color: #4B5BB0;">allhealthtech.com</p>
+      </div>
+
     </div>
   `;
 
   await transporter.sendMail({
-    from: process.env.ORGANIZER_EMAIL,
+    from: process.env.FROM_EMAIL,
     to: attendeeEmail,
     subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
     html,
