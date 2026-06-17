@@ -163,9 +163,14 @@ export async function sendConfirmationEmail(registration) {
 
   await transporter.sendMail({
     from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
+    replyTo: 'maklabs@allhealthtech.com',
     to: attendeeEmail,
     subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
     html,
+    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nDate: ${eventDate}\nLocation: ${eventLocation}\nTicket Type: ${ticketTypeName}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nBring this Ticket ID to the event for check-in. This ticket is non-transferable.\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
+    headers: {
+      'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
+    },
   });
 }
 
@@ -232,10 +237,15 @@ export async function sendCancellationEmail(registration) {
   `;
 
   await transporter.sendMail({
-    from: process.env.ORGANIZER_EMAIL,
+    from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
+    replyTo: 'maklabs@allhealthtech.com',
     to: attendeeEmail,
     subject: `Registration Cancellation Confirmed - ${ticketId}`,
     html,
+    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} has been cancelled.\n\nTicket ID: ${ticketId}\nRefund ID: ${refundId}\nRefund Amount: ${formattedAmount}\nRefund Status: ${refundStatus}\n\nRefunds typically take 5-7 business days.\n\nNeed help? Email: maklabs@allhealthtech.com\n\nAllHealthTech 2026`,
+    headers: {
+      'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
+    },
   });
 }
 
