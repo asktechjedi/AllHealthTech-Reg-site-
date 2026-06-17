@@ -158,7 +158,7 @@ export async function sendConfirmationEmail(registration) {
   `;
 
   await transporter.sendMail({
-    from: process.env.FROM_EMAIL,
+    from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
     to: attendeeEmail,
     subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
     html,

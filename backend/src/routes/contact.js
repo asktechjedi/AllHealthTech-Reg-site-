@@ -17,7 +17,7 @@ router.post('/', validate(contactSchema), async (req, res, next) => {
     const { name, email, subject, message } = req.body;
 
     await transporter.sendMail({
-      from: process.env.FROM_EMAIL,
+      from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
       to: process.env.ORGANIZER_EMAIL,
       replyTo: email,
       subject: `[Contact Form] ${subject} - from ${name}`,
