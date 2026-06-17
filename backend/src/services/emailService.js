@@ -1,5 +1,9 @@
 import nodemailer from 'nodemailer';
 import aws from '@aws-sdk/client-ses';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/allhealth-x-tech-logo-on-dark.png');
 
 const { SESClient } = aws;
 
@@ -39,9 +43,7 @@ export async function sendConfirmationEmail(registration) {
 
   // Hardcoded event information (single event)
   const eventName = 'AllHealthTech 2026';
-  const eventDate = 'October 15-17, 2026';
-  const eventLocation = 'Bombay Exhibition Centre, Mumbai';
-  const ticketTypeName = 'General Admission';
+  const eventLocation = 'Bangalore, venue TBC';
 
   // Build optional fields rows
   let optionalFieldsRows = '';
@@ -83,7 +85,7 @@ export async function sendConfirmationEmail(registration) {
 
       <!-- HEADER -->
       <div style="background: #000E7A; padding: 32px 40px; text-align: center; border-bottom: 3px solid #EB42FA;">
-        <img src="https://allhealthtech.com/email-logo.png" alt="AllHealthTech" height="44" style="display: block; margin: 0 auto 20px; height: 44px; width: auto;" />
+        <img src="cid:logo" alt="AllHealthTech" height="44" style="display: block; margin: 0 auto 20px; height: 44px; width: auto;" />
         <h1 style="color: #ffffff; margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.3px;">Registration Confirmed</h1>
         <p style="color: #D6CFFF; margin: 0; font-size: 14px;">${eventName}</p>
       </div>
@@ -107,16 +109,8 @@ export async function sendConfirmationEmail(registration) {
             <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventName}</td>
           </tr>
           <tr style="background: #FAF3FF;">
-            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Date</td>
-            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventDate}</td>
-          </tr>
-          <tr>
             <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Location</td>
             <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${eventLocation}</td>
-          </tr>
-          <tr style="background: #FAF3FF;">
-            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Ticket Type</td>
-            <td style="padding: 12px 16px; font-size: 13px; color: #1A2A8A; border-bottom: 1px solid #D6CFFF;">${ticketTypeName}</td>
           </tr>
           <tr>
             <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #000E7A; border-bottom: 1px solid #D6CFFF;">Name</td>
@@ -128,15 +122,10 @@ export async function sendConfirmationEmail(registration) {
           </tr>${optionalFieldsRows}
         </table>
 
-        <!-- Instructions -->
-        <div style="background: #EDE8FF; border-left: 4px solid #000E7A; padding: 16px 20px; margin: 0 0 20px; border-radius: 6px;">
-          <p style="margin: 0 0 10px; font-size: 11px; font-weight: 700; color: #000E7A; text-transform: uppercase; letter-spacing: 1px;">Important — Save This Email</p>
-          <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #1A2A8A; line-height: 1.9;">
-            <li>Bring this email (or a screenshot) to the event for check-in</li>
-            <li>Your Ticket ID <strong>${ticketId}</strong> is required at the entrance</li>
-            <li>This ticket is non-transferable</li>
-          </ul>
-        </div>
+        <!-- Non-refundable notice -->
+        <p style="font-size: 12px; color: #4B5BB0; margin: 0 0 20px; padding: 10px 14px; background: #EDE8FF; border-radius: 6px;">
+          Please note: all ticket sales are <strong>final and non-refundable</strong>. This ticket is non-transferable.
+        </p>
 
         <!-- Help -->
         <div style="background: #FFFEF9; border: 1px solid #D6CFFF; padding: 16px 20px; border-radius: 6px; margin: 0 0 28px;">
@@ -167,86 +156,13 @@ export async function sendConfirmationEmail(registration) {
     to: attendeeEmail,
     subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
     html,
-    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nDate: ${eventDate}\nLocation: ${eventLocation}\nTicket Type: ${ticketTypeName}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nBring this Ticket ID to the event for check-in. This ticket is non-transferable.\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
+    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nLocation: ${eventLocation}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
+    attachments: [{ filename: 'logo.png', path: LOGO_PATH, cid: 'logo' }],
     headers: {
       'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
     },
   });
 }
 
-/**
- * Send a cancellation confirmation email.
- * @param {Object} registration
- * @param {string} registration.ticketId
- * @param {string} registration.attendeeName
- * @param {string} registration.attendeeEmail
- * @param {string} registration.refundId
- * @param {string} registration.refundStatus
- * @param {number} registration.amountPaid
- */
-export async function sendCancellationEmail(registration) {
-  const { ticketId, attendeeName, attendeeEmail, refundId, refundStatus, amountPaid } =
-    registration;
-
-  // Hardcoded event information (single event)
-  const eventName = 'AllHealthTech 2026';
-
-  const formattedAmount = new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amountPaid / 100); // amountPaid stored in paise
-
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-      <div style="background: #dc2626; padding: 32px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: #fff; margin: 0; font-size: 24px;">Registration Cancelled</h1>
-        <p style="color: #fecaca; margin: 8px 0 0;">${eventName}</p>
-      </div>
-      <div style="background: #f9fafb; padding: 32px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb;">
-        <p style="font-size: 16px;">Dear <strong>${attendeeName}</strong>,</p>
-        <p>Your registration for <strong>${eventName}</strong> has been successfully cancelled.</p>
-
-        <table style="width: 100%; border-collapse: collapse; margin: 24px 0; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-          <tr style="background: #fef2f2;">
-            <td style="padding: 12px 16px; font-weight: bold; width: 40%; border-bottom: 1px solid #e5e7eb;">Ticket ID</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; font-family: monospace; font-size: 15px;">${ticketId}</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Event</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">${eventName}</td>
-          </tr>
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Refund ID</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; font-family: monospace;">${refundId}</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e5e7eb;">Refund Amount</td>
-            <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #059669; font-weight: bold;">${formattedAmount}</td>
-          </tr>
-          <tr style="background: #f9fafb;">
-            <td style="padding: 12px 16px; font-weight: bold;">Refund Status</td>
-            <td style="padding: 12px 16px;">${refundStatus}</td>
-          </tr>
-        </table>
-
-        <p style="color: #6b7280; font-size: 14px;">Refunds typically take 5–7 business days to reflect in your account, depending on your bank.</p>
-        <p style="color: #6b7280; font-size: 14px;">If you have any questions, please contact us with your Ticket ID.</p>
-      </div>
-    </div>
-  `;
-
-  await transporter.sendMail({
-    from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
-    replyTo: 'maklabs@allhealthtech.com',
-    to: attendeeEmail,
-    subject: `Registration Cancellation Confirmed - ${ticketId}`,
-    html,
-    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} has been cancelled.\n\nTicket ID: ${ticketId}\nRefund ID: ${refundId}\nRefund Amount: ${formattedAmount}\nRefund Status: ${refundStatus}\n\nRefunds typically take 5-7 business days.\n\nNeed help? Email: maklabs@allhealthtech.com\n\nAllHealthTech 2026`,
-    headers: {
-      'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
-    },
-  });
-}
 
 export { transporter };
