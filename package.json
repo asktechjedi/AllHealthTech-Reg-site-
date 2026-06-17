@@ -15,5 +15,8 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.1070.0"
   }
 }
