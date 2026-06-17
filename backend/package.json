@@ -21,6 +21,7 @@
     "sheets:recover": "node scripts/recover-google-sheets-sync.js"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.1070.0",
     "@prisma/client": "^5.15.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
