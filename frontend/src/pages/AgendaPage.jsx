@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import CTABand from '../components/ui/CTABand'
 import Badge from '../components/ui/Badge'
 import GridOverlay from '../components/ui/GridOverlay'
-import { ClockIcon } from '../components/icons'
+import { ClockIcon, ChevronDownIcon } from '../components/icons'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { getEventData } from '../lib/eventData'
 
@@ -20,7 +20,7 @@ const SESSION_STYLES = {
   fireside:    { accent: '#6B7FE8', dot: 'bg-[var(--color-bridge)]',     ring: 'ring-[rgba(107,127,232,0.22)]', cardBg: 'bg-white' },
   interactive: { accent: '#EB42FA', dot: 'bg-[var(--color-magenta)]',    ring: 'ring-[rgba(235,66,250,0.2)]',  cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white' },
   gala:        { accent: '#EB42FA', dot: 'bg-[var(--color-magenta)]',    ring: 'ring-[rgba(235,66,250,0.2)]',  cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white' },
-  sponsor:     { accent: '#D6CFFF', dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: 'bg-[var(--color-warm-white)]' },
+  sponsor:     { accent: '#7B61FF', dot: 'bg-[#7B61FF]',                 ring: 'ring-[rgba(123,97,255,0.2)]',   cardBg: 'bg-gradient-to-br from-[rgba(123,97,255,0.04)] via-white to-white' },
   break:       { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
   networking:  { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
   emcee:       { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
@@ -78,23 +78,29 @@ function CompactRow({ item, index }) {
       <div className="hidden w-24 flex-shrink-0 pr-4 text-right sm:block">
         <span className="text-xs text-[var(--text-muted)]">{fmt(item.startTime)}</span>
       </div>
-      <div className="hidden w-10 flex-shrink-0 items-center justify-center sm:flex">
+      <div className="flex w-10 flex-shrink-0 items-center justify-center">
         <div
           className="relative z-10 h-2.5 w-2.5 flex-shrink-0 rounded-full border bg-white"
           style={{ borderColor: '#D6CFFF' }}
         />
       </div>
-      <div className="flex flex-1 flex-wrap items-center gap-x-2 gap-y-0.5">
-        <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
-        <span className="text-xs text-[var(--text-muted)]">
-          {fmt(item.startTime)}{item.endTime && ` – ${fmt(item.endTime)}`}
-        </span>
+      <div className="flex flex-1 flex-col gap-0.5">
+        <div className="flex flex-wrap items-center gap-x-2">
+          <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
+          <span className="text-xs text-[var(--text-muted)]">
+            {fmt(item.startTime)}{item.endTime && ` – ${fmt(item.endTime)}`}
+          </span>
+        </div>
+        {item.description && (
+          <p className="text-xs leading-relaxed text-[var(--text-muted)]">{item.description}</p>
+        )}
       </div>
     </div>
   )
 }
 
 function SessionCard({ item, index }) {
+  const [isOpen, setIsOpen] = useState(item.type === 'keynote')
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 })
   const s = SESSION_STYLES[item.type] ?? SESSION_STYLES.sponsor
   const isKeynote = item.type === 'keynote'
@@ -109,7 +115,7 @@ function SessionCard({ item, index }) {
       ].join(' ')}
       style={{ transitionDelay: `${index * 55}ms`, transitionDuration: '500ms' }}
     >
-      {/* Time */}
+      {/* Time — desktop only */}
       <div className="hidden w-24 flex-shrink-0 pr-4 pt-6 text-right sm:block">
         <div className={['text-sm font-semibold', isKeynote ? 'text-[var(--color-navy)]' : 'text-[var(--color-blue-deep)]'].join(' ')}>
           {fmt(item.startTime)}
@@ -119,30 +125,33 @@ function SessionCard({ item, index }) {
         )}
       </div>
 
-      {/* Dot */}
-      <div className="relative hidden w-10 flex-shrink-0 justify-center pt-[1.65rem] sm:flex">
+      {/* Dot — always visible */}
+      <div className="relative flex w-10 flex-shrink-0 justify-center pt-[1.65rem]">
         <div
           className="relative z-10 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 bg-white"
           style={{ borderColor: s.accent ?? '#D6CFFF' }}
         >
-          <div
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ backgroundColor: s.accent ?? '#D6CFFF' }}
-          />
+          <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: s.accent ?? '#D6CFFF' }} />
         </div>
       </div>
 
       {/* Card */}
       <div
         className={[
-          'group flex-1 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-mist)] shadow-[var(--shadow-card)] transition-all duration-300',
-          'hover:-translate-y-0.5 hover:border-[var(--color-bridge)] hover:shadow-[0_16px_44px_rgba(0,14,122,0.1)]',
+          'flex-1 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-mist)] shadow-[var(--shadow-card)] transition-all duration-300 cursor-pointer select-none',
+          'hover:border-[var(--color-bridge)] hover:shadow-[0_16px_44px_rgba(0,14,122,0.1)]',
           s.cardBg,
         ].join(' ')}
         style={s.accent ? { borderLeft: `3px solid ${s.accent}` } : {}}
+        onClick={() => setIsOpen((o) => !o)}
       >
+        {/* Keynote top bar */}
         {isKeynote && (
           <div className="h-[2px] w-full bg-gradient-to-r from-[var(--color-navy)] via-[var(--color-blue-core)] to-transparent opacity-60" />
+        )}
+        {/* Partner Spotlight top bar */}
+        {item.type === 'sponsor' && (
+          <div className="h-[2px] w-full bg-gradient-to-r from-[#7B61FF] via-[rgba(123,97,255,0.4)] to-transparent opacity-70" />
         )}
 
         <div className={isKeynote ? 'p-6' : 'p-5'}>
@@ -154,7 +163,8 @@ function SessionCard({ item, index }) {
             </span>
           </div>
 
-          <div className="flex flex-wrap items-start justify-between gap-2">
+          {/* Title row + chevron */}
+          <div className="flex items-start justify-between gap-2">
             <h3
               className={[
                 'flex-1 [font-family:var(--font-body)] font-semibold leading-snug text-[var(--text-primary)]',
@@ -163,20 +173,39 @@ function SessionCard({ item, index }) {
             >
               {item.title}
             </h3>
-            {item.track && (
-              <Badge variant={TRACK_BADGE[item.track] ?? 'default'}>{item.track}</Badge>
-            )}
+            <div className="flex flex-shrink-0 items-center gap-2">
+              {item.track && (
+                <Badge variant={TRACK_BADGE[item.track] ?? 'default'}>{item.track}</Badge>
+              )}
+              {item.description && (
+                <ChevronDownIcon
+                  className={[
+                    'h-4 w-4 flex-shrink-0 text-[var(--text-muted)] transition-transform duration-300',
+                    isOpen ? 'rotate-180' : '',
+                  ].join(' ')}
+                />
+              )}
+            </div>
           </div>
 
-          {item.description && (
-            <p className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">{item.description}</p>
-          )}
-
+          {/* Speaker chips — always visible */}
           {displaySpeakers.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 border-t border-[var(--color-mist)] pt-4">
+            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-3 border-t border-[var(--color-mist)] pt-3">
               {displaySpeakers.map((sp, i) => (
                 <SpeakerChip key={i} speaker={sp} />
               ))}
+            </div>
+          )}
+
+          {/* Expandable region — description only */}
+          {item.description && (
+            <div
+              className={[
+                'overflow-hidden transition-all duration-300 ease-in-out',
+                isOpen ? 'max-h-[200px]' : 'max-h-0',
+              ].join(' ')}
+            >
+              <p className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">{item.description}</p>
             </div>
           )}
         </div>
@@ -276,7 +305,12 @@ export default function AgendaPage() {
 
             {/* Items with continuous line */}
             <div className="relative">
-              {/* Vertical line running through all dots — hidden on mobile */}
+              {/* Vertical line — mobile position (no time column) */}
+              <div
+                className="absolute block w-px bg-[var(--color-mist)] sm:hidden"
+                style={{ left: '1.25rem', top: '1.75rem', bottom: '1.75rem' }}
+              />
+              {/* Vertical line — desktop position (after time column) */}
               <div
                 className="absolute hidden w-px bg-[var(--color-mist)] sm:block"
                 style={{ left: 'calc(6rem + 1.25rem)', top: '1.75rem', bottom: '1.75rem' }}
