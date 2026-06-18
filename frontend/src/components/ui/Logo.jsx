@@ -1,5 +1,5 @@
-import logoOnLight from '../../assets/png - aht-logo.png'
-import logoOnDark from '../../assets/allhealth-x-tech-logo-on-dark.png'
+import logoOnLight from '../../assets/aht-logo.webp'
+import logoOnDark from '../../assets/allhealth-x-tech-logo-on-dark.webp'
 
 const sizes = {
   nav: 'h-16 w-auto sm:h-[4.5rem] md:h-20 rounded-[6px]',

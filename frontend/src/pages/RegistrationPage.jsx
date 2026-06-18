@@ -22,7 +22,7 @@ export default function RegistrationPage() {
               Register to Attend
             </h1>
             <p className="mt-3 text-lg text-[var(--text-secondary)]">
-              Bangalore, July 2026. Curated participation.
+              Bangalore, 27 July 2026. Curated participation.
             </p>
           </div>
         </div>

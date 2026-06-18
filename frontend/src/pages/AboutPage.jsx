@@ -48,7 +48,7 @@ export default function AboutPage() {
         variant="about"
         eyebrow="All Health X Tech Summit"
         title="A curated room for the people actively building healthcare's future."
-        subtitle="Bangalore, July 2026. Limited seats. Curated participation. In partnership with HealthTech Alpha."
+        subtitle="Bangalore, 27 July 2026. Limited seats. Curated participation. In partnership with HealthTech Alpha."
         primaryCta={{ to: '/register', label: 'Register to Attend' }}
         secondaryCta={{ to: '/contact', label: 'Partner With Us' }}
       />

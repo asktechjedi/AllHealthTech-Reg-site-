@@ -6,6 +6,23 @@ import { getEventData } from '../lib/eventData'
 
 const TAB_LIST = ['About', 'Career', 'Recognition']
 
+const SESSION_TYPE_LABELS = {
+  keynote: 'Keynote',
+  panel: 'Panel',
+  fireside: 'Fireside',
+  interactive: 'Interactive',
+  sponsor: 'Sponsor Note',
+}
+
+function formatSessionTime(iso) {
+  return new Date(iso).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'Asia/Kolkata',
+  })
+}
+
 function ExpertiseChip({ label }) {
   return (
     <span className="inline-flex items-center rounded-[var(--radius-pill)] bg-[var(--color-frost)] px-3 py-1 text-xs font-medium text-[var(--color-blue-deep)]">
@@ -135,6 +152,8 @@ function SpeakerModal({ speaker, onClose }) {
                 alt={speaker.name}
                 className="absolute inset-0 h-full w-full object-cover"
                 style={{ objectPosition: speaker.photoPosition || 'center top' }}
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-blue-deep)]">
@@ -162,6 +181,20 @@ function SpeakerModal({ speaker, onClose }) {
               {speaker.title}
             </p>
             <p className="mt-1 text-xs text-[rgba(250,243,255,0.5)] leading-snug">{speaker.organization}</p>
+
+            {/* Session chips */}
+            {speaker.sessions?.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {speaker.sessions.map((session) => (
+                  <span
+                    key={session.id}
+                    className="inline-flex items-center rounded-[var(--radius-pill)] border border-[rgba(107,127,232,0.35)] bg-[rgba(107,127,232,0.18)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--color-bridge)]"
+                  >
+                    {SESSION_TYPE_LABELS[session.type] ?? session.type} · {formatSessionTime(session.startTime)}
+                  </span>
+                ))}
+              </div>
+            )}
 
             {/* Social quick-links in header */}
             {(speaker.linkedinUrl || speaker.twitterUrl) && (
@@ -334,6 +367,7 @@ function SpeakerCard({ speaker, onClick, index }) {
           src={speaker.photoUrl}
           alt={speaker.name}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           style={{ objectPosition: speaker.photoPosition || 'center top' }}
         />
@@ -372,6 +406,11 @@ function SpeakerCard({ speaker, onClick, index }) {
           {speaker.title}
         </p>
         <p className="mt-0.5 text-[11px] text-[rgba(250,243,255,0.55)] leading-snug">{speaker.organization}</p>
+        {speaker.sessions?.length > 0 && (
+          <span className="mt-2 inline-flex items-center rounded-[var(--radius-pill)] border border-[rgba(107,127,232,0.4)] bg-[rgba(107,127,232,0.2)] px-2 py-0.5 text-[10px] font-medium text-[rgba(250,243,255,0.85)] backdrop-blur-sm">
+            {SESSION_TYPE_LABELS[speaker.sessions[0].type] ?? speaker.sessions[0].type} · {formatSessionTime(speaker.sessions[0].startTime)}
+          </span>
+        )}
       </div>
 
       {/* Featured badge */}

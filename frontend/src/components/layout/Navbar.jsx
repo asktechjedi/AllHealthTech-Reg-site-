@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import useUIStore from '../../stores/uiStore'
 import Logo from '../ui/Logo'
 import { linkBtn } from '../ui/buttonClasses'
@@ -22,11 +22,31 @@ export default function Navbar() {
   const isDarkHeroPage = DARK_HERO_ROUTES.includes(location.pathname)
   const overHero = isDarkHeroPage && !isScrolled
 
+  const navRef = useRef(null)
+  const linkRefs = useRef({})
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, visible: false })
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
     handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [location.pathname])
+
+  useLayoutEffect(() => {
+    const path = location.pathname
+    const match = navLinks.find(({ to }) =>
+      to === '/' ? path === '/' : path.startsWith(to)
+    )
+    if (!match || !navRef.current) {
+      setIndicator((prev) => ({ ...prev, visible: false }))
+      return
+    }
+    const linkEl = linkRefs.current[match.to]
+    if (!linkEl) return
+    const navRect = navRef.current.getBoundingClientRect()
+    const linkRect = linkEl.getBoundingClientRect()
+    setIndicator({ left: linkRect.left - navRect.left, width: linkRect.width, visible: true })
   }, [location.pathname])
 
   const headerClass = overHero
@@ -44,7 +64,7 @@ export default function Navbar() {
       : 'text-[var(--text-secondary)] hover:bg-[var(--color-frost)] hover:text-[var(--color-blue-deep)]'
   }
 
-  const activeBarClass = overHero ? 'bg-[var(--color-bridge)]' : 'bg-[var(--color-blue-core)]'
+  const indicatorColor = overHero ? 'bg-[var(--color-bridge)]' : 'bg-[var(--color-blue-core)]'
 
   const registerClass = overHero
     ? 'hidden items-center rounded-[var(--radius-pill)] border-[1.5px] border-[rgba(250,243,255,0.35)] px-5 py-2.5 text-[13px] font-medium text-[var(--text-on-dark)] transition-all duration-300 hover:bg-[rgba(250,243,255,0.08)] sm:inline-flex'
@@ -65,32 +85,32 @@ export default function Navbar() {
           <Logo variant="nav" theme={overHero ? 'dark' : 'light'} />
         </NavLink>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
+        <ul ref={navRef} className="relative hidden items-center gap-0.5 lg:flex">
           {navLinks.map(({ to, label }) => (
-            <li key={to}>
+            <li key={to} ref={(el) => { linkRefs.current[to] = el }}>
               <NavLink
                 to={to}
                 end={to === '/'}
                 onClick={() => window.scrollTo(0, 0)}
                 className={({ isActive }) => [
-                  'relative rounded-[var(--radius-md)] px-3.5 py-2 text-sm font-medium transition-all duration-[var(--transition-fast)]',
+                  'block rounded-[var(--radius-md)] px-3.5 py-2 text-sm font-medium transition-colors duration-[var(--transition-fast)]',
                   linkClass(isActive),
                 ].join(' ')}
               >
-                {({ isActive }) => (
-                  <>
-                    {label}
-                    {isActive && (
-                      <span
-                        className={`absolute bottom-0 left-1/2 h-0.5 w-full -translate-x-1/2 rounded-full ${activeBarClass}`}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </>
-                )}
+                {label}
               </NavLink>
             </li>
           ))}
+          {/* Single sliding underline indicator */}
+          <span
+            className={`pointer-events-none absolute bottom-0 h-0.5 rounded-full transition-all duration-300 ease-out ${indicatorColor}`}
+            style={{
+              left: indicator.left,
+              width: indicator.width,
+              opacity: indicator.visible ? 1 : 0,
+            }}
+            aria-hidden="true"
+          />
         </ul>
 
         <div className="flex items-center gap-3">

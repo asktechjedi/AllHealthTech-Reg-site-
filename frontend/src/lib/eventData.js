@@ -1,8 +1,8 @@
-import drUmaPhoto from '../assets/AHT-Speaker-PIC/Dr Uma - Jhanvi Shah.jpg'
-import shivaniPhoto from '../assets/AHT-Speaker-PIC/Shivani Kulkarni_v1 - Jhanvi Shah.webp'
-import ujjvalaPhoto from '../assets/AHT-Speaker-PIC/Ujjvala Ballal Profile Pic - Jhanvi Shah.webp'
-import snehaPhoto from '../assets/AHT-Speaker-PIC/F367BAC2-E06B-47A8-9528-503B4F6BE464 - Jhanvi Shah.webp'
-import drBhaskarPhoto from '../assets/AHT-Speaker-PIC/Dr Bhaskar - Jhanvi Shah.webp'
+import drUmaPhoto from '../assets/AHT-Speaker-PIC/dr-uma.webp'
+import shivaniPhoto from '../assets/AHT-Speaker-PIC/shivani-kulkarni.webp'
+import ujjvalaPhoto from '../assets/AHT-Speaker-PIC/ujjvala-ballal.webp'
+import snehaPhoto from '../assets/AHT-Speaker-PIC/sneha-bhonsle.webp'
+import drBhaskarPhoto from '../assets/AHT-Speaker-PIC/dr-bhaskar.webp'
 
 const speakerRecords = [
   {
@@ -172,7 +172,242 @@ const speakerRecords = [
   },
 ]
 
-const agendaRecords = []
+const agendaRecords = [
+  {
+    id: 'session-registration',
+    displayOrder: 1,
+    title: 'Registration & Welcome Tea',
+    startTime: '2026-07-27T09:45:00+05:30',
+    endTime: '2026-07-27T10:30:00+05:30',
+    track: null,
+    type: 'break',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-opening',
+    displayOrder: 2,
+    title: 'Opening — Introduction to Event & Event Flow',
+    startTime: '2026-07-27T11:00:00+05:30',
+    endTime: '2026-07-27T11:20:00+05:30',
+    track: null,
+    type: 'emcee',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-keynote-1',
+    displayOrder: 3,
+    title: 'Keynote 1',
+    startTime: '2026-07-27T11:20:00+05:30',
+    endTime: '2026-07-27T11:40:00+05:30',
+    track: 'Keynote',
+    type: 'keynote',
+    description: '',
+    speakerId: null,
+    speakers: [{ name: 'Dairo' }],
+  },
+  {
+    id: 'session-keynote-2',
+    displayOrder: 4,
+    title: 'Keynote 2',
+    startTime: '2026-07-27T11:45:00+05:30',
+    endTime: '2026-07-27T11:55:00+05:30',
+    track: 'Keynote',
+    type: 'keynote',
+    description: '',
+    speakerId: 'speaker-dr-uma-nambiar',
+    speakers: [],
+  },
+  {
+    id: 'session-panel-1',
+    displayOrder: 5,
+    title: 'Panel 1 — Hospital & HealthTech',
+    startTime: '2026-07-27T12:00:00+05:30',
+    endTime: '2026-07-27T12:30:00+05:30',
+    track: 'Panel',
+    type: 'panel',
+    description: '',
+    speakerId: null,
+    speakers: [
+      { name: 'Dr. Ujjwala' },
+      { name: 'Dr. Karamveer S Chhabra' },
+      { name: 'Dr. Amit Raaj' },
+    ],
+  },
+  {
+    id: 'session-fireside',
+    displayOrder: 6,
+    title: 'Fireside Chat',
+    startTime: '2026-07-27T12:35:00+05:30',
+    endTime: '2026-07-27T12:50:00+05:30',
+    track: 'Fireside',
+    type: 'fireside',
+    description: '',
+    speakerId: null,
+    speakers: [{ name: 'Dr. Bhaskar Charak' }],
+  },
+  {
+    id: 'session-sponsor-1',
+    displayOrder: 7,
+    title: 'Sponsor Note 1',
+    startTime: '2026-07-27T13:00:00+05:30',
+    endTime: '2026-07-27T13:20:00+05:30',
+    track: null,
+    type: 'sponsor',
+    description: '',
+    speakerId: null,
+    speakers: [{ name: 'Sanket Shah' }],
+  },
+  {
+    id: 'session-lunch',
+    displayOrder: 8,
+    title: 'Lunch',
+    startTime: '2026-07-27T13:20:00+05:30',
+    endTime: '2026-07-27T13:45:00+05:30',
+    track: null,
+    type: 'break',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-panel-2',
+    displayOrder: 9,
+    title: 'Panel 2 — The HealthTech Founder',
+    startTime: '2026-07-27T13:40:00+05:30',
+    endTime: '2026-07-27T14:00:00+05:30',
+    track: 'Panel',
+    type: 'panel',
+    description: '',
+    speakerId: null,
+    speakers: [
+      { name: 'Hosa Health' },
+      { name: 'Rimidio' },
+      { name: 'Prodoc' },
+    ],
+  },
+  {
+    id: 'session-pitch',
+    displayOrder: 10,
+    title: 'The 3-Minute Pitch — Live Engagement',
+    startTime: '2026-07-27T14:00:00+05:30',
+    endTime: '2026-07-27T15:00:00+05:30',
+    track: 'Interactive',
+    type: 'interactive',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-panel-3',
+    displayOrder: 11,
+    title: 'Panel 3 — The VC: AI & Agents in Healthcare',
+    startTime: '2026-07-27T15:00:00+05:30',
+    endTime: '2026-07-27T15:30:00+05:30',
+    track: 'Panel',
+    type: 'panel',
+    description: '',
+    speakerId: null,
+    speakers: [
+      { name: 'Ashima', organization: 'Sorin' },
+      { name: 'Anirudh', organization: 'Xceed' },
+      { name: 'Shivani Kulkarni', organization: 'PrimeVP', speakerId: 'speaker-shivani-kulkarni' },
+    ],
+  },
+  {
+    id: 'session-hi-tea',
+    displayOrder: 12,
+    title: 'Hi-Tea',
+    startTime: '2026-07-27T15:30:00+05:30',
+    endTime: '2026-07-27T15:45:00+05:30',
+    track: null,
+    type: 'break',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-panel-4',
+    displayOrder: 13,
+    title: 'Panel 4 — Regulation, Consent & the Law',
+    startTime: '2026-07-27T15:50:00+05:30',
+    endTime: '2026-07-27T16:10:00+05:30',
+    track: 'Panel',
+    type: 'panel',
+    description: '',
+    speakerId: null,
+    speakers: [
+      { name: 'Sneha Bhonsle', speakerId: 'speaker-sneha-bhonsle' },
+    ],
+  },
+  {
+    id: 'session-sponsor-2',
+    displayOrder: 14,
+    title: 'Sponsor Note 2',
+    startTime: '2026-07-27T16:12:00+05:30',
+    endTime: '2026-07-27T16:30:00+05:30',
+    track: null,
+    type: 'sponsor',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-panel-5',
+    displayOrder: 15,
+    title: 'Panel 5 — AI in Healthcare Marketing',
+    startTime: '2026-07-27T16:35:00+05:30',
+    endTime: '2026-07-27T16:50:00+05:30',
+    track: 'Panel',
+    type: 'panel',
+    description: '',
+    speakerId: null,
+    speakers: [
+      { name: 'Samir Karpe' },
+      { name: 'Kriti Yadav' },
+      { name: 'Rahul Jain' },
+    ],
+  },
+  {
+    id: 'session-sponsor-3',
+    displayOrder: 16,
+    title: 'Sponsor Note 3',
+    startTime: '2026-07-27T17:00:00+05:30',
+    endTime: '2026-07-27T17:20:00+05:30',
+    track: null,
+    type: 'sponsor',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-networking',
+    displayOrder: 17,
+    title: 'Networking & Booth',
+    startTime: '2026-07-27T17:30:00+05:30',
+    endTime: '2026-07-27T18:10:00+05:30',
+    track: null,
+    type: 'networking',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+  {
+    id: 'session-gala',
+    displayOrder: 18,
+    title: 'Gala & Standup',
+    startTime: '2026-07-27T18:30:00+05:30',
+    endTime: '2026-07-27T21:30:00+05:30',
+    track: null,
+    type: 'gala',
+    description: '',
+    speakerId: null,
+    speakers: [],
+  },
+]
 
 function sortByDisplayOrder(items) {
   return items.slice().sort((a, b) => a.displayOrder - b.displayOrder)
@@ -186,17 +421,27 @@ function attachSpeakersToAgenda(agendaItems, speakerMap) {
   return sortByDisplayOrder(agendaItems).map((item) => ({
     ...item,
     speaker: item.speakerId ? speakerMap.get(item.speakerId) ?? null : null,
+    speakers: (item.speakers || []).map((s) => {
+      if (!s.speakerId) return s
+      const record = speakerMap.get(s.speakerId)
+      return record ? { ...s, photoUrl: record.photoUrl, title: record.title } : s
+    }),
   }))
 }
 
 function attachSessionsToSpeakers(speakers, agendaItems) {
-  const sessionsBySpeakerId = agendaItems.reduce((acc, item) => {
-    if (!item.speakerId) return acc
-    if (!acc.has(item.speakerId)) acc.set(item.speakerId, [])
-    acc.get(item.speakerId).push(item)
-    return acc
-  }, new Map())
-
+  const sessionsBySpeakerId = new Map()
+  for (const item of agendaItems) {
+    const addSession = (id) => {
+      if (!sessionsBySpeakerId.has(id)) sessionsBySpeakerId.set(id, [])
+      const list = sessionsBySpeakerId.get(id)
+      if (!list.some((i) => i.id === item.id)) list.push(item)
+    }
+    if (item.speakerId) addSession(item.speakerId)
+    for (const s of item.speakers ?? []) {
+      if (s.speakerId) addSession(s.speakerId)
+    }
+  }
   return sortByDisplayOrder(speakers).map((speaker) => ({
     ...speaker,
     sessions: sessionsBySpeakerId.get(speaker.id) ?? [],

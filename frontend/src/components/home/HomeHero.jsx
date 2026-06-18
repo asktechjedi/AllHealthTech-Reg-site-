@@ -13,8 +13,8 @@ const fadeUp = (delay = 0) => ({
 })
 
 const metaItems = [
-  { icon: MapPinIcon, label: 'Bangalore · venue TBC' },
-  { icon: CalendarIcon, label: 'July 2026' },
+  { icon: MapPinIcon, label: 'Hotel Royal Orchid · Domlur, Bangalore' },
+  { icon: CalendarIcon, label: '27 July 2026' },
   { icon: LockIcon, label: 'Invite-only gathering' },
 ]
 
@@ -30,6 +30,8 @@ export default function HomeHero() {
           src={heroBackground}
           alt=""
           className="h-full min-h-dvh w-full object-cover object-[center_42%] sm:object-[62%_center] lg:object-[78%_center]"
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(0,8,74,0.94)_0%,rgba(0,14,122,0.82)_38%,rgba(0,14,122,0.45)_58%,rgba(0,8,74,0.2)_78%,rgba(0,8,74,0.55)_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,8,74,0.88)_0%,rgba(0,8,74,0.25)_28%,transparent_55%)]" />

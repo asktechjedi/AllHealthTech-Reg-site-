@@ -61,6 +61,8 @@ export default function FeaturedSpeakers() {
             src="/AHT Photos.webp"
             alt="Bringing the ecosystem together — All Health X Tech Summit 2026 partners and participants"
             className="w-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>

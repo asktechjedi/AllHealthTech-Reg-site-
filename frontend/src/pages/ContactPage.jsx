@@ -9,8 +9,8 @@ import { MailIcon, PhoneIcon, MapPinIcon, ClockIcon, CheckIcon } from '../compon
 const INFO = [
   { icon: MailIcon, label: 'Email', value: 'maklabs@allhealthtech.com', href: 'mailto:maklabs@allhealthtech.com' },
   { icon: PhoneIcon, label: 'Phone', value: '+91 99007 41100', href: 'tel:+919900741100' },
-  { icon: MapPinIcon, label: 'Venue', value: 'Bangalore, venue TBC', href: null },
-  { icon: ClockIcon, label: 'Office Hours', value: 'Mon–Fri, 9 AM – 6 PM IST', href: null },
+  { icon: MapPinIcon, label: 'Venue', value: 'Hotel Royal Orchid, Domlur, Bangalore', href: 'https://maps.google.com/?q=Hotel+Royal+Orchid,Domlur,Bangalore' },
+  { icon: ClockIcon, label: 'Event Timing', value: '27 July 2026 · 9:45 AM – 9:30 PM IST', href: null },
 ]
 
 export default function ContactPage() {
@@ -171,6 +171,33 @@ export default function ContactPage() {
             </form>
           </AnimatedSection>
         </div>
+
+        {/* Venue map */}
+        <AnimatedSection animation="fadeUp" duration={800} delay={300} className="mt-6">
+          <div className="rounded-[var(--radius-card)] border border-[var(--color-mist)] bg-[var(--color-warm-white)] p-5 shadow-[var(--shadow-card)]">
+            <div className="mb-4 flex items-center gap-2.5">
+              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-mist)] bg-[var(--color-frost)]">
+                <MapPinIcon className="h-3.5 w-3.5 text-[var(--color-bridge)]" />
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--text-muted)]">Event Venue</p>
+                <p className="text-sm font-medium text-[var(--text-primary)]">Hotel Royal Orchid, Domlur, Bangalore</p>
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-[var(--radius-lg)]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4257.812475982718!2d77.64339005351746!3d12.957239484942463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1405dbb04b89%3A0x6ba4a1a96e5ed004!2sHotel%20Royal%20Orchid!5e1!3m2!1sen!2sin!4v1781765562619!5m2!1sen!2sin"
+                width="100%"
+                height="340"
+                style={{ border: 0, display: 'block' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Hotel Royal Orchid, Domlur, Bangalore"
+              />
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </div>
   )
