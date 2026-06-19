@@ -5,6 +5,11 @@ import { dirname, join } from 'path';
 
 const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/png - aht-logo.png');
 
+function maskEmail(email) {
+  const [local, domain] = email.split('@');
+  return `${local.slice(0, 3)}***@${domain}`;
+}
+
 const { SESClient } = aws;
 
 const sesClient = new SESClient({
@@ -40,6 +45,9 @@ export async function sendConfirmationEmail(registration) {
     dietaryRestrictions,
     accessibilityNeeds,
   } = registration;
+
+  const t0 = Date.now();
+  console.log(`[Email] SEND_START | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)}`);
 
   // Hardcoded event information (single event)
   const eventName = 'AllHealthTech 2026';
@@ -150,18 +158,24 @@ export async function sendConfirmationEmail(registration) {
     </div>
   `;
 
-  await transporter.sendMail({
-    from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
-    replyTo: 'maklabs@allhealthtech.com',
-    to: attendeeEmail,
-    subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
-    html,
-    text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nLocation: ${eventLocation}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
-    attachments: [{ filename: 'logo.png', path: LOGO_PATH, cid: 'logo' }],
-    headers: {
-      'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
-    },
-  });
+  try {
+    await transporter.sendMail({
+      from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
+      replyTo: 'maklabs@allhealthtech.com',
+      to: attendeeEmail,
+      subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
+      html,
+      text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nLocation: ${eventLocation}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
+      attachments: [{ filename: 'logo.png', path: LOGO_PATH, cid: 'logo' }],
+      headers: {
+        'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
+      },
+    });
+    console.log(`[Email] SEND_SUCCESS | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} durationMs=${Date.now() - t0}`);
+  } catch (err) {
+    console.error(`[Email] SEND_FAILED | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} error="${err.message}" durationMs=${Date.now() - t0}`);
+    throw err;
+  }
 }
 
 

@@ -11,6 +11,7 @@ function getRazorpayClient() {
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
   if (!keyId || !keySecret) {
+    console.error(`[Payment] RAZORPAY_NOT_CONFIGURED | ts=${new Date().toISOString()} reason="RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET missing"`);
     const error = new Error('Razorpay is not configured');
     error.statusCode = 503;
     error.code = 'RAZORPAY_NOT_CONFIGURED';
@@ -31,16 +32,25 @@ export async function createRegistrationOrder({ attendeeName, attendeeEmail }) {
   const client = getRazorpayClient();
   const receipt = `reg_${Date.now()}`;
 
-  return client.orders.create({
-    amount: REGISTRATION_AMOUNT_PAISE,
-    currency: REGISTRATION_CURRENCY,
-    receipt,
-    notes: {
-      attendeeName,
-      attendeeEmail,
-      purpose: 'registration',
-    },
-  });
+  console.log(`[Payment] RAZORPAY_API_CALL | ts=${new Date().toISOString()} receipt=${receipt} amount=${REGISTRATION_AMOUNT_PAISE} currency=${REGISTRATION_CURRENCY}`);
+  const t0 = Date.now();
+  try {
+    const order = await client.orders.create({
+      amount: REGISTRATION_AMOUNT_PAISE,
+      currency: REGISTRATION_CURRENCY,
+      receipt,
+      notes: {
+        attendeeName,
+        attendeeEmail,
+        purpose: 'registration',
+      },
+    });
+    console.log(`[Payment] RAZORPAY_API_SUCCESS | ts=${new Date().toISOString()} orderId=${order.id} receipt=${receipt} durationMs=${Date.now() - t0}`);
+    return order;
+  } catch (err) {
+    console.error(`[Payment] RAZORPAY_API_ERROR | ts=${new Date().toISOString()} receipt=${receipt} error="${err.message}" statusCode=${err.statusCode ?? 'N/A'} durationMs=${Date.now() - t0}`);
+    throw err;
+  }
 }
 
 export function verifyRazorpaySignature({ orderId, paymentId, signature }) {

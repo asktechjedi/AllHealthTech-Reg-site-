@@ -16,6 +16,15 @@ import {
 
 const router = Router();
 
+function maskEmail(email) {
+  const [local, domain] = email.split('@');
+  return `${local.slice(0, 3)}***@${domain}`;
+}
+
+function maskPhone(phone) {
+  return `${'*'.repeat(Math.max(0, phone.length - 4))}${phone.slice(-4)}`;
+}
+
 const checkAvailabilityQuerySchema = z.object({
   email: z.string().trim().email('Invalid email format').toLowerCase().optional(),
   phone: z
@@ -132,14 +141,21 @@ router.post(
         razorpay_signature,
       } = req.body;
 
+      console.log(`[Registration] REQUEST_RECEIVED | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} phone=${maskPhone(attendeePhone)} name="${attendeeName}" orderId=${razorpay_order_id}`);
+
       const availabilityConflict = await getAvailabilityConflictResponse({
         attendeeEmail,
         attendeePhone,
       });
 
+      console.log(`[Registration] AVAILABILITY_CHECK | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} available=${!availabilityConflict}`);
+
       if (availabilityConflict) {
+        console.warn(`[Registration] AVAILABILITY_CONFLICT | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} code=${availabilityConflict.body.code}`);
         return res.status(availabilityConflict.statusCode).json(availabilityConflict.body);
       }
+
+      console.log(`[Registration] PAYMENT_VERIFY_START | ts=${new Date().toISOString()} orderId=${razorpay_order_id} paymentId=${razorpay_payment_id}`);
 
       const isPaymentValid = verifyRazorpaySignature({
         orderId: razorpay_order_id,
@@ -147,7 +163,10 @@ router.post(
         signature: razorpay_signature,
       });
 
+      console.log(`[Registration] PAYMENT_VERIFY_RESULT | ts=${new Date().toISOString()} orderId=${razorpay_order_id} paymentId=${razorpay_payment_id} valid=${isPaymentValid}`);
+
       if (!isPaymentValid) {
+        console.warn(`[Registration] PAYMENT_VERIFY_FAILED | ts=${new Date().toISOString()} orderId=${razorpay_order_id} paymentId=${razorpay_payment_id}`);
         return res.status(400).json({
           error: 'Payment verification failed. Registration was not created.',
           code: 'PAYMENT_VERIFICATION_FAILED',
@@ -160,7 +179,10 @@ router.post(
         },
       });
 
+      console.log(`[Registration] PAYMENT_REUSE_CHECK | ts=${new Date().toISOString()} paymentId=${razorpay_payment_id} alreadyUsed=${!!existingPayment}`);
+
       if (existingPayment) {
+        console.warn(`[Registration] PAYMENT_ALREADY_USED | ts=${new Date().toISOString()} paymentId=${razorpay_payment_id} existingRegistrationId=${existingPayment.id}`);
         return res.status(409).json({
           error: 'This payment has already been used for a registration',
           code: 'PAYMENT_ALREADY_USED',
@@ -170,11 +192,14 @@ router.post(
       // Generate ticket ID and create registration atomically under Serializable
       // isolation so concurrent registrations can't read the same count and
       // produce duplicate ticket IDs. Retry up to 3 times on serialization failure.
+      const txT0 = Date.now();
+      console.log(`[Registration] DB_TX_START | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} orderId=${razorpay_order_id}`);
       let registration;
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           registration = await prisma.$transaction(async (tx) => {
             const ticketId = await generateTicketId(tx);
+            console.log(`[Registration] TICKET_ID_GENERATED | ts=${new Date().toISOString()} ticketId=${ticketId} email=${maskEmail(attendeeEmail)}`);
             return tx.registration.create({
               data: {
                 ticketId,
@@ -195,23 +220,28 @@ router.post(
               },
             });
           }, { isolationLevel: 'Serializable' });
+          console.log(`[Registration] DB_TX_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} attempt=${attempt} durationMs=${Date.now() - txT0}`);
           break;
         } catch (err) {
-          if (err.code === 'P2034' && attempt < 3) continue;
+          if (err.code === 'P2034' && attempt < 3) {
+            console.warn(`[Registration] DB_TX_SERIALIZATION_RETRY | ts=${new Date().toISOString()} attempt=${attempt} email=${maskEmail(attendeeEmail)}`);
+            continue;
+          }
           throw err;
         }
       }
 
       // Send confirmation email asynchronously (don't wait for it)
       sendConfirmationEmail(registration).catch((err) =>
-        console.error('Failed to send confirmation email:', err)
+        console.error(`[Registration] EMAIL_SEND_CATCH | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} error="${err.message}"`)
       );
 
       // Sync to Google Sheets asynchronously (don't wait for it)
       syncRegistrationToGoogleSheets(registration).catch((err) =>
-        console.error('Failed to sync registration to Google Sheets:', err)
+        console.error(`[Registration] SHEETS_SYNC_CATCH | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} error="${err.message}"`)
       );
 
+      console.log(`[Registration] RESPONSE_SENT | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} statusCode=201`);
       return res.status(201).json({
         success: true,
         registrationId: registration.id,
@@ -228,12 +258,13 @@ router.post(
  * @param {Object} registration - Registration object with relations
  */
 async function syncRegistrationToGoogleSheets(registration) {
-  // Skip if Google Sheets is not configured
+  console.log(`[Registration] SHEETS_SYNC_START | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId}`);
+
   const { isGoogleSheetsConfigured, getGoogleSheetsConfig, syncRegistrationToSheets, TransientSyncError, PermanentSyncError } =
     await import('../services/googleSheetsService.js');
 
   if (!isGoogleSheetsConfigured()) {
-    console.log('[Registration] Google Sheets sync is not configured, skipping');
+    console.log(`[Registration] SHEETS_SYNC_SKIPPED | ts=${new Date().toISOString()} registrationId=${registration.id} reason="NOT_CONFIGURED"`);
     return;
   }
 
@@ -256,10 +287,7 @@ async function syncRegistrationToGoogleSheets(registration) {
         error.message,
         'TRANSIENT'
       );
-      console.log('[Registration] Transient sync error queued for retry:', {
-        registrationId: registration.id,
-        error: error.message,
-      });
+      console.warn(`[Registration] SHEETS_SYNC_QUEUED_RETRY | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} error="${error.message}"`);
     } else if (error instanceof PermanentSyncError) {
       // Move to dead letter queue
       const failedSync = await queueFailedSync(
@@ -282,11 +310,7 @@ async function syncRegistrationToGoogleSheets(registration) {
       await prisma.failedSync.delete({
         where: { id: failedSync.id },
       });
-      console.error('[Registration] Permanent sync error moved to dead letter queue:', {
-        registrationId: registration.id,
-        error: error.message,
-      });
-      // TODO: Alert support team
+      console.error(`[Registration] SHEETS_SYNC_DEAD_LETTER | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} error="${error.message}"`);
     } else {
       // Unknown error - treat as transient
       await queueFailedSync(
@@ -295,10 +319,7 @@ async function syncRegistrationToGoogleSheets(registration) {
         error.message,
         'TRANSIENT'
       );
-      console.error('[Registration] Unknown sync error queued for retry:', {
-        registrationId: registration.id,
-        error: error.message,
-      });
+      console.error(`[Registration] SHEETS_SYNC_UNKNOWN_ERROR | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} error="${error.message}" treating="TRANSIENT"`);
     }
   }
 }

@@ -199,6 +199,8 @@ function isTransientError(error) {
  */
 export async function syncRegistrationToSheets(registration, config) {
   const { spreadsheetId, sheetName = 'Registrations' } = config;
+  const t0 = Date.now();
+  console.log(`[GoogleSheets] SYNC_START | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} spreadsheetId=${spreadsheetId} sheetName=${sheetName}`);
 
   try {
     const auth = await getGoogleSheetsAuth();
@@ -213,9 +215,7 @@ export async function syncRegistrationToSheets(registration, config) {
     });
     const existingTicketIds = (existing.data.values || []).flat();
     if (existingTicketIds.includes(registration.ticketId)) {
-      console.log('[GoogleSheets] Registration already in sheet, skipping duplicate sync', {
-        ticketId: registration.ticketId,
-      });
+      console.log(`[GoogleSheets] SYNC_DUPLICATE_SKIP | ts=${new Date().toISOString()} ticketId=${registration.ticketId} registrationId=${registration.id} durationMs=${Date.now() - t0}`);
       return;
     }
 
@@ -232,13 +232,10 @@ export async function syncRegistrationToSheets(registration, config) {
       throw new Error('Failed to append row to sheet');
     }
 
-    console.log('[GoogleSheets] Registration synced successfully', {
-      registrationId: registration.id,
-      ticketId: registration.ticketId,
-      updatedRows: response.data.updates.updatedRows,
-    });
+    console.log(`[GoogleSheets] SYNC_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} updatedRows=${response.data.updates.updatedRows} durationMs=${Date.now() - t0}`);
   } catch (error) {
     const message = formatGoogleSheetsError(error);
+    console.error(`[GoogleSheets] SYNC_ERROR | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} errorType=${isTransientError(error) ? 'TRANSIENT' : 'PERMANENT'} error="${message}" durationMs=${Date.now() - t0}`);
     if (isTransientError(error)) {
       throw new TransientSyncError(message);
     } else {
