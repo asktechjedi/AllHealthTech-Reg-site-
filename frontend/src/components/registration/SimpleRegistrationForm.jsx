@@ -6,7 +6,7 @@ import Button from '../ui/Button.jsx'
 import ErrorMessage from '../ui/ErrorMessage.jsx'
 import { apiFetch } from '../../lib/api.js'
 import { checkRegistrationAvailability } from '../../lib/checkRegistrationAvailability.js'
-import { cleanupRazorpayOverlay, pinRazorpayOverlayToViewport } from '../../lib/razorpayOverlay.js'
+import { cleanupRazorpayOverlay, pinRazorpayOverlayToViewport, destroyRazorpay } from '../../lib/razorpayOverlay.js'
 import { analytics, logEvent } from '../../firebase.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -293,7 +293,7 @@ export default function SimpleRegistrationForm() {
           handler: resolve,
           modal: {
             ondismiss: () => {
-              cleanupRazorpayOverlay()
+              destroyRazorpay()
               apiFetch('/api/payments/cancelled', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -306,8 +306,7 @@ export default function SimpleRegistrationForm() {
         })
 
         checkout.on('payment.failed', (response) => {
-          checkout.close()
-          cleanupRazorpayOverlay()
+          destroyRazorpay()
           apiFetch('/api/payments/cancelled', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -324,7 +323,7 @@ export default function SimpleRegistrationForm() {
         pinRazorpayOverlayToViewport()
       })
 
-      cleanupRazorpayOverlay()
+      destroyRazorpay()
 
       const response = await apiFetch('/api/registrations', {
         method: 'POST',
