@@ -67,4 +67,11 @@ router.post('/order', paymentLimiter, validate(createOrderSchema), async (req, r
   }
 });
 
+router.post('/cancelled', paymentLimiter, async (req, res) => {
+  const { orderId, reason, email } = req.body;
+  const maskedEmail = email ? maskEmail(email) : 'unknown';
+  console.warn(`[Payment] PAYMENT_CANCELLED | ts=${new Date().toISOString()} orderId=${orderId ?? 'unknown'} email=${maskedEmail} reason="${reason ?? 'modal_dismissed'}"`);
+  return res.status(200).json({ received: true });
+});
+
 export default router;

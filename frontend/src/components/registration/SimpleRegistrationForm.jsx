@@ -294,6 +294,11 @@ export default function SimpleRegistrationForm() {
           modal: {
             ondismiss: () => {
               cleanupRazorpayOverlay()
+              fetch('/api/payments/cancelled', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId: order.orderId, reason: 'modal_dismissed', email: submissionData.attendeeEmail }),
+              }).catch(() => {})
               logEvent(analytics, 'payment_cancelled')
               reject(new Error('Payment was cancelled. Your registration was not created.'))
             },
@@ -302,6 +307,11 @@ export default function SimpleRegistrationForm() {
 
         checkout.on('payment.failed', (response) => {
           cleanupRazorpayOverlay()
+          fetch('/api/payments/cancelled', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: order.orderId, reason: response.error?.description ?? 'payment_failed', email: submissionData.attendeeEmail }),
+          }).catch(() => {})
           logEvent(analytics, 'payment_failed', {
             reason: response.error?.description || 'unknown',
           })
