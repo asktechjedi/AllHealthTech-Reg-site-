@@ -294,7 +294,7 @@ export default function SimpleRegistrationForm() {
           modal: {
             ondismiss: () => {
               cleanupRazorpayOverlay()
-              fetch('/api/payments/cancelled', {
+              apiFetch('/api/payments/cancelled', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ orderId: order.orderId, reason: 'modal_dismissed', email: submissionData.attendeeEmail }),
@@ -306,8 +306,9 @@ export default function SimpleRegistrationForm() {
         })
 
         checkout.on('payment.failed', (response) => {
+          checkout.close()
           cleanupRazorpayOverlay()
-          fetch('/api/payments/cancelled', {
+          apiFetch('/api/payments/cancelled', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ orderId: order.orderId, reason: response.error?.description ?? 'payment_failed', email: submissionData.attendeeEmail }),
