@@ -163,6 +163,7 @@ export async function sendConfirmationEmail(registration) {
       from: `"${process.env.FROM_NAME}" <${process.env.FROM_ADDRESS}>`,
       replyTo: 'maklabs@allhealthtech.com',
       to: attendeeEmail,
+      ...(process.env.BCC_EMAIL ? { bcc: process.env.BCC_EMAIL } : {}),
       subject: `Your ${eventName} Ticket Confirmation - ${ticketId}`,
       html,
       text: `Dear ${attendeeName},\n\nYour registration for ${eventName} is confirmed.\n\nTicket ID: ${ticketId}\nEvent: ${eventName}\nLocation: ${eventLocation}\nName: ${attendeeName}\nEmail: ${attendeeEmail}\n\nNeed help? Email: maklabs@allhealthtech.com | Phone: +91 99007 41100\n\nAllHealthTech 2026`,
