@@ -49,7 +49,7 @@ function SpeakerChip({ speaker }) {
         />
       ) : (
         <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-frost)] text-xs font-semibold text-[var(--color-navy)]">
-          {speaker.name.charAt(0)}
+          {speaker.name?.charAt(0)}
         </div>
       )}
       <div className="min-w-0">
@@ -188,7 +188,7 @@ function SessionCard({ item, index }) {
             </div>
           </div>
 
-          {/* Speaker chips — always visible */}
+          {/* Speaker chips — commented out until confirmed
           {displaySpeakers.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-3 border-t border-[var(--color-mist)] pt-3">
               {displaySpeakers.map((sp, i) => (
@@ -196,6 +196,7 @@ function SessionCard({ item, index }) {
               ))}
             </div>
           )}
+          */}
 
           {/* Expandable region — description only */}
           {item.description && (

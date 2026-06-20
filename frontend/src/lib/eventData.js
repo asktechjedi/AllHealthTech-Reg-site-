@@ -258,7 +258,7 @@ const agendaRecords = [
     track: 'Keynote',
     type: 'keynote',
     description: 'A vision for the next decade of healthcare transformation.',
-    speakerId: 'speaker-dr-dario-heymann',
+    speakerId: null,
     speakers: [],
   },
   {
@@ -270,7 +270,7 @@ const agendaRecords = [
     track: 'Keynote',
     type: 'keynote',
     description: 'Exploring emerging opportunities at the intersection of healthcare, technology, and innovation.',
-    speakerId: 'speaker-dr-uma-nambiar',
+    speakerId: null,
     speakers: [],
   },
   {
@@ -298,7 +298,7 @@ const agendaRecords = [
     track: 'Fireside',
     type: 'fireside',
     description: 'An intimate conversation with a healthcare leader on the opportunities and challenges shaping the industry.',
-    speakerId: 'speaker-dr-bhaskar-rajakumar',
+    speakerId: null,
     speakers: [],
   },
   {
@@ -366,7 +366,7 @@ const agendaRecords = [
     speakers: [
       { name: 'Ashima', organization: 'Sorin' },
       { name: 'Anirudh Iyer', organization: 'Xceed' },
-      { name: 'Shivani Kulkarni', organization: 'PrimeVP', speakerId: 'speaker-shivani-kulkarni' },
+      { name: 'Shivani Kulkarni', organization: 'PrimeVP' },
     ],
   },
   {
@@ -392,7 +392,7 @@ const agendaRecords = [
     description: 'Navigating policy, regulation, data governance, and legal considerations in healthcare innovation.',
     speakerId: null,
     speakers: [
-      { name: 'Sneha Bhonsle', speakerId: 'speaker-sneha-bhonsle' },
+      { name: 'Sneha Bhonsle' },
     ],
   },
   {

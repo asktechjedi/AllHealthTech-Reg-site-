@@ -158,7 +158,7 @@ function SpeakerModal({ speaker, onClose }) {
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-blue-deep)]">
                 <span className="font-[var(--font-display)] text-5xl text-white opacity-30">
-                  {speaker.name.charAt(0)}
+                  {speaker.name?.charAt(0)}
                 </span>
               </div>
             )}
@@ -374,7 +374,7 @@ function SpeakerCard({ speaker, onClick, index }) {
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-frost)] to-[var(--color-mist)] flex items-center justify-center">
           <span className="font-[var(--font-display)] text-6xl text-[var(--color-bridge)] opacity-30">
-            {speaker.name.charAt(0)}
+            {speaker.name?.charAt(0)}
           </span>
         </div>
       )}
