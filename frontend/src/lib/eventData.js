@@ -5,6 +5,8 @@ import snehaPhoto from '../assets/AHT-Speaker-PIC/sneha-bhonsle.webp'
 import drBhaskarPhoto from '../assets/AHT-Speaker-PIC/dr-bhaskar.webp'
 import drAjitPhoto from '../assets/AHT-Speaker-PIC/dr-ajit-audipudi.webp'
 import darioPhoto from '../assets/AHT-Speaker-PIC/dario-heymann.webp'
+import anirudhPhoto from '../assets/AHT-Speaker-PIC/anirudh-iyer.jpg'
+import kirtiPhoto from '../assets/AHT-Speaker-PIC/kirti-yadav.jpg'
 
 const speakerRecords = [
   {
@@ -191,6 +193,53 @@ const speakerRecords = [
       { label: 'Co-Founder', value: 'AdaptAI Health Tech Pvt Ltd' },
       { label: 'Focus', value: 'Translating AI from proof-of-concept to real-world clinical practice' },
       { label: 'Engagements', value: 'Speaker, subject matter expert & workshop lead on AI in healthcare' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-anirudh-iyer',
+    name: 'Anirudh Iyer',
+    title: 'Vice President, Investments',
+    organization: 'Xeed Ventures',
+    tagline: 'Partnering with early-stage founders to build scalable businesses',
+    biography:
+      'Anirudh Iyer is Vice President for Investments at Xeed Ventures, where he partners with early-stage founders building tech-first and tech-enabled businesses from their first conviction cheque through scale. He focuses on sourcing and evaluating investments, working closely with portfolio companies, and developing strategic frameworks that help founders navigate growth.\nAt Xeed Ventures, Anirudh has worked with startups across SaaS, AI, fintech, enterprise technology, and consumer technology.\nAs an early-stage investor, Anirudh works closely with founders on investment readiness, business strategy, fundraising, and scaling technology businesses. His interests span emerging technologies, venture investing, and helping entrepreneurs build category-defining companies from inception to growth.\nAnirudh is also a CAIA (Chartered Alternative Investment Analyst) Charterholder, reflecting his expertise in alternative investments, venture capital, private equity, and portfolio management.',
+    photoUrl: anirudhPhoto,
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 8,
+    expertise: ['Venture Capital', 'Early Stage Investing', 'SaaS', 'AI', 'Fintech', 'Alternative Investments'],
+    highlights: [
+      { label: 'Current', value: 'Vice President, Investments — Xeed Ventures' },
+      { label: 'Focus', value: 'Tech-first & tech-enabled early-stage startups' },
+      { label: 'Sectors', value: 'SaaS · AI · Fintech · Enterprise Tech · Consumer Tech' },
+      { label: 'Credential', value: 'CAIA Charterholder — Chartered Alternative Investment Analyst' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-kirti-yadav',
+    name: 'Kirti Yadav',
+    title: 'Head, Integrated Marketing & SBU Head, Rehabilitation',
+    organization: 'MAIINS, Marengo Asia Hospitals',
+    tagline: 'Healthcare Growth Strategist | AI-Driven Marketing & Rehabilitation Leader',
+    biography:
+      'Kirti Yadav is a healthcare business leader with over 16 years of experience spanning healthcare marketing, business development, rehabilitation, home healthcare, and digital health. She currently leads Integrated Marketing and the Rehabilitation Business Unit at MAIINS (Marengo Asia Institute of Neurosciences & Spine), one of India\'s leading neuroscience institutes under Marengo Asia Hospitals, Gurugram.\nWith a unique blend of clinical expertise as a physiotherapist and commercial leadership experience, Kirti has successfully built and scaled healthcare businesses, developed high-performing teams, and driven sustainable growth across hospitals, rehabilitation services, and home healthcare organizations.\nHer expertise lies in healthcare growth strategy, AI-driven patient engagement, integrated marketing, brand building, referral network development, and business transformation. She has played a pivotal role in positioning MAIINS as a leading destination for neuroscience and rehabilitation care through innovative marketing, digital transformation, and stakeholder engagement initiatives.\nKirti is passionate about leveraging technology and artificial intelligence to enhance patient experiences, improve healthcare accessibility, and create scalable growth models for healthcare organizations.',
+    photoUrl: kirtiPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 9,
+    expertise: ['AI in Healthcare Marketing', 'Digital Transformation in Healthcare', 'Patient Acquisition & Engagement', 'Healthcare Brand Strategy', 'Rehabilitation & Allied Health', 'Business Growth & Revenue Expansion'],
+    highlights: [
+      { label: 'Current', value: 'Head, Integrated Marketing & SBU Head Rehabilitation — MAIINS, Marengo Asia Hospitals' },
+      { label: 'Experience', value: '16+ years in healthcare marketing, business development & rehabilitation' },
+      { label: 'Background', value: 'Physiotherapist with commercial leadership expertise' },
+      { label: 'Focus', value: 'AI-driven patient engagement · Brand building · Referral network development' },
     ],
     education: [],
     awards: [],
