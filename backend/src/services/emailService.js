@@ -52,7 +52,7 @@ export async function sendConfirmationEmail(registration) {
 
   // Hardcoded event information (single event)
   const eventName = 'AllHealthTech 2026';
-  const eventLocation = 'Bangalore, venue TBC';
+  const eventLocation = 'Hotel Royal Orchid, Domlur, Bangalore';
 
   // Build optional fields rows
   let optionalFieldsRows = '';
