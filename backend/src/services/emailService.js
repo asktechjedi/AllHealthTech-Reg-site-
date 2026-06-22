@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import aws from '@aws-sdk/client-ses';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { writeLog, maskEmail as logMaskEmail } from './registrationLogService.js';
 
 const LOGO_PATH = join(dirname(fileURLToPath(import.meta.url)), '../assets/png - aht-logo.png');
 
@@ -172,9 +173,29 @@ export async function sendConfirmationEmail(registration) {
         'List-Unsubscribe': '<mailto:maklabs@allhealthtech.com?subject=unsubscribe>',
       },
     });
-    console.log(`[Email] SEND_SUCCESS | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} durationMs=${Date.now() - t0}`);
+    const duration = Date.now() - t0
+    console.log(`[Email] SEND_SUCCESS | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} durationMs=${duration}`);
+    writeLog({
+      event: 'EMAIL_SENT', status: 'SUCCESS',
+      registrationId: registration.id ?? null,
+      ticketId,
+      attendeeEmail: logMaskEmail(attendeeEmail),
+      durationMs: duration,
+      message: 'Confirmation email sent via AWS SES',
+    }).catch((e) => console.error('[Log] EMAIL_SENT write failed:', e.message))
   } catch (err) {
-    console.error(`[Email] SEND_FAILED | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} error="${err.message}" durationMs=${Date.now() - t0}`);
+    const duration = Date.now() - t0
+    console.error(`[Email] SEND_FAILED | ts=${new Date().toISOString()} ticketId=${ticketId} to=${maskEmail(attendeeEmail)} error="${err.message}" durationMs=${duration}`);
+    writeLog({
+      event: 'EMAIL_FAILED', status: 'FAILED',
+      registrationId: registration.id ?? null,
+      ticketId,
+      attendeeEmail: logMaskEmail(attendeeEmail),
+      durationMs: duration,
+      errorCode: 'SES_SEND_ERROR',
+      errorMessage: err.message,
+      message: 'Confirmation email failed',
+    }).catch((e) => console.error('[Log] EMAIL_FAILED write failed:', e.message))
     throw err;
   }
 }

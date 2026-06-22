@@ -1,6 +1,7 @@
 import { google } from 'googleapis';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { writeLog, maskEmail as logMaskEmail } from './registrationLogService.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -232,10 +233,32 @@ export async function syncRegistrationToSheets(registration, config) {
       throw new Error('Failed to append row to sheet');
     }
 
-    console.log(`[GoogleSheets] SYNC_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} updatedRows=${response.data.updates.updatedRows} durationMs=${Date.now() - t0}`);
+    const duration = Date.now() - t0
+    console.log(`[GoogleSheets] SYNC_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} updatedRows=${response.data.updates.updatedRows} durationMs=${duration}`);
+    writeLog({
+      event: 'SHEETS_SYNCED', status: 'SUCCESS',
+      registrationId: registration.id,
+      ticketId: registration.ticketId,
+      attendeeEmail: logMaskEmail(registration.attendeeEmail),
+      durationMs: duration,
+      message: 'Row appended to Google Sheets successfully',
+    }).catch((e) => console.error('[Log] SHEETS_SYNCED write failed:', e.message))
   } catch (error) {
     const message = formatGoogleSheetsError(error);
-    console.error(`[GoogleSheets] SYNC_ERROR | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} errorType=${isTransientError(error) ? 'TRANSIENT' : 'PERMANENT'} error="${message}" durationMs=${Date.now() - t0}`);
+    const duration = Date.now() - t0
+    const errorType = isTransientError(error) ? 'TRANSIENT' : 'PERMANENT'
+    console.error(`[GoogleSheets] SYNC_ERROR | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} errorType=${errorType} error="${message}" durationMs=${duration}`);
+    writeLog({
+      event: errorType === 'TRANSIENT' ? 'SHEETS_SYNC_FAILED' : 'SHEETS_SYNC_DEAD_LETTER',
+      status: 'FAILED',
+      registrationId: registration.id,
+      ticketId: registration.ticketId,
+      attendeeEmail: logMaskEmail(registration.attendeeEmail),
+      durationMs: duration,
+      errorCode: errorType === 'TRANSIENT' ? 'TRANSIENT_ERROR' : 'PERMANENT_ERROR',
+      errorMessage: message,
+      message: errorType === 'TRANSIENT' ? 'Sheets sync failed — will retry' : 'Sheets sync permanently failed',
+    }).catch((e) => console.error('[Log] SHEETS_SYNC_FAILED write failed:', e.message))
     if (isTransientError(error)) {
       throw new TransientSyncError(message);
     } else {
