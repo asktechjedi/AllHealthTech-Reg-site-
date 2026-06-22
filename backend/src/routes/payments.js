@@ -8,17 +8,9 @@ import {
 } from '../services/paymentService.js';
 import { getAvailabilityConflictResponse } from '../services/registrationAvailability.js';
 import { paymentLimiter } from '../middleware/rateLimit.js';
+import { writeLog, maskEmail, maskPhone, getIp } from '../services/registrationLogService.js';
 
 const router = Router();
-
-function maskEmail(email) {
-  const [local, domain] = email.split('@');
-  return `${local.slice(0, 3)}***@${domain}`;
-}
-
-function maskPhone(phone) {
-  return `${'*'.repeat(Math.max(0, phone.length - 4))}${phone.slice(-4)}`;
-}
 
 const createOrderSchema = z.object({
   attendeeName: z.string().min(1, 'Name is required').max(100).trim(),
@@ -37,6 +29,13 @@ router.post('/order', paymentLimiter, validate(createOrderSchema), async (req, r
 
     console.log(`[Payment] ORDER_REQUEST | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} phone=${maskPhone(attendeePhone)} name="${attendeeName}"`);
 
+    writeLog({
+      event: 'FORM_SUBMITTED', status: 'SUCCESS',
+      attendeeEmail: maskEmail(attendeeEmail), attendeePhone: maskPhone(attendeePhone),
+      ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+      message: 'User submitted registration form',
+    }).catch((e) => console.error('[Log] FORM_SUBMITTED write failed:', e.message))
+
     const availabilityConflict = await getAvailabilityConflictResponse({
       attendeeEmail,
       attendeePhone,
@@ -46,13 +45,37 @@ router.post('/order', paymentLimiter, validate(createOrderSchema), async (req, r
 
     if (availabilityConflict) {
       console.warn(`[Payment] AVAILABILITY_CONFLICT | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} code=${availabilityConflict.body.code}`);
+      writeLog({
+        event: 'AVAILABILITY_CHECKED', status: 'FAILED',
+        attendeeEmail: maskEmail(attendeeEmail), attendeePhone: maskPhone(attendeePhone),
+        message: availabilityConflict.body.error,
+        errorCode: availabilityConflict.body.code,
+        metadata: { emailAvailable: false },
+      }).catch((e) => console.error('[Log] AVAILABILITY_CHECKED write failed:', e.message))
       return res.status(availabilityConflict.statusCode).json(availabilityConflict.body);
     }
+
+    writeLog({
+      event: 'AVAILABILITY_CHECKED', status: 'SUCCESS',
+      attendeeEmail: maskEmail(attendeeEmail), attendeePhone: maskPhone(attendeePhone),
+      message: 'Email and phone are available',
+      metadata: { emailAvailable: true, phoneAvailable: true },
+    }).catch((e) => console.error('[Log] AVAILABILITY_CHECKED write failed:', e.message))
 
     console.log(`[Payment] RAZORPAY_ORDER_CREATING | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)}`);
     const t0 = Date.now();
     const order = await createRegistrationOrder({ attendeeName, attendeeEmail });
-    console.log(`[Payment] RAZORPAY_ORDER_CREATED | ts=${new Date().toISOString()} orderId=${order.id} amount=${REGISTRATION_AMOUNT_PAISE} currency=${REGISTRATION_CURRENCY} durationMs=${Date.now() - t0} email=${maskEmail(attendeeEmail)}`);
+    const orderDuration = Date.now() - t0
+    console.log(`[Payment] RAZORPAY_ORDER_CREATED | ts=${new Date().toISOString()} orderId=${order.id} amount=${REGISTRATION_AMOUNT_PAISE} currency=${REGISTRATION_CURRENCY} durationMs=${orderDuration} email=${maskEmail(attendeeEmail)}`);
+
+    writeLog({
+      event: 'PAYMENT_ORDER_CREATED', status: 'SUCCESS',
+      attendeeEmail: maskEmail(attendeeEmail),
+      razorpayOrderId: order.id,
+      amountPaise: REGISTRATION_AMOUNT_PAISE,
+      durationMs: orderDuration,
+      message: 'Razorpay order created successfully',
+    }).catch((e) => console.error('[Log] PAYMENT_ORDER_CREATED write failed:', e.message))
 
     return res.status(201).json({
       success: true,
@@ -71,6 +94,13 @@ router.post('/cancelled', paymentLimiter, async (req, res) => {
   const { orderId, reason, email } = req.body;
   const maskedEmail = email ? maskEmail(email) : 'unknown';
   console.warn(`[Payment] PAYMENT_CANCELLED | ts=${new Date().toISOString()} orderId=${orderId ?? 'unknown'} email=${maskedEmail} reason="${reason ?? 'modal_dismissed'}"`);
+  writeLog({
+    event: 'PAYMENT_CANCELLED', status: 'CANCELLED',
+    attendeeEmail: maskedEmail,
+    razorpayOrderId: orderId ?? null,
+    message: 'User cancelled payment modal',
+    metadata: { reason: reason ?? 'modal_dismissed' },
+  }).catch((e) => console.error('[Log] PAYMENT_CANCELLED write failed:', e.message))
   return res.status(200).json({ received: true });
 });
 

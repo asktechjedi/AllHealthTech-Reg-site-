@@ -13,6 +13,7 @@ import {
   checkRegistrationAvailability,
   getAvailabilityConflictResponse,
 } from '../services/registrationAvailability.js';
+import { writeLog, maskEmail as logMaskEmail, maskPhone as logMaskPhone, getIp } from '../services/registrationLogService.js';
 
 const router = Router();
 
@@ -152,6 +153,14 @@ router.post(
 
       if (availabilityConflict) {
         console.warn(`[Registration] AVAILABILITY_CONFLICT | ts=${new Date().toISOString()} email=${maskEmail(attendeeEmail)} code=${availabilityConflict.body.code}`);
+        writeLog({
+          event: 'AVAILABILITY_CHECKED', status: 'FAILED',
+          attendeeEmail: logMaskEmail(attendeeEmail), attendeePhone: logMaskPhone(attendeePhone),
+          razorpayOrderId: razorpay_order_id,
+          message: availabilityConflict.body.error,
+          errorCode: availabilityConflict.body.code,
+          ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+        }).catch((e) => console.error('[Log] AVAILABILITY_CHECKED write failed:', e.message))
         return res.status(availabilityConflict.statusCode).json(availabilityConflict.body);
       }
 
@@ -167,11 +176,27 @@ router.post(
 
       if (!isPaymentValid) {
         console.warn(`[Registration] PAYMENT_VERIFY_FAILED | ts=${new Date().toISOString()} orderId=${razorpay_order_id} paymentId=${razorpay_payment_id}`);
+        writeLog({
+          event: 'PAYMENT_VERIFIED', status: 'FAILED',
+          attendeeEmail: logMaskEmail(attendeeEmail), attendeePhone: logMaskPhone(attendeePhone),
+          razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
+          errorCode: 'PAYMENT_VERIFICATION_FAILED',
+          message: 'Razorpay signature mismatch',
+          ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+        }).catch((e) => console.error('[Log] PAYMENT_VERIFIED write failed:', e.message))
         return res.status(400).json({
           error: 'Payment verification failed. Registration was not created.',
           code: 'PAYMENT_VERIFICATION_FAILED',
         });
       }
+
+      writeLog({
+        event: 'PAYMENT_VERIFIED', status: 'SUCCESS',
+        attendeeEmail: logMaskEmail(attendeeEmail), attendeePhone: logMaskPhone(attendeePhone),
+        razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
+        message: 'HMAC-SHA256 signature verified successfully',
+        ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+      }).catch((e) => console.error('[Log] PAYMENT_VERIFIED write failed:', e.message))
 
       const existingPayment = await prisma.registration.findFirst({
         where: {
@@ -183,11 +208,28 @@ router.post(
 
       if (existingPayment) {
         console.warn(`[Registration] PAYMENT_ALREADY_USED | ts=${new Date().toISOString()} paymentId=${razorpay_payment_id} existingRegistrationId=${existingPayment.id}`);
+        writeLog({
+          event: 'PAYMENT_REUSE_CHECKED', status: 'FAILED',
+          attendeeEmail: logMaskEmail(attendeeEmail),
+          razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
+          errorCode: 'PAYMENT_ALREADY_USED',
+          message: 'Payment ID already used for another registration',
+          metadata: { existingRegistrationId: existingPayment.id },
+          ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+        }).catch((e) => console.error('[Log] PAYMENT_REUSE_CHECKED write failed:', e.message))
         return res.status(409).json({
           error: 'This payment has already been used for a registration',
           code: 'PAYMENT_ALREADY_USED',
         });
       }
+
+      writeLog({
+        event: 'PAYMENT_REUSE_CHECKED', status: 'SUCCESS',
+        attendeeEmail: logMaskEmail(attendeeEmail),
+        razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
+        message: 'Payment ID is unique — not previously used',
+        ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+      }).catch((e) => console.error('[Log] PAYMENT_REUSE_CHECKED write failed:', e.message))
 
       // Generate ticket ID and create registration atomically under Serializable
       // isolation so concurrent registrations can't read the same count and
@@ -220,7 +262,18 @@ router.post(
               },
             });
           }, { isolationLevel: 'Serializable' });
-          console.log(`[Registration] DB_TX_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} attempt=${attempt} durationMs=${Date.now() - txT0}`);
+          const txDuration = Date.now() - txT0
+          console.log(`[Registration] DB_TX_SUCCESS | ts=${new Date().toISOString()} registrationId=${registration.id} ticketId=${registration.ticketId} attempt=${attempt} durationMs=${txDuration}`);
+          writeLog({
+            event: 'REGISTRATION_CREATED', status: 'SUCCESS',
+            registrationId: registration.id, ticketId: registration.ticketId,
+            attendeeEmail: logMaskEmail(attendeeEmail), attendeePhone: logMaskPhone(attendeePhone),
+            razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
+            amountPaise: REGISTRATION_AMOUNT_PAISE,
+            durationMs: txDuration,
+            message: `Registration created and ticket ${registration.ticketId} assigned`,
+            ipAddress: getIp(req), userAgent: req.headers['user-agent'] ?? null,
+          }).catch((e) => console.error('[Log] REGISTRATION_CREATED write failed:', e.message))
           break;
         } catch (err) {
           if (err.code === 'P2034' && attempt < 3) {
