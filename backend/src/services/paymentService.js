@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
 
-export const REGISTRATION_AMOUNT_PAISE = 100;
+export const REGISTRATION_AMOUNT_PAISE = 299900;
 export const REGISTRATION_CURRENCY = 'INR';
 
 let razorpayClient;
