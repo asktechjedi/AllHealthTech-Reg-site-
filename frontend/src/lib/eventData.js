@@ -7,6 +7,10 @@ import drAjitPhoto from '../assets/AHT-Speaker-PIC/dr-ajit-audipudi.webp'
 import darioPhoto from '../assets/AHT-Speaker-PIC/dario-heymann.webp'
 import anirudhPhoto from '../assets/AHT-Speaker-PIC/anirudh-iyer.jpg'
 import kirtiPhoto from '../assets/AHT-Speaker-PIC/kirti-yadav.jpg'
+import saarthakPhoto from '../assets/AHT-Speaker-PIC/dr-saarthak-bakshi.jpg'
+import anupPhoto from '../assets/AHT-Speaker-PIC/dr-anup-warrier.jpg'
+import muthuPhoto from '../assets/AHT-Speaker-PIC/dr-muthu-dhandapani.jpg'
+import smitaPhoto from '../assets/AHT-Speaker-PIC/smita-malipatil.jpg'
 
 const speakerRecords = [
   {
@@ -270,6 +274,134 @@ const speakerRecords = [
       { degree: 'MSc, Biochemistry & Molecular Biology', institution: '', year: '', achievement: '' },
     ],
     awards: [],
+  },
+  {
+    id: 'speaker-dr-anup-warrier',
+    name: 'Dr. Anup R. Warrier',
+    title: 'Group Chief of Medical Services & Quality',
+    organization: 'Aster DM Healthcare',
+    tagline: 'Driving clinical excellence, quality & digital transformation across an 18-hospital network.',
+    biography:
+      'Dr. Anup R. Warrier is Group Chief of Medical Services & Quality at Aster DM Healthcare, where he leads clinical strategy, quality, patient safety, and digital transformation across an 18-hospital network. A physician executive with nearly two decades of experience, his career spans infectious diseases, healthcare quality, clinical governance, accreditation, and enterprise healthcare leadership.\nOver the years, Dr. Warrier has led large-scale initiatives in quality improvement, EMR implementation, AI adoption, greenfield hospital commissioning, and clinical governance — driving measurable improvements in patient safety and healthcare outcomes. He reduced composite HAI rates from 2.0% to 0.9% group-wide, sustained six JCI accreditation cycles, and delivered award-winning reductions in CLABSI and surgical-site infections.\nBeyond his leadership at Aster, he serves in national and international roles focused on infection prevention, antimicrobial stewardship, and healthcare quality, and has contributed extensively to clinical research, policy, and medical education with 30+ peer-reviewed publications.',
+    photoUrl: anupPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 11,
+    expertise: ['Clinical Governance & Patient Safety', 'Quality Systems (JCI · NABH · ACHSI)', 'Infectious Diseases & Antimicrobial Stewardship', 'EMR & AI / Digital Adoption', 'Greenfield Hospital Commissioning', 'M&A Clinical Due Diligence'],
+    highlights: [
+      { label: 'Current', value: 'Group Chief of Medical Services & Quality — Aster DM Healthcare (18 hospitals)' },
+      { label: 'Impact', value: 'Reduced composite HAI rates from 2.0% → 0.9% group-wide; sustained 6 JCI accreditation cycles' },
+      { label: 'External Roles', value: 'Chairperson, CAHO IPC Forum · Faculty, WHO Infection Prevention programmes · Kerala AMR Committee' },
+      { label: 'Research', value: '30+ peer-reviewed publications — antimicrobial resistance, infection prevention, sepsis & implementation science' },
+    ],
+    education: [
+      { degree: 'INSEAD — Leadership Programme for Senior Executives (ILPSE)', institution: '', year: 'Ongoing', achievement: '' },
+      { degree: 'Harvard Medical School — AI in Healthcare', institution: '', year: 'Ongoing', achievement: '' },
+      { degree: 'DNB, General Medicine', institution: '', year: '', achievement: '' },
+      { degree: 'MBBS', institution: 'Government Medical College, Trivandrum', year: '', achievement: '' },
+    ],
+    awards: [
+      'SHEA International Ambassador Award',
+      'Healthcare Management Asia Award 2016',
+      'Healthcare Management Asia Award 2019',
+      'SHEA International Research Grant',
+      'IDSA Centre of Excellence Recognition',
+      'ESCMID European Centre for Collaboration Recognition',
+    ],
+  },
+  {
+    id: 'speaker-smita-malipatil',
+    name: 'Smita Malipatil',
+    title: 'Founder & CEO',
+    organization: 'Hosa Health',
+    tagline: 'Building a pediatric intelligence layer for Gen Alpha Healthcare.',
+    biography:
+      'Smita Malipatil is the Founder & CEO of Hosa Health, building a pediatric intelligence layer for Gen Alpha Healthcare.\nSmita began her entrepreneurial journey as the founder of Kieon, one of the UK\'s pioneering digital transformation agencies. Under her leadership, Kieon expanded its operations across the UK, US, and India — culminating in a successful exit to a major UK PLC. Post her exit, she was CEO for two companies in the Deeptech and AI/ML sectors, where she successfully scaled the organizations and led them through key stages of growth.\nAn alumna of Harvard Business School, Smita is a passionate advocate for entrepreneurship and women in leadership. She is an angel investor and startup mentor, and serves as a Founding Member of the India-UK Responsible AI Group, a committee member of the Start-up Vision Group Karnataka, and Board and Charter Member at TiE Bangalore.',
+    photoUrl: smitaPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: 'https://www.linkedin.com/in/bigchief/',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 13,
+    expertise: ['Pediatric Digital Health', 'AI/ML & Deeptech', 'Digital Transformation', 'Entrepreneurship & Exits', 'Angel Investing', 'Responsible AI'],
+    highlights: [
+      { label: 'Current', value: 'Founder & CEO — Hosa Health (pediatric intelligence layer for Gen Alpha)' },
+      { label: 'Previous', value: 'Founder, Kieon — UK digital transformation agency; successful exit to major UK PLC' },
+      { label: 'Leadership', value: 'CEO at two Deeptech & AI/ML companies post-exit; scaled through key growth stages' },
+      { label: 'Community', value: 'Founding Member, India-UK Responsible AI Group · TiE Bangalore Board & Charter Member' },
+    ],
+    education: [
+      { degree: 'Harvard Business School', institution: '', year: '', achievement: 'Alumna' },
+    ],
+    awards: [],
+  },
+  {
+    id: 'speaker-dr-muthu-dhandapani',
+    name: 'Dr. Muthu Dhandapani',
+    title: 'Vice President — Quality & Regulatory Compliance',
+    organization: 'Tricog Health',
+    tagline: 'Bridging innovation, regulation & commercialization across medical devices & AI-powered digital health.',
+    biography:
+      'Dr. Dhandapani is a strategic and execution-driven leader with 22 years of regulatory experience across India, USA, and EU — building and scaling medical device, diagnostics, and digital health functions. He has proven success in leading product development, R&D and manufacturing facility setup, regulatory affairs, quality systems, multicentric clinical studies, AI/ML-based SaMD (Software as a Medical Device), and cloud-connected medical platforms.\nHe brings strong command over global regulations including CDSCO, FDA, ISO 13485, IEC 62304, MDSAP, EU IVDR, and MDR, with deep leadership experience in new product development, clinical validation, software lifecycle management, and international market access.\nBeyond his industry role, Dr. Dhandapani serves as a mentor on the board of 12 bio-incubators and TBIs including BBC, C-CAMP, ISB, MS Ramaiah, JSS Mysuru, STPI, IIT Guwahati, Yenepoya, and GINSERV.',
+    photoUrl: muthuPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 12,
+    expertise: ['Medical Device Regulation (CDSCO · FDA · EU MDR)', 'AI/ML SaMD & Digital Health', 'Quality Systems (ISO 13485 · MDSAP)', 'Clinical Validation & Studies', 'R&D & Manufacturing Setup', 'Startup Mentorship & Incubation'],
+    highlights: [
+      { label: 'Current', value: 'VP, Quality & Regulatory Compliance — Tricog Health' },
+      { label: 'Experience', value: '22 years across India, USA & EU in medical devices, diagnostics & digital health' },
+      { label: 'Expertise', value: 'AI/ML SaMD · Cloud-connected medical platforms · International market access · MDSAP · EU IVDR' },
+      { label: 'Mentorship', value: 'Board mentor at 12 bio-incubators & TBIs — BBC, C-CAMP, ISB, IIT Guwahati, STPI & more' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-dr-saarthak-bakshi',
+    name: 'Dr. Saarthak Bakshi',
+    title: 'Founder & CEO',
+    organization: 'Risaa IVF and NEOS Angels',
+    tagline: 'Combining healthcare innovation with entrepreneurship to advance fertility care and support the next generation of healthcare startups.',
+    biography:
+      'Dr. Saarthak Bakshi is the Founder & CEO of RISAA IVF and NEOS Angels, where he combines healthcare innovation with entrepreneurship to advance fertility care and support the next generation of healthcare startups. A serial entrepreneur, investor, and startup mentor, he has guided more than 35 startups while building ventures focused on healthcare, education, and social impact.\nBeyond his entrepreneurial journey, Dr. Bakshi actively contributes to India\'s innovation ecosystem through leadership and advisory roles across healthcare, startup incubators, and industry organizations. His work is driven by a commitment to improving healthcare accessibility, promoting fertility awareness, and enabling innovation through collaboration, mentorship, and investment.',
+    photoUrl: saarthakPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: 'https://www.linkedin.com/in/saarthakbakshi/',
+    twitterUrl: 'https://x.com/saarthak_bakshi',
+    isFeatured: true,
+    displayOrder: 10,
+    expertise: ['Fertility & IVF', 'Healthcare Innovation', 'Startup Mentorship', 'Venture Investing', 'Social Impact', 'Healthcare Entrepreneurship'],
+    highlights: [
+      { label: 'Current', value: 'Founder & CEO — RISAA IVF and NEOS Angels' },
+      { label: 'Impact', value: 'Mentored & guided 35+ startups across healthcare, education & social impact' },
+      { label: 'Roles', value: 'Director, HealthPod Incubator · President, Voice of Healthcare · Founder, IIRFT' },
+      { label: 'Mission', value: 'Improving healthcare accessibility · Fertility awareness · Innovation through mentorship' },
+      { label: 'Leadership', value: 'AIMA YLC National Brand Communication Chair · CRM Academy of Asia Board of Directors' },
+      { label: 'Advisory', value: 'Strategic Advisor & Board Member — INY Foundation · Trustee, Foundation of Healthcare Wellness & Promotion' },
+      { label: 'Councils', value: 'Indo-German Young Leaders Forum · CII Young Indians Core Executive Committee · Startup Leadership Program Leader' },
+    ],
+    education: [],
+    awards: [
+      '50 Under 50 Healthcare Entrepreneur of the Year 2025',
+      'Best Healthcare Entrepreneur of the Year 2025',
+      '100 Most Impactful Healthcare Leaders 2024 — World Health & Congress Awards',
+      'AIMA Young Leaders Award 2024',
+      'Entrepreneur of the Year in Healthcare 2023 & 2024 — Entrepreneur Magazine',
+      'National Award in Healthcare — Delhi Management Association 2023',
+      'IVF Chain of the Year 2023–25',
+      'Best of the Best IVF India Award 2023–24',
+      'Best Infertility Clinic India 2023 — Times of India',
+      'CSC\'23 Fellow — The Duke of Edinburgh\'s Commonwealth Study Conference, Canada',
+      'FORBES 30 Under 30 Asia',
+      'BW Healthcare World 40 Under 40',
+      'Entrepreneur 35 Under 35',
+      'Multiple TEDx Speaker',
+    ],
   },
 ]
 
