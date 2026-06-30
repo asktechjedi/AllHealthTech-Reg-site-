@@ -11,6 +11,8 @@ import saarthakPhoto from '../assets/AHT-Speaker-PIC/dr-saarthak-bakshi.jpg'
 import anupPhoto from '../assets/AHT-Speaker-PIC/dr-anup-warrier.jpg'
 import muthuPhoto from '../assets/AHT-Speaker-PIC/dr-muthu-dhandapani.jpg'
 import smitaPhoto from '../assets/AHT-Speaker-PIC/smita-malipatil.jpg'
+import drAmitRajPhoto from '../assets/AHT-Speaker-PIC/dr-amit-raj.webp'
+import drAnandSivaramanPhoto from '../assets/AHT-Speaker-PIC/dr-anand-sivaraman.webp'
 
 const speakerRecords = [
   {
@@ -359,6 +361,64 @@ const speakerRecords = [
       { label: 'Mentorship', value: 'Board mentor at 12 bio-incubators & TBIs — BBC, C-CAMP, ISB, IIT Guwahati, STPI & more' },
     ],
     education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-dr-amit-raj',
+    name: 'Dr. Amit Raj',
+    title: 'Founder & CEO, Plexus AI | Cardiologist',
+    organization: 'Plexus AI / Plexus Medcare Hospital',
+    tagline: 'Building clinical AI infrastructure that makes AI safe, trusted and deployable at bedside.',
+    biography:
+      'Dr. Amit Raj is a cardiologist, hospital leader, and healthcare entrepreneur dedicated to bridging the gap between healthcare AI innovation and real-world clinical adoption.\nAs Founder & CEO of Plexus AI and Managing Director of Plexus Medcare Hospital, he is building infrastructure that connects clinical practice with AI innovation. Through Plexus AI\'s hospital-based platform, he enables AI startups, hospitals, and healthcare organizations to navigate three critical stages: Validation → Deployment → Market Access.\nThis framework ensures AI solutions are clinically validated, responsibly governed, and scaled through real-world evidence and physician-led implementation. His work focuses on making AI safe, practical, and scalable within everyday clinical workflows — not confined to laboratories or theoretical environments.\nHe believes the future of healthcare will be defined not only by smarter algorithms, but by the ability to responsibly integrate AI into patient care. His vision is to position India as a global leader in trusted clinical AI validation, deployment, and innovation, improving healthcare outcomes through safe and evidence-driven adoption.',
+    photoUrl: drAmitRajPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: 'https://www.linkedin.com/in/doctoramitraj',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 14,
+    expertise: ['Clinical AI Validation', 'Real-World Evidence', 'Hospital AI Deployment', 'Responsible AI Governance', 'Cardiovascular AI', 'Digital Health Strategy'],
+    highlights: [
+      { label: 'Current', value: 'Founder & CEO, Plexus AI' },
+      { label: 'Also', value: 'Managing Director, Plexus Medcare Hospital' },
+      { label: 'Framework', value: 'Clinical AI Validation → Deployment → Market Access' },
+      { label: 'Mission', value: 'Positioning India as a global leader in trusted clinical AI' },
+    ],
+    education: [
+      { degree: 'Executive Education', institution: 'Harvard Business School', year: '', achievement: '' },
+      { degree: 'Executive Education', institution: 'IIM Ahmedabad', year: '', achievement: '' },
+      { degree: 'Executive Education', institution: 'ISB', year: '', achievement: '' },
+    ],
+    awards: [
+      'ESC | ACC | EAPCI | EBAC Member',
+    ],
+  },
+  {
+    id: 'speaker-dr-anand-sivaraman',
+    name: 'Dr. Anand Sivaraman',
+    title: 'Founder & CEO',
+    organization: 'Remidio',
+    tagline: 'Reimagining healthcare access through AI-powered medical devices.',
+    biography:
+      'Dr. Anand Sivaraman is redefining the way healthcare innovation reaches those who need it most, through Remidio — an India-headquartered, AI-enabled medical devices company that has pioneered innovations delivering specialist care to primary care, public health centers, and patient homes, starting with Ophthalmic Care.\nA scientist, entrepreneur, and problem-solver, he earned his Master\'s, PhD and Postdoctoral degrees at MIT, followed by 20 years of experience building novel products out of India in in-vitro diagnostics and optical imaging.\nAnand believes that, in order to create disruptive healthcare access, product innovations need to be combined with both delivery and business model innovations. Traditional medical devices often remain too expensive, complex, and designed for specialists — not keeping the healthcare worker at the last mile in mind. Remidio\'s innovations challenge this model, bringing world-class diagnostics to the last mile with simplicity, efficiency, and affordability.\nHis approach is rooted in a vision for equitable healthcare, where groundbreaking technology is not just developed for the privileged few but designed to work in the real-world conditions of both developing and developed nations. His greatest strength is his ability to turn constraints into catalysts for innovation — seeing challenges like limited infrastructure, affordability gaps, or workforce shortages as opportunities to design smarter, more scalable healthcare solutions.',
+    photoUrl: drAnandSivaramanPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 15,
+    expertise: ['AI-Powered Medical Devices', 'Ophthalmic Diagnostics', 'Last-Mile Healthcare', 'Medical Innovation', 'Equitable Healthcare Access', 'Optical Imaging'],
+    highlights: [
+      { label: 'Current', value: 'CEO & Founder, Remidio' },
+      { label: 'Focus', value: 'AI-enabled devices bringing specialist care to primary care & patient homes' },
+      { label: 'Background', value: '20+ years building novel diagnostics & optical imaging products from India' },
+      { label: 'Vision', value: 'Equitable healthcare — world-class diagnostics at the last mile' },
+    ],
+    education: [
+      { degree: 'Postdoctoral Research', institution: 'MIT', year: '', achievement: '' },
+      { degree: 'PhD', institution: 'MIT', year: '', achievement: '' },
+      { degree: "Master's", institution: 'MIT', year: '', achievement: '' },
+    ],
     awards: [],
   },
   {
