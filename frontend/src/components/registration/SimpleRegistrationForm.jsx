@@ -451,7 +451,7 @@ export default function SimpleRegistrationForm() {
                 required
                 value={fields.attendeeName}
                 onChange={handleChange}
-                placeholder="Jane Doe"
+                placeholder="Enter your full name"
                 error={errors.attendeeName}
                 aria-required="true"
               />
@@ -466,7 +466,7 @@ export default function SimpleRegistrationForm() {
               value={fields.attendeeEmail}
               onChange={handleChange}
               onBlur={handleEmailBlur}
-              placeholder="jane@example.com"
+              placeholder="Enter your email address"
               error={errors.attendeeEmail}
               aria-required="true"
             />
@@ -480,7 +480,7 @@ export default function SimpleRegistrationForm() {
               value={fields.attendeePhone}
               onChange={handleChange}
               onBlur={handlePhoneBlur}
-              placeholder="+91 98765 43210"
+              placeholder="Enter your phone number"
               error={errors.attendeePhone}
               aria-required="true"
             />
@@ -500,7 +500,7 @@ export default function SimpleRegistrationForm() {
               label="Organization"
               value={fields.organization}
               onChange={handleChange}
-              placeholder="Acme Corp"
+              placeholder="Enter your organization name"
               error={errors.organization}
               aria-required="false"
             />
@@ -511,7 +511,7 @@ export default function SimpleRegistrationForm() {
               label="Role / Job Title"
               value={fields.role}
               onChange={handleChange}
-              placeholder="Product Manager"
+              placeholder="Enter your role or job title"
               error={errors.role}
               aria-required="false"
             />
