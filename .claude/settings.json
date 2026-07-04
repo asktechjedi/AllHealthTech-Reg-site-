@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"from PIL import Image; print\\('ok'\\)\")",
+      "Bash(node -e \"require\\('sharp'\\); console.log\\('sharp ok'\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(npx eslint *)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(cp /tmp/karamveer-preview.webp \"/Users/sreekanth/AHT/AllHealthTech-Reg-site-/frontend/src/assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp\" *)"
+    ],
+    "additionalDirectories": [
+      "/private/tmp"
+    ]
+  }
+}

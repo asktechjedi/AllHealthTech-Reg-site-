@@ -13,6 +13,9 @@ import muthuPhoto from '../assets/AHT-Speaker-PIC/dr-muthu-dhandapani.jpg'
 import smitaPhoto from '../assets/AHT-Speaker-PIC/smita-malipatil.jpg'
 import drAmitRajPhoto from '../assets/AHT-Speaker-PIC/dr-amit-raj.webp'
 import drAnandSivaramanPhoto from '../assets/AHT-Speaker-PIC/dr-anand-sivaraman.webp'
+import drKaramveerPhoto from '../assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp'
+import vivekRajagopalPhoto from '../assets/AHT-Speaker-PIC/vivek-rajagopal.webp'
+import vsVenkateshPhoto from '../assets/AHT-Speaker-PIC/vs-venkatesh.webp'
 
 const speakerRecords = [
   {
@@ -461,6 +464,93 @@ const speakerRecords = [
       'BW Healthcare World 40 Under 40',
       'Entrepreneur 35 Under 35',
       'Multiple TEDx Speaker',
+    ],
+  },
+  {
+    id: 'speaker-dr-karamveer-chhabra',
+    name: 'Dr. Karamveer S. Chhabra',
+    title: 'Executive Director',
+    organization: 'Alive Wellness Clinics',
+    tagline: 'Driving innovation in aesthetic medicine, wellness & patient-centric care',
+    biography:
+      'Dr. Karamveer S. Chhabra is an Indian aesthetic physician, entrepreneur, and healthcare leader who has emerged as one of the prominent young voices in aesthetic medicine and wellness in India. He currently serves as Executive Director of Alive Wellness Clinics, one of India\'s leading chains in clinical dermatology and aesthetic medicine, with a growing network of clinics across the country.\nWith a unique combination of medical understanding, business strategy, and global exposure, Dr. Chhabra has played a key role in expanding the organization\'s footprint, strengthening its digital ecosystem, and positioning the group among India\'s fast-growing dermatology and aesthetic healthcare brands. Since being appointed Executive Director in 2023, he has contributed significantly to operational expansion, patient experience optimization, and the integration of advanced aesthetic technologies and treatment verticals.\nA graduate of M. S. Ramaiah Medical College, Dr. Chhabra combines evidence-based medicine with a modern understanding of aesthetics, wellness, regenerative medicine, and patient-centric care. His work spans injectables, body contouring, regenerative aesthetics, practice development, and the growing intersection of medicine, technology, and consumer healthcare.\nHe is also the Founder of Alive Institute of Aesthetics, a leading training platform focused on aesthetic medicine education, which has trained 200+ doctors and 400+ support staff in about three years, with collaborative programs alongside globally recognized brands including APTOS and Merz Aesthetics. Dr. Chhabra has been recognized by The Times of India for his contributions to aesthetic medicine, healthcare entrepreneurship, and clinical management.',
+    photoUrl: drKaramveerPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 16,
+    expertise: ['Aesthetic Medicine', 'Regenerative Aesthetics', 'Healthcare Entrepreneurship', 'Practice Development', 'Wellness & Patient Care'],
+    highlights: [
+      { label: 'Current', value: 'Executive Director, Alive Wellness Clinics' },
+      { label: 'Founder', value: 'Alive Institute of Aesthetics' },
+      { label: 'Committee', value: 'Core Committee Member, Association of Aesthetic Doctors of India (AADi)' },
+      { label: 'Training Impact', value: '200+ doctors & 400+ support staff trained in ~3 years' },
+      { label: 'Recognition', value: 'Recognized by The Times of India for aesthetic medicine & healthcare leadership' },
+      { label: 'International', value: 'Faculty speaker — IMCAS World Congress, AMWC, MAIS Summit (Spain)' },
+    ],
+    education: [
+      { degree: 'MBBS', institution: 'M. S. Ramaiah Medical College', year: '', achievement: '' },
+    ],
+    awards: [
+      'Recognized by The Times of India for achievements in aesthetic medicine & healthcare entrepreneurship',
+    ],
+  },
+  {
+    id: 'speaker-vivek-rajagopal',
+    name: 'Vivek Rajagopal',
+    title: 'Group Chief Analytics & AI Officer',
+    organization: 'Narayana Health',
+    tagline: 'Leading AI-driven clinical & operational transformation that delivers better care and outcomes',
+    biography:
+      'Vivek Rajagopal is the Group Chief Analytics & AI Officer at Narayana Health, one of India\'s largest hospital chains. Over the past 15 years, he has not only led but also founded the organisation\'s Analytics & AI division — Medha AI, building it into a central driver of transformation, advancing clinical care, optimising operations, enhancing patient engagement, and strengthening financial outcomes. He combines this deep industry experience with a PGDM from the prestigious Indian Institute of Management Bangalore (IIMB).',
+    photoUrl: vivekRajagopalPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 17,
+    expertise: ['Healthcare Analytics', 'Artificial Intelligence', 'Clinical Transformation', 'Operations Optimization', 'Patient Engagement'],
+    highlights: [
+      { label: 'Current', value: 'Group Chief Analytics & AI Officer, Narayana Health' },
+      { label: 'Founder', value: 'Medha AI — Narayana Health\'s Analytics & AI division' },
+      { label: 'Experience', value: '15+ years leading AI-driven clinical & operational transformation' },
+      { label: 'Focus', value: 'Clinical care · Operations · Patient engagement · Financial outcomes' },
+    ],
+    education: [
+      { degree: 'PGDM', institution: 'Indian Institute of Management, Bangalore (IIMB)', year: '', achievement: '' },
+    ],
+    awards: [],
+  },
+  {
+    id: 'speaker-vs-venkatesh',
+    name: 'V.S. Venkatesh',
+    title: 'Managing Director',
+    organization: 'Zentor Medtech Pvt Ltd',
+    tagline: 'Transforming healthcare businesses through strategy, leadership & innovation',
+    biography:
+      'Venkatesh is a seasoned business consultant and startup mentor with over three decades of experience in the global healthcare sector. His expertise spans 360 degrees across pharmaceuticals, hospitals, diagnostics, and health tech & medtech, with a proven track record of steering organizations toward sustainable growth and excellence.\nAs a strategic leader, he has held C-level positions with renowned brands, including Apollo Hospitals, SRL Ranbaxy, Zydus Cadila, Bourn Hall (UK), and JDC (UAE).\nTrained at leading institutions like IIM-Ahmedabad, Harvard Business School, and Wharton, Venkatesh provides advisory services and mentorship to first-generation entrepreneurs and established businesses seeking professionalization or strategic turnarounds. He was also instrumental in taking GST successfully into the IPO. His unique approach combines critical business tactics with a deep understanding of organizational culture, focusing on the creative and expressive dimensions of leadership.\nA keynote speaker, Venkatesh has addressed audiences in over 15 countries on topics ranging from healthcare technology and management change to medical tourism. He has received numerous awards for his leadership and public speaking, including "CEO of the Year" (Dubai, 2017) and "Best International Speaker" (India, 2016).',
+    photoUrl: vsVenkateshPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 18,
+    expertise: ['Healthcare Strategy', 'Business Consulting', 'Startup Mentorship', 'Pharma & Medtech', 'Organizational Leadership'],
+    highlights: [
+      { label: 'Current', value: 'Managing Director, Zentor Medtech Pvt Ltd' },
+      { label: 'Previously', value: 'C-level roles — Apollo Hospitals · SRL Ranbaxy · Zydus Cadila · Bourn Hall (UK) · JDC (UAE)' },
+      { label: 'Experience', value: '30+ years across pharmaceuticals, hospitals, diagnostics & medtech' },
+      { label: 'Speaking', value: 'Keynote speaker in 15+ countries on healthcare tech, management change & medical tourism' },
+    ],
+    education: [
+      { degree: 'Executive Education', institution: 'IIM Ahmedabad', year: '', achievement: '' },
+      { degree: 'Executive Education', institution: 'Harvard Business School', year: '', achievement: '' },
+      { degree: 'Executive Education', institution: 'Wharton School', year: '', achievement: '' },
+    ],
+    awards: [
+      'CEO of the Year — Dubai, 2017',
+      'Best International Speaker — India, 2016',
     ],
   },
 ]

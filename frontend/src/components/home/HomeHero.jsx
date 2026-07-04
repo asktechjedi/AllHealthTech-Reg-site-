@@ -96,7 +96,7 @@ export default function HomeHero() {
       </div>
 
       {/* Scroll cue */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9, duration: 0.5 }}
@@ -107,7 +107,7 @@ export default function HomeHero() {
           Scroll
         </span>
         <span className="block h-8 w-px animate-pulse bg-[linear-gradient(to_bottom,rgba(250,243,255,0.5),transparent)]" />
-      </motion.div>
+      </motion.div> */}
     </section>
   )
 }
