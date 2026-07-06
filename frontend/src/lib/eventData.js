@@ -16,6 +16,8 @@ import drAnandSivaramanPhoto from '../assets/AHT-Speaker-PIC/dr-anand-sivaraman.
 import drKaramveerPhoto from '../assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp'
 import vivekRajagopalPhoto from '../assets/AHT-Speaker-PIC/vivek-rajagopal.webp'
 import vsVenkateshPhoto from '../assets/AHT-Speaker-PIC/vs-venkatesh.webp'
+import kaminiShivalkarPhoto from '../assets/AHT-Speaker-PIC/kamini-shivalkar.webp'
+import raghuvamshiThakurPhoto from '../assets/AHT-Speaker-PIC/raghuvamshi-thakur.webp'
 
 const speakerRecords = [
   {
@@ -552,6 +554,57 @@ const speakerRecords = [
       'CEO of the Year — Dubai, 2017',
       'Best International Speaker — India, 2016',
     ],
+  },
+  {
+    id: 'speaker-kamini-shivalkar',
+    name: 'Kamini Shivalkar',
+    title: 'AVP - Investments',
+    organization: 'Gemba Capital',
+    tagline: 'Backing the next generation of health & consumer startups',
+    biography:
+      "Kamini Shivalkar currently works as an AVP in the investment team at Gemba Capital, an early-stage VC fund focused on Fintech and Consumer tech. She has 8 years of experience in early-stage investing and currently writes 'The Burn Rate', a weekly intelligence debrief on India's health and wellness boom for founders, investors, and operators.\nPrior to her role as an investor, she served as a Business Analyst at Indus Valley Partners and was an early team member at Byju's. She holds a Master's from JBIMS and a B.Tech from VNIT. Outside of work, she has completed high-altitude Himalayan treks and runs marathons and trail runs across India.",
+    photoUrl: kaminiShivalkarPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 19,
+    expertise: ['Venture Capital', 'Fintech', 'Consumer Tech', 'Early Stage Investing', 'Health & Wellness'],
+    highlights: [
+      { label: 'Current', value: 'AVP - Investments, Gemba Capital' },
+      { label: 'Writes', value: "'The Burn Rate' — weekly intelligence debrief on India's health & wellness boom" },
+      { label: 'Previously', value: "Business Analyst, Indus Valley Partners · Early team member, Byju's" },
+      { label: 'Experience', value: '8 years in early-stage investing' },
+    ],
+    education: [
+      { degree: "Master's", institution: 'JBIMS', year: '', achievement: '' },
+      { degree: 'B.Tech', institution: 'VNIT', year: '', achievement: '' },
+    ],
+    awards: [],
+  },
+  {
+    id: 'speaker-raghuvamshi-thakur',
+    name: 'Raghuvamshi Thakur',
+    title: 'Co-founder',
+    organization: 'Prodoc AI',
+    tagline: 'Transforming patient care through conversational and agentic AI',
+    biography:
+      'Raghuvamshi Thakur is the Co-founder of Prodoc AI, a healthcare AI company transforming patient engagement through conversational and agentic AI. He leads product strategy and innovation, helping hospitals automate patient journeys across preventive care, surgery, recovery, and chronic disease management.\nHis work focuses on combining large language models, specialized healthcare AI, and workflow automation to improve patient outcomes while reducing operational complexity. Under his leadership, Prodoc AI has partnered with over 100 healthcare providers and impacted more than one million patients. Raghuvamshi is passionate about building practical AI products that make healthcare more accessible, personalized, and measurable.',
+    photoUrl: raghuvamshiThakurPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: 'https://www.linkedin.com/in/raghuvamshithakur/',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 20,
+    expertise: ['Conversational AI', 'Agentic AI', 'Healthcare AI', 'Patient Engagement', 'Workflow Automation'],
+    highlights: [
+      { label: 'Current', value: 'Co-founder, Prodoc AI' },
+      { label: 'Focus', value: 'Automating patient journeys — preventive care, surgery, recovery & chronic disease management' },
+      { label: 'Impact', value: '100+ healthcare providers partnered · 1M+ patients impacted' },
+      { label: 'Approach', value: 'LLMs + specialized healthcare AI + workflow automation' },
+    ],
+    education: [],
+    awards: [],
   },
 ]
 
