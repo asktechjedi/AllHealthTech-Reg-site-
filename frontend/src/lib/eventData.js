@@ -18,6 +18,7 @@ import vivekRajagopalPhoto from '../assets/AHT-Speaker-PIC/vivek-rajagopal.webp'
 import vsVenkateshPhoto from '../assets/AHT-Speaker-PIC/vs-venkatesh.webp'
 import kaminiShivalkarPhoto from '../assets/AHT-Speaker-PIC/kamini-shivalkar.webp'
 import raghuvamshiThakurPhoto from '../assets/AHT-Speaker-PIC/raghuvamshi-thakur.webp'
+import ashimaSetiaPhoto from '../assets/AHT-Speaker-PIC/ashima-setia.webp'
 
 const speakerRecords = [
   {
@@ -602,6 +603,30 @@ const speakerRecords = [
       { label: 'Focus', value: 'Automating patient journeys — preventive care, surgery, recovery & chronic disease management' },
       { label: 'Impact', value: '100+ healthcare providers partnered · 1M+ patients impacted' },
       { label: 'Approach', value: 'LLMs + specialized healthcare AI + workflow automation' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-ashima-setia',
+    name: 'Ashima Setia',
+    title: 'Principal',
+    organization: 'Sorin Investments',
+    tagline: 'Backing category-defining health tech and med tech ventures',
+    biography:
+      'Ashima Setia brings a cross-functional background spanning consulting, operations, and investing. At McKinsey, she worked with life sciences clients including global CROs. She later led the insurance vertical at MediBuddy, driving the business to profitability.\nShe is currently a Principal at Sorin Investments, where her portfolio includes Nivaan Care. Her focus areas span insurance-linked health models and scalable care delivery platforms, with a broader mandate backing category-defining health tech and med tech ventures across insurance, care delivery, and life sciences innovation.',
+    photoUrl: ashimaSetiaPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 21,
+    expertise: ['Health Tech Investing', 'Insurance', 'Care Delivery', 'Life Sciences', 'Venture Investing'],
+    highlights: [
+      { label: 'Current', value: 'Principal, Sorin Investments' },
+      { label: 'Portfolio', value: 'Nivaan Care' },
+      { label: 'Previously', value: 'Led insurance vertical at MediBuddy, driving it to profitability · McKinsey (life sciences, global CROs)' },
+      { label: 'Focus', value: 'Insurance-linked health models & scalable care delivery platforms' },
     ],
     education: [],
     awards: [],
