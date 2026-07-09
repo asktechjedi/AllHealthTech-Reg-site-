@@ -19,6 +19,7 @@ import vsVenkateshPhoto from '../assets/AHT-Speaker-PIC/vs-venkatesh.webp'
 import kaminiShivalkarPhoto from '../assets/AHT-Speaker-PIC/kamini-shivalkar.webp'
 import raghuvamshiThakurPhoto from '../assets/AHT-Speaker-PIC/raghuvamshi-thakur.webp'
 import ashimaSetiaPhoto from '../assets/AHT-Speaker-PIC/ashima-setia.webp'
+import khanjanKotechaPhoto from '../assets/AHT-Speaker-PIC/khanjan-kotecha.webp'
 
 const speakerRecords = [
   {
@@ -627,6 +628,29 @@ const speakerRecords = [
       { label: 'Portfolio', value: 'Nivaan Care' },
       { label: 'Previously', value: 'Led insurance vertical at MediBuddy, driving it to profitability · McKinsey (life sciences, global CROs)' },
       { label: 'Focus', value: 'Insurance-linked health models & scalable care delivery platforms' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-khanjan-kotecha',
+    name: 'Khanjan Kotecha',
+    title: 'VP of Products',
+    organization: 'Certinal',
+    tagline: 'Building trusted AI & compliance infrastructure for healthcare',
+    biography:
+      "Khanjan is a technologist who builds products for regulated industries. As VP of Products at Certinal, a data privacy, consent, and compliance platform, he leads product for healthcare and life sciences. He builds AI-driven workflows that solve two hard problems at once: making eSignatures hold up as legally valid clinical consent and keeping pace with India's Digital Personal Data Protection (DPDP) Act.\nOver 12+ years, he has built products across trust and verification infrastructure, growth-stage SaaS, and two-sided marketplaces. His focus has consistently been the same: making technology that regulated, high-stakes organizations can actually trust and adopt.",
+    photoUrl: khanjanKotechaPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 22,
+    expertise: ['Product Management', 'AI Compliance', 'eSignatures', 'Data Privacy', 'Healthcare & Life Sciences'],
+    highlights: [
+      { label: 'Current', value: 'VP of Products, Certinal' },
+      { label: 'Focus', value: 'AI-driven workflows for legally valid clinical consent & DPDP Act compliance' },
+      { label: 'Experience', value: '12+ years across trust & verification infrastructure, growth-stage SaaS & two-sided marketplaces' },
     ],
     education: [],
     awards: [],
