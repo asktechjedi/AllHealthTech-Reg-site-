@@ -7,7 +7,10 @@
       "Bash(npx eslint *)",
       "Read(//tmp/**)",
       "Read(//private/tmp/**)",
-      "Bash(cp /tmp/karamveer-preview.webp \"/Users/sreekanth/AHT/AllHealthTech-Reg-site-/frontend/src/assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp\" *)"
+      "Bash(cp /tmp/karamveer-preview.webp \"/Users/sreekanth/AHT/AllHealthTech-Reg-site-/frontend/src/assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp\" *)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"frontend/src/assets/AHT-Speaker-PIC/kamini-shivalkar.webp\")",
+      "Bash(export DATABASE_URL='postgresql://postgres:xutlbNqrhrWrLssMbNYFtmXakdWHwOxP@ballast.proxy.rlwy.net:54027/railway')",
+      "Bash(npx prisma *)"
     ],
     "additionalDirectories": [
       "/private/tmp"
