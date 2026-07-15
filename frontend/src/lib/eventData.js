@@ -1066,7 +1066,7 @@ function attachSpeakersToAgenda(agendaItems, speakerMap) {
     speakers: (item.speakers || []).map((s) => {
       if (!s.speakerId) return s
       const record = speakerMap.get(s.speakerId)
-      return record ? { ...s, photoUrl: record.photoUrl, title: record.title } : s
+      return record ? { ...s, name: record.name, photoUrl: record.photoUrl, title: record.title } : s
     }),
   }))
 }
