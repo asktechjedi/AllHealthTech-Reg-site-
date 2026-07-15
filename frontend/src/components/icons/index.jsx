@@ -236,3 +236,78 @@ export function ChevronDownIcon({ className = 'w-5 h-5' }) {
     </svg>
   )
 }
+
+export function MicIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="2" width="6" height="12" rx="3" />
+      <path d="M5 11a7 7 0 0014 0" />
+      <path d="M12 18v4M9 22h6" />
+    </svg>
+  )
+}
+
+export function UsersGroupIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="8" r="3.25" />
+      <path d="M2.75 19c0-3.4 2.8-5.75 6.25-5.75s6.25 2.35 6.25 5.75" />
+      <path d="M16 8.25a2.75 2.75 0 110 5.3" />
+      <path d="M18.5 13.6c2 .55 3 2.1 3 5.4" />
+    </svg>
+  )
+}
+
+export function ChatBubbleIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 5.5A2.5 2.5 0 016.5 3h9A2.5 2.5 0 0118 5.5v6a2.5 2.5 0 01-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 014 11.5v-6z" />
+      <path d="M20 8.5a2.5 2.5 0 012 2.5v3a2.5 2.5 0 01-2 2.45" />
+    </svg>
+  )
+}
+
+export function BoltIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12.5 2.5L5 14h5.5L10.5 21.5 19 10h-5.5L12.5 2.5z" />
+    </svg>
+  )
+}
+
+export function GlassIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 3h12l-1.4 10.2a4.6 4.6 0 01-9.2 0L6 3z" />
+      <path d="M9 3.5l6 5M12 13.5V20M8.5 20h7" />
+    </svg>
+  )
+}
+
+export function SparkleIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" />
+      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" />
+    </svg>
+  )
+}
+
+export function PersonAvatarIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="12" cy="8.2" r="3.7" />
+      <path d="M4 20.2c0-4.3 3.58-7.3 8-7.3s8 3 8 7.3a.9.9 0 01-.9.9H4.9a.9.9 0 01-.9-.9z" />
+    </svg>
+  )
+}
+
+export function CoffeeCupIcon({ className = 'w-5 h-5' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 8h13v5a5 5 0 01-5 5H9a5 5 0 01-5-5V8z" />
+      <path d="M17 9.5h1.5a2.5 2.5 0 010 5H17" />
+      <path d="M7 4.5c0 .8-1 1-1 2M11 4.5c0 .8-1 1-1 2" />
+    </svg>
+  )
+}

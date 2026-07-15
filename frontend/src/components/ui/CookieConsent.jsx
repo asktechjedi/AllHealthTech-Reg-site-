@@ -32,7 +32,7 @@ export default function CookieConsent() {
     >
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-[var(--text-secondary)]">
-          We use cookies to understand how visitors use this site (Google Analytics). No personal data is
+          We use cookies to understand how visitors use this site. No personal data is
           collected without your consent.{' '}
           <a
             href="/privacy-policy"

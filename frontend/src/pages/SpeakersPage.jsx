@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
-import { XIcon, LinkedInIcon, TwitterIcon } from '../components/icons'
+import { XIcon, LinkedInIcon, TwitterIcon, PersonAvatarIcon } from '../components/icons'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { getEventData } from '../lib/eventData'
 
@@ -157,9 +158,7 @@ function SpeakerModal({ speaker, onClose }) {
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-blue-deep)]">
-                <span className="font-[var(--font-display)] text-5xl text-white opacity-30">
-                  {speaker.name?.charAt(0)}
-                </span>
+                <PersonAvatarIcon className="h-16 w-16 text-white opacity-30" />
               </div>
             )}
             {/* Right-edge fade so photo blends into the dark panel */}
@@ -373,9 +372,7 @@ function SpeakerCard({ speaker, onClick, index }) {
         />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-frost)] to-[var(--color-mist)] flex items-center justify-center">
-          <span className="font-[var(--font-display)] text-6xl text-[var(--color-bridge)] opacity-30">
-            {speaker.name?.charAt(0)}
-          </span>
+          <PersonAvatarIcon className="h-20 w-20 text-[var(--color-bridge)] opacity-40" />
         </div>
       )}
 
@@ -430,6 +427,23 @@ function SpeakerCard({ speaker, onClick, index }) {
 export default function SpeakersPage() {
   const [selected, setSelected] = useState(null)
   const speakers = useMemo(() => getEventData().speakers, [])
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    const id = searchParams.get('speaker')
+    if (!id) return
+    const match = speakers.find((s) => s.id === id)
+    if (match) setSelected(match)
+  }, [searchParams, speakers])
+
+  const closeModal = () => {
+    setSelected(null)
+    if (searchParams.has('speaker')) {
+      const next = new URLSearchParams(searchParams)
+      next.delete('speaker')
+      setSearchParams(next, { replace: true })
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[var(--color-ice)]">
@@ -454,7 +468,7 @@ export default function SpeakersPage() {
         )}
       </div>
 
-      <SpeakerModal speaker={selected} onClose={() => setSelected(null)} />
+      <SpeakerModal speaker={selected} onClose={closeModal} />
     </div>
   )
 }

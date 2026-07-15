@@ -1,10 +1,26 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion, useReducedMotion } from 'framer-motion'
 import CTABand from '../components/ui/CTABand'
 import Badge from '../components/ui/Badge'
 import GridOverlay from '../components/ui/GridOverlay'
-import { ClockIcon, ChevronDownIcon } from '../components/icons'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import {
+  ClockIcon,
+  ChevronDownIcon,
+  MicIcon,
+  UsersGroupIcon,
+  ChatBubbleIcon,
+  BoltIcon,
+  GlassIcon,
+  SparkleIcon,
+  CoffeeCupIcon,
+  NetworkIcon,
+  TicketIcon,
+  PersonAvatarIcon,
+} from '../components/icons'
 import { getEventData } from '../lib/eventData'
+
+const EASE_OUT = [0.16, 1, 0.3, 1]
 
 function fmt(d) {
   return new Date(d).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -15,16 +31,52 @@ function fmtDate(d) {
 }
 
 const SESSION_STYLES = {
-  keynote:     { accent: '#000E7A', dot: 'bg-[var(--color-navy)]',       ring: 'ring-[rgba(0,14,122,0.18)]',    cardBg: 'bg-gradient-to-br from-[rgba(0,14,122,0.035)] via-white to-white' },
-  panel:       { accent: '#0023FD', dot: 'bg-[var(--color-blue-core)]',  ring: 'ring-[rgba(0,35,253,0.18)]',   cardBg: 'bg-white' },
-  fireside:    { accent: '#6B7FE8', dot: 'bg-[var(--color-bridge)]',     ring: 'ring-[rgba(107,127,232,0.22)]', cardBg: 'bg-white' },
-  interactive: { accent: '#EB42FA', dot: 'bg-[var(--color-magenta)]',    ring: 'ring-[rgba(235,66,250,0.2)]',  cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white' },
-  gala:        { accent: '#EB42FA', dot: 'bg-[var(--color-magenta)]',    ring: 'ring-[rgba(235,66,250,0.2)]',  cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white' },
-  sponsor:     { accent: '#7B61FF', dot: 'bg-[#7B61FF]',                 ring: 'ring-[rgba(123,97,255,0.2)]',   cardBg: 'bg-gradient-to-br from-[rgba(123,97,255,0.04)] via-white to-white' },
-  break:       { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
-  networking:  { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
-  emcee:       { accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
-  registration:{ accent: null,      dot: 'bg-[var(--color-mist)]',       ring: '',                              cardBg: '' },
+  keynote: {
+    accent: '#000E7A',
+    glow: 'rgba(0,14,122,0.28)',
+    bar: 'linear-gradient(90deg, #000E7A 0%, rgba(0,14,122,0) 100%)',
+    cardBg: 'bg-gradient-to-br from-[rgba(0,14,122,0.035)] via-white to-white',
+    icon: MicIcon,
+  },
+  panel: {
+    accent: '#0023FD',
+    glow: 'rgba(0,35,253,0.26)',
+    bar: 'linear-gradient(90deg, #0023FD 0%, rgba(0,35,253,0) 100%)',
+    cardBg: 'bg-white',
+    icon: UsersGroupIcon,
+  },
+  fireside: {
+    accent: '#6B7FE8',
+    glow: 'rgba(107,127,232,0.32)',
+    bar: 'linear-gradient(90deg, #6B7FE8 0%, rgba(107,127,232,0) 100%)',
+    cardBg: 'bg-white',
+    icon: ChatBubbleIcon,
+  },
+  interactive: {
+    accent: '#EB42FA',
+    glow: 'rgba(235,66,250,0.28)',
+    bar: 'linear-gradient(90deg, #EB42FA 0%, rgba(235,66,250,0) 100%)',
+    cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white',
+    icon: BoltIcon,
+  },
+  gala: {
+    accent: '#EB42FA',
+    glow: 'rgba(235,66,250,0.28)',
+    bar: 'linear-gradient(90deg, #EB42FA 0%, rgba(235,66,250,0) 100%)',
+    cardBg: 'bg-gradient-to-br from-[rgba(235,66,250,0.03)] via-white to-white',
+    icon: GlassIcon,
+  },
+  sponsor: {
+    accent: '#7B61FF',
+    glow: 'rgba(123,97,255,0.28)',
+    bar: 'linear-gradient(90deg, #7B61FF 0%, rgba(123,97,255,0) 100%)',
+    cardBg: 'bg-gradient-to-br from-[rgba(123,97,255,0.04)] via-white to-white',
+    icon: SparkleIcon,
+  },
+  break:        { accent: '#6B7FE8', icon: CoffeeCupIcon },
+  networking:   { accent: '#6B7FE8', icon: NetworkIcon },
+  emcee:        { accent: '#6B7FE8', icon: MicIcon },
+  registration: { accent: '#6B7FE8', icon: TicketIcon },
 }
 
 const TRACK_BADGE = { Keynote: 'navy', Panel: 'accent', Fireside: 'info', Interactive: 'warning' }
@@ -38,51 +90,159 @@ const LEGEND = [
 
 const COMPACT_TYPES = new Set(['break', 'networking', 'emcee', 'registration'])
 
+/* A speaker in an agenda entry may carry `speakerId` (from the raw agenda
+   record) or `id` (when it's the resolved full speaker record) — normalize. */
+function speakerHref(speaker) {
+  const id = speaker?.speakerId ?? speaker?.id
+  return id ? `/speakers?speaker=${id}` : null
+}
+
 function SpeakerChip({ speaker }) {
-  return (
-    <div className="flex items-center gap-2">
+  const href = speakerHref(speaker)
+
+  const content = (
+    <>
       {speaker.photoUrl ? (
         <img
           src={speaker.photoUrl}
           alt={speaker.name}
-          className="h-7 w-7 flex-shrink-0 rounded-full object-cover ring-2 ring-white shadow-sm"
+          className="h-7 w-7 flex-shrink-0 rounded-full object-cover object-top ring-2 ring-white shadow-sm"
         />
       ) : (
-        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-frost)] text-xs font-semibold text-[var(--color-navy)]">
-          {speaker.name?.charAt(0)}
+        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-mist)]">
+          <PersonAvatarIcon className="h-4 w-4 text-[var(--color-navy)] opacity-50" />
         </div>
       )}
       <div className="min-w-0">
-        <div className="text-xs font-medium leading-tight text-[var(--text-primary)]">{speaker.name}</div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-medium leading-tight text-[var(--text-primary)]">{speaker.name}</span>
+          {speaker.role && (
+            <span className="rounded-[var(--radius-pill)] bg-[var(--color-magenta-tint)] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[var(--color-violet)]">
+              {speaker.role}
+            </span>
+          )}
+        </div>
         {speaker.organization && (
           <div className="text-[10px] leading-tight text-[var(--text-muted)]">{speaker.organization}</div>
         )}
       </div>
+    </>
+  )
+
+  const className =
+    'flex items-center gap-2 rounded-[var(--radius-pill)] bg-[rgba(237,232,255,0.55)] py-1 pl-1 pr-3 transition-colors duration-200' +
+    (href ? ' hover:bg-[rgba(237,232,255,0.95)]' : '')
+
+  if (!href) return <div className={className}>{content}</div>
+
+  return (
+    <Link
+      to={href}
+      onClick={(e) => e.stopPropagation()}
+      className={className}
+      aria-label={`View ${speaker.name}'s speaker profile`}
+    >
+      {content}
+    </Link>
+  )
+}
+
+function SpeakerAvatar({ speaker, size = 'h-7 w-7' }) {
+  return speaker.photoUrl ? (
+    <img
+      src={speaker.photoUrl}
+      alt=""
+      className={`${size} flex-shrink-0 rounded-full object-cover object-top ring-2 ring-[var(--color-warm-white)]`}
+    />
+  ) : (
+    <div
+      className={`flex ${size} flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-frost)] ring-2 ring-[var(--color-warm-white)]`}
+    >
+      <PersonAvatarIcon className="h-4 w-4 text-[var(--color-navy)] opacity-50" />
+    </div>
+  )
+}
+
+/* ─── Overlapping avatar preview — who's on before you expand ───────────── */
+function SpeakerStack({ speakers }) {
+  const shown = speakers.slice(0, 4)
+  const extra = speakers.length - shown.length
+
+  return (
+    <div className="flex items-center -space-x-2.5">
+      {shown.map((sp, i) => {
+        const href = speakerHref(sp)
+        const avatar = sp.photoUrl ? (
+          <img src={sp.photoUrl} alt="" className="h-full w-full object-cover object-top" />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center">
+            <PersonAvatarIcon className="h-4 w-4 text-[var(--color-navy)] opacity-50" />
+          </span>
+        )
+        const key = sp.speakerId ?? sp.id ?? sp.name ?? i
+        const className =
+          'relative h-7 w-7 flex-shrink-0 overflow-hidden rounded-full bg-[var(--color-frost)] ring-2 ring-[var(--color-warm-white)] transition-transform duration-200' +
+          (href ? ' hover:z-20 hover:scale-110' : '')
+
+        return href ? (
+          <Link
+            key={key}
+            to={href}
+            onClick={(e) => e.stopPropagation()}
+            className={className}
+            style={{ zIndex: shown.length - i }}
+            aria-label={`View ${sp.name}'s speaker profile`}
+          >
+            {avatar}
+          </Link>
+        ) : (
+          <div key={key} className={className} style={{ zIndex: shown.length - i }}>
+            {avatar}
+          </div>
+        )
+      })}
+      {extra > 0 && (
+        <div className="relative z-0 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] text-[10px] font-semibold text-white ring-2 ring-[var(--color-warm-white)]">
+          +{extra}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ─── Timeline marker — session type as an icon, not just a color ───────── */
+function TypeMarker({ type, compact = false }) {
+  const s = SESSION_STYLES[type] ?? SESSION_STYLES.sponsor
+  const Icon = s.icon
+  const dimensions = compact ? 'h-7 w-7' : 'h-10 w-10'
+  const iconSize = compact ? 'h-3.5 w-3.5' : 'h-[18px] w-[18px]'
+
+  return (
+    <div
+      className={`relative z-10 flex flex-shrink-0 items-center justify-center rounded-full border-2 bg-[var(--color-warm-white)] ${dimensions}`}
+      style={{ borderColor: s.accent ?? '#D6CFFF' }}
+    >
+      {Icon && <Icon className={iconSize} style={{ color: s.accent ?? '#8A93C9' }} />}
     </div>
   )
 }
 
 function CompactRow({ item, index }) {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.3 })
-  const s = SESSION_STYLES[item.type] ?? SESSION_STYLES.break
+  const prefersReducedMotion = useReducedMotion()
 
   return (
-    <div
-      ref={ref}
-      className={[
-        'flex items-center gap-0 py-2 transition-all duration-300',
-        isVisible ? 'opacity-100' : 'opacity-0',
-      ].join(' ')}
-      style={{ transitionDelay: `${index * 35}ms` }}
+    <motion.div
+      className="flex items-center gap-0 py-2"
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.4, ease: EASE_OUT, delay: prefersReducedMotion ? 0 : Math.min(index * 0.03, 0.3) }}
     >
       <div className="hidden w-24 flex-shrink-0 pr-4 text-right sm:block">
         <span className="text-xs text-[var(--text-muted)]">{fmt(item.startTime)}</span>
       </div>
       <div className="flex w-10 flex-shrink-0 items-center justify-center">
-        <div
-          className="relative z-10 h-2.5 w-2.5 flex-shrink-0 rounded-full border bg-white"
-          style={{ borderColor: '#D6CFFF' }}
-        />
+        <TypeMarker type={item.type} compact />
       </div>
       <div className="flex flex-1 flex-col gap-0.5">
         <div className="flex flex-wrap items-center gap-x-2">
@@ -95,28 +255,28 @@ function CompactRow({ item, index }) {
           <p className="text-xs leading-relaxed text-[var(--text-muted)]">{item.description}</p>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 function SessionCard({ item, index }) {
   const [isOpen, setIsOpen] = useState(item.type === 'keynote')
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 })
+  const prefersReducedMotion = useReducedMotion()
   const s = SESSION_STYLES[item.type] ?? SESSION_STYLES.sponsor
   const isKeynote = item.type === 'keynote'
   const displaySpeakers = item.speakers?.length > 0 ? item.speakers : item.speaker ? [item.speaker] : []
+  const hasExpandableContent = Boolean(item.description) || displaySpeakers.length > 0
 
   return (
-    <div
-      ref={ref}
-      className={[
-        'flex items-start pb-4 transition-all',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
-      ].join(' ')}
-      style={{ transitionDelay: `${index * 55}ms`, transitionDuration: '500ms' }}
+    <motion.div
+      className="flex items-start pb-5"
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5, ease: EASE_OUT, delay: prefersReducedMotion ? 0 : Math.min(index * 0.05, 0.4) }}
     >
       {/* Time — desktop only */}
-      <div className="hidden w-24 flex-shrink-0 pr-4 pt-6 text-right sm:block">
+      <div className="hidden w-24 flex-shrink-0 pr-4 pt-8 text-right sm:block">
         <div className={['text-sm font-semibold', isKeynote ? 'text-[var(--color-navy)]' : 'text-[var(--color-blue-deep)]'].join(' ')}>
           {fmt(item.startTime)}
         </div>
@@ -125,34 +285,27 @@ function SessionCard({ item, index }) {
         )}
       </div>
 
-      {/* Dot — always visible */}
-      <div className="relative flex w-10 flex-shrink-0 justify-center pt-[1.65rem]">
-        <div
-          className="relative z-10 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 bg-white"
-          style={{ borderColor: s.accent ?? '#D6CFFF' }}
-        >
-          <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: s.accent ?? '#D6CFFF' }} />
-        </div>
+      {/* Marker — icon badge, always visible */}
+      <div className="relative flex w-10 flex-shrink-0 justify-center pt-6">
+        <TypeMarker type={item.type} />
       </div>
 
       {/* Card */}
-      <div
+      <motion.div
         className={[
-          'flex-1 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-mist)] shadow-[var(--shadow-card)] transition-all duration-300 cursor-pointer select-none',
-          'hover:border-[var(--color-bridge)] hover:shadow-[0_16px_44px_rgba(0,14,122,0.1)]',
+          'flex-1 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-mist)] shadow-[var(--shadow-card)] cursor-pointer select-none',
           s.cardBg,
         ].join(' ')}
-        style={s.accent ? { borderLeft: `3px solid ${s.accent}` } : {}}
-        onClick={() => setIsOpen((o) => !o)}
+        whileHover={
+          prefersReducedMotion
+            ? undefined
+            : { y: -5, boxShadow: `0 22px 48px ${s.glow ?? 'rgba(0,14,122,0.16)'}, 0 4px 16px rgba(0,14,122,0.08)` }
+        }
+        transition={{ duration: 0.3, ease: EASE_OUT }}
+        onClick={() => hasExpandableContent && setIsOpen((o) => !o)}
       >
-        {/* Keynote top bar */}
-        {isKeynote && (
-          <div className="h-[2px] w-full bg-gradient-to-r from-[var(--color-navy)] via-[var(--color-blue-core)] to-transparent opacity-60" />
-        )}
-        {/* Partner Spotlight top bar */}
-        {item.type === 'sponsor' && (
-          <div className="h-[2px] w-full bg-gradient-to-r from-[#7B61FF] via-[rgba(123,97,255,0.4)] to-transparent opacity-70" />
-        )}
+        {/* Type-coded top edge — every session carries its accent */}
+        <div className="h-[3px] w-full opacity-90" style={{ background: s.bar ?? 'transparent' }} />
 
         <div className={isKeynote ? 'p-6' : 'p-5'}>
           {/* Mobile time */}
@@ -177,41 +330,68 @@ function SessionCard({ item, index }) {
               {item.track && (
                 <Badge variant={TRACK_BADGE[item.track] ?? 'default'}>{item.track}</Badge>
               )}
-              {item.description && (
-                <ChevronDownIcon
-                  className={[
-                    'h-4 w-4 flex-shrink-0 text-[var(--text-muted)] transition-transform duration-300',
-                    isOpen ? 'rotate-180' : '',
-                  ].join(' ')}
-                />
+              {hasExpandableContent && (
+                <motion.div
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={{ duration: 0.35, ease: EASE_OUT }}
+                  className="flex-shrink-0"
+                >
+                  <ChevronDownIcon className="h-4 w-4 text-[var(--text-muted)]" />
+                </motion.div>
               )}
             </div>
           </div>
 
-          {/* Speaker chips — commented out until confirmed
-          {displaySpeakers.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-3 border-t border-[var(--color-mist)] pt-3">
-              {displaySpeakers.map((sp, i) => (
-                <SpeakerChip key={i} speaker={sp} />
-              ))}
-            </div>
-          )}
-          */}
-
-          {/* Expandable region — description only */}
-          {item.description && (
-            <div
-              className={[
-                'overflow-hidden transition-all duration-300 ease-in-out',
-                isOpen ? 'max-h-[200px]' : 'max-h-0',
-              ].join(' ')}
+          {/* Who's speaking — visible at a glance, before expanding */}
+          {displaySpeakers.length === 1 && speakerHref(displaySpeakers[0]) ? (
+            <Link
+              to={speakerHref(displaySpeakers[0])}
+              onClick={(e) => e.stopPropagation()}
+              className="mt-3 flex items-center gap-2.5 -m-1 rounded-lg p-1 transition-colors duration-200 hover:bg-[rgba(237,232,255,0.5)]"
+              aria-label={`View ${displaySpeakers[0].name}'s speaker profile`}
             >
-              <p className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">{item.description}</p>
+              <SpeakerAvatar speaker={displaySpeakers[0]} />
+              <span className="text-[11px] font-medium leading-snug text-[var(--text-secondary)]">
+                {displaySpeakers[0].name}
+              </span>
+            </Link>
+          ) : (
+            displaySpeakers.length > 0 && (
+              <div className="mt-3 flex items-center gap-2.5">
+                <SpeakerStack speakers={displaySpeakers} />
+                <span className="text-[11px] leading-snug text-[var(--text-muted)]">
+                  {`${displaySpeakers.length} speakers`}
+                </span>
+              </div>
+            )
+          )}
+
+          {/* Expandable region — description + full speaker roster */}
+          {hasExpandableContent && (
+            <div
+              className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+              }`}
+            >
+              <div className="overflow-hidden">
+                <div className="mt-3 space-y-3 border-t border-[var(--color-mist)] pt-3">
+                  {item.description && (
+                    <p className="text-xs leading-relaxed text-[var(--text-secondary)]">{item.description}</p>
+                  )}
+                  {displaySpeakers.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {displaySpeakers.map((sp, i) => (
+                        <SpeakerChip key={sp.speakerId ?? sp.name ?? i} speaker={sp} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
