@@ -490,7 +490,6 @@ const speakerRecords = [
     highlights: [
       { label: 'Current', value: 'Executive Director, Alive Wellness Clinics' },
       { label: 'Founder', value: 'Alive Institute of Aesthetics' },
-      { label: 'Committee', value: 'Core Committee Member, Association of Aesthetic Doctors of India (AADi)' },
       { label: 'Training Impact', value: '200+ doctors & 400+ support staff trained in ~3 years' },
       { label: 'Recognition', value: 'Recognized by The Times of India for aesthetic medicine & healthcare leadership' },
       { label: 'International', value: 'Faculty speaker — IMCAS World Congress, AMWC, MAIS Summit (Spain)' },
