@@ -20,6 +20,8 @@ import kaminiShivalkarPhoto from '../assets/AHT-Speaker-PIC/kamini-shivalkar.web
 import raghuvamshiThakurPhoto from '../assets/AHT-Speaker-PIC/raghuvamshi-thakur.webp'
 import ashimaSetiaPhoto from '../assets/AHT-Speaker-PIC/ashima-setia.webp'
 import khanjanKotechaPhoto from '../assets/AHT-Speaker-PIC/khanjan-kotecha.webp'
+import drMridulRampalPhoto from '../assets/AHT-Speaker-PIC/dr-mridul-rampal.webp'
+import ravindraMkPhoto from '../assets/AHT-Speaker-PIC/ravindra-mk.webp'
 
 const speakerRecords = [
   {
@@ -673,23 +675,6 @@ const speakerRecords = [
     awards: [],
   },
   {
-    id: 'speaker-swethanshu',
-    name: 'Swethanshu',
-    title: '',
-    organization: '',
-    tagline: '',
-    biography: '',
-    photoUrl: null,
-    linkedinUrl: '',
-    twitterUrl: '',
-    isFeatured: false,
-    displayOrder: 25,
-    expertise: [],
-    highlights: [],
-    education: [],
-    awards: [],
-  },
-  {
     id: 'speaker-ishitha',
     name: 'Ishitha',
     title: '',
@@ -708,19 +693,29 @@ const speakerRecords = [
   },
   {
     id: 'speaker-dr-mridhul',
-    name: 'Dr. Mridhul',
-    title: '',
-    organization: '',
-    tagline: '',
-    biography: '',
-    photoUrl: null,
+    name: 'Dr. Mridul Rampal',
+    title: 'Co-Founder and Chief Medical Officer',
+    organization: '2care.ai',
+    tagline: 'Transforming patient engagement through multilingual voice AI',
+    biography:
+      "Dr. Mridul Rampal is Co-Founder and Chief Medical Officer at 2care.ai, a Voice AI platform transforming hospital front desks across India with support for Hindi, English, and regional languages. He also leads the company's go-to-market strategy in India, driving hospital partnerships and commercial growth.\nA retired Major from the Indian Army Medical Corps, he brings seven years of clinical experience spanning trauma centres, high-altitude postings, and frontline deployments including Operation Sindoor in J&K, alongside an MBBS.\nHis clinical background shapes 2care.ai's approach to post-discharge care, escalation protocols, and multilingual patient communication as the company deploys AI voice agents across hospitals in India, the UK, and the US.",
+    photoUrl: drMridulRampalPhoto,
+    photoPosition: 'center top',
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 27,
-    expertise: [],
-    highlights: [],
-    education: [],
+    expertise: ['Voice AI', 'Patient Engagement', 'Multilingual Healthcare Communication', 'Post-Discharge Care', 'Go-To-Market Strategy'],
+    highlights: [
+      { label: 'Current', value: 'Co-Founder & Chief Medical Officer, 2care.ai' },
+      { label: 'Focus', value: 'GTM strategy in India — hospital partnerships & commercial growth' },
+      { label: 'Background', value: 'Retired Major, Indian Army Medical Corps — 7 years clinical experience' },
+      { label: 'Deployments', value: 'Trauma centres, high-altitude postings & Operation Sindoor, J&K' },
+      { label: 'Reach', value: 'AI voice agents deployed across hospitals in India, the UK & the US' },
+    ],
+    education: [
+      { degree: 'MBBS', institution: '', year: '', achievement: '' },
+    ],
     awards: [],
   },
   {
@@ -754,6 +749,30 @@ const speakerRecords = [
     displayOrder: 29,
     expertise: [],
     highlights: [],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-ravindra-mk',
+    name: 'Ravindra M.K',
+    title: 'Entrepreneur & Founding Member',
+    organization: 'BHIVE Workspace',
+    tagline: 'Building thriving startup ecosystems through community & innovation',
+    biography:
+      "Ravindra M.K. is a founding member of BHIVE Workspace, one of India's leading coworking and managed workspace providers. Over the years, he has played a key role in building and scaling entrepreneurial communities, helping startups, innovators, and growing businesses access the infrastructure, networks, and ecosystem support needed to thrive.\nWith deep experience in startup ecosystems, business growth, and community building, Ravindra has worked closely with founders across sectors, giving him a unique perspective on how businesses scale, build trust, and create lasting customer relationships. His expertise lies in bringing together people, ideas, and opportunities to foster innovation and sustainable growth.\nAt Allhealth X Tech Summit 2026, Ravindra brings valuable insights on community-led growth, brand building, and how emerging technologies such as AI are reshaping the way organizations engage with customers and markets.",
+    photoUrl: ravindraMkPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 30,
+    expertise: ['Startup Ecosystems', 'Community-Led Growth', 'Business Scaling', 'Brand Building', 'AI in Customer Engagement'],
+    highlights: [
+      { label: 'Current', value: 'Founding Member, BHIVE Workspace' },
+      { label: 'Focus', value: 'Building and scaling entrepreneurial communities across India' },
+      { label: 'Expertise', value: 'Startup ecosystems · Business growth · Community building' },
+      { label: 'At the Summit', value: 'Community-led growth, brand building & AI in customer engagement' },
+    ],
     education: [],
     awards: [],
   },
@@ -911,10 +930,9 @@ const agendaRecords = [
     endTime: '2026-07-27T14:35:00+05:30',
     track: 'Panel',
     type: 'panel',
-    description: 'Building, scaling, and navigating the realities of creating healthcare startups. Moderator: Swethanshu.',
+    description: 'Building, scaling, and navigating the realities of creating healthcare startups.',
     speakerId: null,
     speakers: [
-      { speakerId: 'speaker-swethanshu', name: 'Swethanshu', role: 'Moderator' },
       { speakerId: 'speaker-dr-anand-sivaraman', name: 'Anand Sivaraman', organization: 'Remidio' },
       { speakerId: 'speaker-smita-malipatil', name: 'Smita Malipatil', organization: 'Hosa Health' },
       { speakerId: 'speaker-raghuvamshi-thakur', name: 'Raghuvamshi', organization: 'ProDOC' },
@@ -1010,10 +1028,10 @@ const agendaRecords = [
     endTime: '2026-07-27T18:10:00+05:30',
     track: 'Panel',
     type: 'panel',
-    description: 'How AI is reshaping patient engagement, communication, growth, and healthcare brand building. Moderator: Dr. Mridhul.',
+    description: 'How AI is reshaping patient engagement, communication, growth, and healthcare brand building. Moderator: Dr. Mridul Rampal.',
     speakerId: null,
     speakers: [
-      { speakerId: 'speaker-dr-mridhul', name: 'Dr. Mridhul', role: 'Moderator' },
+      { speakerId: 'speaker-dr-mridhul', name: 'Dr. Mridul Rampal', role: 'Moderator' },
       { speakerId: 'speaker-kirti-yadav', name: 'Kriti Yadav' },
       { speakerId: 'speaker-samir-karpe', name: 'Samir Karpe' },
       { speakerId: 'speaker-bharat-gupta', name: 'Bharat Gupta' },
