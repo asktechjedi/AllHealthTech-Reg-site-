@@ -10,7 +10,12 @@
       "Bash(cp /tmp/karamveer-preview.webp \"/Users/sreekanth/AHT/AllHealthTech-Reg-site-/frontend/src/assets/AHT-Speaker-PIC/dr-karamveer-chhabra.webp\" *)",
       "Bash(sips -g pixelWidth -g pixelHeight \"frontend/src/assets/AHT-Speaker-PIC/kamini-shivalkar.webp\")",
       "Bash(export DATABASE_URL='postgresql://postgres:xutlbNqrhrWrLssMbNYFtmXakdWHwOxP@ballast.proxy.rlwy.net:54027/railway')",
-      "Bash(npx prisma *)"
+      "Bash(npx prisma *)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"frontend/src/assets/AHT-Speaker-PIC/ravindra-mk.webp\")",
+      "Bash(cwebp -q 82 -m 6 \"Gayathri Vivekanandan - Jhanvi Shah.png\" -o gayathri-vivekanandan.webp)",
+      "Bash(git add *)",
+      "Bash(npx vite *)",
+      "Bash(cwebp -q 82 -m 6 -resize 800 0 \"Vamshi Krishna - Jhanvi Shah.jpeg\" -o dr-vamsi-krishna.webp)"
     ],
     "additionalDirectories": [
       "/private/tmp"

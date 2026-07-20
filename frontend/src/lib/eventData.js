@@ -22,6 +22,8 @@ import ashimaSetiaPhoto from '../assets/AHT-Speaker-PIC/ashima-setia.webp'
 import khanjanKotechaPhoto from '../assets/AHT-Speaker-PIC/khanjan-kotecha.webp'
 import drMridulRampalPhoto from '../assets/AHT-Speaker-PIC/dr-mridul-rampal.webp'
 import ravindraMkPhoto from '../assets/AHT-Speaker-PIC/ravindra-mk.webp'
+import gayathriVivekanandanPhoto from '../assets/AHT-Speaker-PIC/gayathri-vivekanandan.webp'
+import drVamsiKrishnaPhoto from '../assets/AHT-Speaker-PIC/dr-vamsi-krishna.webp'
 
 const speakerRecords = [
   {
@@ -658,18 +660,25 @@ const speakerRecords = [
   },
   {
     id: 'speaker-dr-vamsi-krishna',
-    name: 'Dr. Vamsi Krishna',
-    title: '',
-    organization: 'Apollo Hospitals',
-    tagline: '',
-    biography: '',
-    photoUrl: null,
+    name: 'Dr. Vamshi Krishna A',
+    title: 'Chief Growth Officer',
+    organization: 'Apollo Radiology International',
+    tagline: 'Driving the future of AI-powered diagnostics & global radiology innovation',
+    biography:
+      "Dr. Vamshi Krishna A is the Chief Growth Officer at Apollo Radiology International (ARI), where he leads strategic growth, partnerships, and global expansion initiatives across one of the world's leading teleradiology networks. ARI supports hundreds of hospitals and diagnostic centers across India and multiple international markets, helping healthcare providers improve access to expert radiology services and diagnostic excellence.\nWith over two decades of experience in healthcare and business leadership, Dr. Vamshi has been at the forefront of driving innovation in diagnostic imaging, digital health, and AI-enabled healthcare solutions. He works closely with healthcare organizations, technology partners, and clinical teams to bridge the gap between emerging technologies and real-world clinical adoption.\nA strong advocate for the responsible use of AI in healthcare, Dr. Vamshi is actively involved in conversations around radiology transformation, workflow innovation, clinical trust, and the future of diagnostics. His expertise spans healthcare growth strategy, digital transformation, global healthcare partnerships, and the integration of AI into clinical workflows.",
+    photoUrl: drVamsiKrishnaPhoto,
+    photoPosition: 'center top',
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 24,
-    expertise: [],
-    highlights: [],
+    expertise: ['Healthcare Growth Strategy', 'AI-Powered Diagnostics', 'Teleradiology', 'Digital Transformation', 'Global Healthcare Partnerships', 'Clinical AI Adoption'],
+    highlights: [
+      { label: 'Current', value: 'Chief Growth Officer, Apollo Radiology International' },
+      { label: 'Experience', value: '20+ years in healthcare and business leadership' },
+      { label: 'Reach', value: 'Strategic growth & global expansion across hundreds of hospitals & diagnostic centers' },
+      { label: 'Focus', value: 'AI-enabled diagnostic imaging, workflow innovation & clinical trust' },
+    ],
     education: [],
     awards: [],
   },
@@ -771,6 +780,30 @@ const speakerRecords = [
       { label: 'Focus', value: 'Building and scaling entrepreneurial communities across India' },
       { label: 'Expertise', value: 'Startup ecosystems · Business growth · Community building' },
       { label: 'At the Summit', value: 'Community-led growth, brand building & AI in customer engagement' },
+    ],
+    education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-gayathri-vivekanandan',
+    name: 'Gayathri Vivekanandan',
+    title: 'CEO',
+    organization: 'HXAI',
+    tagline: 'Driving AI-powered transformation in healthcare',
+    biography:
+      "Gayathri Vivekanandan is the Chief Executive Officer of HXAI, where she leads the company's vision as an AI Transformation Partner for the US healthcare ecosystem. With over 30 years of experience leading complex technology and digital transformation programs, she has held leadership roles at global organizations including Infosys and HCL, delivering large-scale initiatives across the BFSI, eCommerce, telecommunications, and other industries.\nAt HXAI, Gayathri is driving the adoption of AI through secure, platform-led, outcome-driven transformation, helping healthcare organizations modernize with confidence and deliver measurable impact. A passionate advocate for women in technology, she is equally committed to building high-performing teams and empowering the next generation of technology leaders.",
+    photoUrl: gayathriVivekanandanPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: true,
+    displayOrder: 31,
+    expertise: ['AI Transformation', 'Healthcare Technology', 'Digital Transformation', 'Platform-Led Strategy', 'Women in Technology', 'Team Leadership'],
+    highlights: [
+      { label: 'Current', value: 'CEO, HXAI' },
+      { label: 'Experience', value: '30+ years leading complex technology & digital transformation programs' },
+      { label: 'Background', value: 'Leadership roles at Infosys & HCL across BFSI, eCommerce & telecommunications' },
+      { label: 'Focus', value: 'AI Transformation Partner for the US healthcare ecosystem' },
     ],
     education: [],
     awards: [],
