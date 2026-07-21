@@ -320,11 +320,20 @@ function SessionCard({ item, index }) {
           <div className="flex items-start justify-between gap-2">
             <h3
               className={[
-                'flex-1 [font-family:var(--font-body)] font-semibold leading-snug text-[var(--text-primary)]',
+                'flex-1 flex items-center gap-2 [font-family:var(--font-body)] font-semibold leading-snug text-[var(--text-primary)]',
                 isKeynote ? 'text-base' : 'text-sm',
               ].join(' ')}
             >
-              {item.title}
+              <span>{item.title}</span>
+              {item.partnerLogo && (
+                <span className="flex h-6 w-20 flex-shrink-0 items-center justify-start">
+                  <img
+                    src={item.partnerLogo}
+                    alt={item.partnerName || 'Partner logo'}
+                    className={`max-w-full  object-contain ${item.partnerLogoClass || 'max-h-full'}`}
+                  />
+                </span>
+              )}
             </h3>
             <div className="flex flex-shrink-0 items-center gap-2">
               {item.track && (

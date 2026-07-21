@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" width="360" height="120" role="img" aria-label="hx·ai">
+  <!-- HxAI wordmark, on-dark / pine variant. Type in on-pine #EDEFE8, dot in accent chartreuse #D7F154. -->
+  <rect width="360" height="120" fill="#232A23"/>
+  <text x="180" y="60" text-anchor="middle" dominant-baseline="central"
+        font-family="'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif"
+        font-size="76" font-weight="700" letter-spacing="-2">
+    <tspan fill="#EDEFE8">hx</tspan><tspan fill="#D7F154">·</tspan><tspan fill="#EDEFE8">ai</tspan>
+  </text>
+</svg>

@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Eyebrow from '../ui/Eyebrow'
 import MetaRow from '../ui/MetaRow'
 import { linkBtn } from '../ui/buttonClasses'
 import { ArrowRightIcon, MapPinIcon, CalendarIcon, LockIcon } from '../icons'
+import prodocLogo from '../../assets/Partner Logo/prodoc-logo.webp'
+import hxaiLogo from '../../assets/Partner Logo/hxai-logo.webp'
+import tobeLogo from '../../assets/Partner Logo/tobe-logo.webp'
+import certinalLogo from '../../assets/Partner Logo/certinal-logo.webp'
 const heroBackground = '/hero-background.webp'
 
 const fadeUp = (delay = 0) => ({
@@ -18,8 +22,48 @@ const metaItems = [
   { icon: LockIcon, label: 'Invite-only gathering' },
 ]
 
+const partnerLogos = [
+  { name: 'HXAI', logo: hxaiLogo, logoClass: 'max-h-8' },
+  { name: 'Prodoc AI', logo: prodocLogo, logoClass: 'max-h-5', mono: true },
+  { name: 'ToBe', logo: tobeLogo, logoClass: 'max-h-5', mono: true },
+  { name: 'Certinal', logo: certinalLogo, logoClass: 'max-h-5', mono: true },
+]
+
 /** Matches fixed navbar height (h-24) */
 const HERO_NAV_OFFSET = 'pt-24'
+
+function PartnerMarquee() {
+  const prefersReducedMotion = useReducedMotion()
+  const track = prefersReducedMotion ? partnerLogos : [...partnerLogos, ...partnerLogos]
+
+  return (
+    <div
+      className="mx-auto w-full max-w-xl overflow-hidden"
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 3%, black 97%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 3%, black 97%, transparent)',
+      }}
+    >
+      <div
+        className={
+          prefersReducedMotion
+            ? 'flex flex-wrap items-center justify-center gap-10'
+            : 'animate-marquee flex w-max items-center gap-10'
+        }
+      >
+        {track.map((p, i) => (
+          <div key={`${p.name}-${i}`} className="flex flex-shrink-0 items-center justify-center">
+            <img
+              src={p.logo}
+              alt={p.name}
+              className={`w-auto ${p.logoClass} ${p.mono ? 'brightness-0 invert opacity-80' : ''}`}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function HomeHero() {
   return (
@@ -88,10 +132,17 @@ export default function HomeHero() {
               Partner With Us
             </Link>
           </motion.div>
+
+          <motion.div {...fadeUp(0.28)} className="mt-6">
+            <MetaRow items={metaItems} variant="chips" />
+          </motion.div>
         </div>
 
-        <motion.div {...fadeUp(0.3)} className="border-t border-[rgba(250,243,255,0.12)] pb-10 pt-6">
-          <MetaRow items={metaItems} variant="chips" />
+        <motion.div {...fadeUp(0.36)} className="border-t border-[rgba(250,243,255,0.12)] pb-8 pt-10 text-center">
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(250,243,255,0.5)]">
+            Ecosystem Partners
+          </p>
+          <PartnerMarquee />
         </motion.div>
       </div>
 
