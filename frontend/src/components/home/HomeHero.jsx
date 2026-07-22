@@ -90,7 +90,7 @@ export default function HomeHero() {
       <div
         className={`relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl min-w-0 flex-col px-4 sm:px-6 lg:px-8 ${HERO_NAV_OFFSET}`}
       >
-        <div className="flex min-h-0 flex-1 flex-col justify-center pb-6 lg:max-w-2xl">
+        <div className="flex min-h-0 flex-1 flex-col justify-center pb-6 max-w-[clamp(24rem,55vw,42rem)]">
           <motion.div {...fadeUp(0)}>
             <Eyebrow variant="dark">All Health Tech presents</Eyebrow>
           </motion.div>
