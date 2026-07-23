@@ -27,6 +27,8 @@ import drVamsiKrishnaPhoto from '../assets/AHT-Speaker-PIC/dr-vamsi-krishna.webp
 import drRameshKarmegamPhoto from '../assets/AHT-Speaker-PIC/dr-ramesh-karmegam.webp'
 import bharatGuptaPhoto from '../assets/AHT-Speaker-PIC/bharat-gupta.webp'
 import samirKarpePhoto from '../assets/AHT-Speaker-PIC/samir-karpe.webp'
+import drKaranSureshPhoto from '../assets/AHT-Speaker-PIC/dr-karan-suresh.webp'
+import sunnyKichlooPhoto from '../assets/AHT-Speaker-PIC/sunny-kichloo.webp'
 import prodocLogo from '../assets/Partner Logo/prodoc-logo.webp'
 import hxaiLogo from '../assets/Partner Logo/hxai-logo.webp'
 import tobeLogo from '../assets/Partner Logo/tobe-logo.webp'
@@ -842,18 +844,44 @@ const speakerRecords = [
   {
     id: 'speaker-dr-karan-suresh',
     name: 'Dr. Karan Suresh',
-    title: '',
+    title: 'Head of Clinical Data Products - Founders Office',
     organization: 'MediBuddy',
-    tagline: '',
-    biography: '',
-    photoUrl: null,
+    tagline: 'Translating unstructured data into actionable clinical insights.',
+    biography: 'Dr. Karan Suresh is a medical doctor from Bangalore who currently works at the Founders Office at MediBuddy, a full stack digital healthcare platform with 90,000+ doctors across 30+ specialities. He heads Clinical Data Products, helping translate unstructured data into actionable clinical insights. He spearheads healthcare initiatives along the lines of innovation, clinical decision support systems, and strategic AI for a variety of use case scenarios. With nearly 4 years of experience, Karan has worked across a variety of fields — as a physician, COVID doctor, entrepreneur, and in Clinical AI strategy. He actively seeks diverse knowledge from distinct avenues to add to his repertoire.',
+    photoUrl: drKaranSureshPhoto,
     linkedinUrl: '',
     twitterUrl: '',
     isFeatured: false,
     displayOrder: 33,
-    expertise: [],
-    highlights: [],
+    expertise: ['Digital Health', 'AI / Digital Adoption', 'Patient Acquisition & Engagement', 'Healthcare Strategy', 'Entrepreneurship'],
+    highlights: [
+      { label: 'Current', value: 'Head of Clinical Data Products, Founders Office — MediBuddy' },
+    ],
     education: [],
+    awards: [],
+  },
+  {
+    id: 'speaker-sunny-kichloo',
+    name: 'Sunny Kichloo',
+    title: 'Head of Strategic Business Initiatives',
+    organization: 'Motherhood Hospitals',
+    tagline: "Driving growth & innovation in women and children's healthcare",
+    biography: "Sunny Kichloo is Head of Strategic Business Initiatives at Motherhood Hospitals, one of India's leading women and children hospital networks with 20+ units nationwide, where he leads strategy and growth across Fertility & IVF, Paediatrics, and Allied Services. With 17+ years of experience across the Indian healthcare ecosystem — including on-ground operations experience leading the business for the North India region at Motherhood Hospitals, plus roles at Cloudnine Hospitals and Nightingales Home Healthcare — he brings both an operator's and strategist's lens to scaling multi-site care. He holds an Executive MBA from IIM Bangalore and a Masters in Physiotherapy.",
+    photoUrl: sunnyKichlooPhoto,
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: false,
+    displayOrder: 34,
+    expertise: ['Fertility & IVF', 'Paediatrics', 'Multi-Site Healthcare Operations', 'Growth Strategy'],
+    highlights: [
+      { label: 'Current', value: 'Head of Strategic Business Initiatives, Motherhood Hospitals' },
+      { label: 'Previously', value: 'North India Business Head, Motherhood Hospitals' },
+      { label: 'Also Worked At', value: 'Cloudnine Hospitals; Nightingales Home Healthcare' },
+    ],
+    education: [
+      { degree: 'Executive MBA', institution: 'IIM Bangalore', year: '', achievement: '' },
+      { degree: 'Masters in Physiotherapy', institution: '', year: '', achievement: '' },
+    ],
     awards: [],
   },
 ]
