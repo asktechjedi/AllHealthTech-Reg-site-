@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import LoadingSpinner from './components/ui/LoadingSpinner'
@@ -23,6 +23,10 @@ function PageFallback() {
 }
 
 export default function App() {
+  useEffect(() => {
+    sessionStorage.removeItem('chunk-reload-attempted')
+  }, [])
+
   return (
     <Suspense fallback={<PageFallback />}>
       <CookieConsent />

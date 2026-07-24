@@ -13,6 +13,15 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     console.error('ErrorBoundary caught an error:', error, info)
     this.setState({ errorInfo: info?.componentStack })
+
+    const isStaleChunkError = /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(
+      error?.message || ''
+    )
+
+    if (isStaleChunkError && !sessionStorage.getItem('chunk-reload-attempted')) {
+      sessionStorage.setItem('chunk-reload-attempted', '1')
+      window.location.reload()
+    }
   }
 
   render() {
