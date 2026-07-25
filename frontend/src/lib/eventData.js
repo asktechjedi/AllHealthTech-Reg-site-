@@ -31,6 +31,7 @@ import drKaranSureshPhoto from '../assets/AHT-Speaker-PIC/dr-karan-suresh.webp'
 import sunnyKichlooPhoto from '../assets/AHT-Speaker-PIC/sunny-kichloo.webp'
 import jhanviShahPhoto from '../assets/AHT-Speaker-PIC/jhanvi-shah.webp'
 import sunandaJayaseelanPhoto from '../assets/AHT-Speaker-PIC/sunanda-jayaseelan.webp'
+import pradeepVamanaPhoto from '../assets/AHT-Speaker-PIC/pradeep-vamana.webp'
 import prodocLogo from '../assets/Partner Logo/prodoc-logo.webp'
 import hxaiLogo from '../assets/Partner Logo/hxai-logo.webp'
 import tobeLogo from '../assets/Partner Logo/tobe-logo.webp'
@@ -923,6 +924,29 @@ const speakerRecords = [
     education: [],
     awards: [],
     agendaOnly: true,
+  },
+  {
+    id: 'speaker-pradeep-vamana',
+    name: 'Pradeep Vamana',
+    title: 'Co-founder',
+    organization: 'Prodancy',
+    tagline: 'Building affordable medtech solutions for smarter orthopaedic care',
+    biography:
+      'Pradeep Vamana, Co-founder of Prodancy, has developed the Vizbl brand of affordable surgical consumables for joint replacement surgery. The Vizbl Surgical Helmet, which protects surgeons and patients from potential infections, is now used by 500 surgeons in 150+ hospitals across 35,000 joint replacement surgeries.\nPrior to Prodancy, Pradeep worked with Airbus, France, developing global procurement strategies, and with Cyient, USA, where he developed a $15 million revenue Engine Aftermarket services business.\nWorking in the US and EU for over 12 years and growing Prodancy to serve 150+ hospitals, Pradeep brings a practitioner\'s view of what it takes to take a medical device from concept to operating room.',
+    photoUrl: pradeepVamanaPhoto,
+    photoPosition: 'center top',
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: false,
+    displayOrder: 37,
+    expertise: ['Medical Device Development', 'Surgical Consumables', 'Healthcare Go-to-Market', 'Strategy & Sales'],
+    highlights: [
+      { label: 'Current', value: 'Co-founder, Prodancy' },
+      { label: 'Product', value: 'Vizbl Surgical Helmet — used by 500 surgeons across 150+ hospitals, 35,000+ surgeries' },
+      { label: 'Previously', value: 'Airbus, France (Global Procurement Strategy) · Cyient, USA ($15M Engine Aftermarket Services)' },
+    ],
+    education: [],
+    awards: [],
   },
 ]
 
