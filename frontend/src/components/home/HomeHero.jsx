@@ -5,7 +5,7 @@ import MetaRow from '../ui/MetaRow'
 import { linkBtn } from '../ui/buttonClasses'
 import { ArrowRightIcon, MapPinIcon, CalendarIcon, LockIcon } from '../icons'
 import prodocLogo from '../../assets/Partner Logo/prodoc-logo.webp'
-import hxaiLogo from '../../assets/Partner Logo/hxai-logo.webp'
+import hxaiLogo from '../../assets/Partner Logo/hxai-logo-light.webp'
 import tobeLogo from '../../assets/Partner Logo/tobe-logo.webp'
 import certinalLogo from '../../assets/Partner Logo/certinal-logo.webp'
 const heroBackground = '/hero-background.webp'
@@ -23,7 +23,7 @@ const metaItems = [
 ]
 
 const partnerLogos = [
-  { name: 'HXAI', logo: hxaiLogo, logoClass: 'max-h-8' },
+  { name: 'HXAI', logo: hxaiLogo, logoClass: 'max-h-5' },
   { name: 'Prodoc AI', logo: prodocLogo, logoClass: 'max-h-5', mono: true },
   { name: 'ToBe', logo: tobeLogo, logoClass: 'max-h-5', mono: true },
   { name: 'Certinal', logo: certinalLogo, logoClass: 'max-h-5', mono: true },

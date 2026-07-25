@@ -20,7 +20,7 @@ const partners = [
     id: 'hxai',
     name: 'HXAI',
     logo: hxaiLogo,
-    logoClass: 'max-h-12',
+    logoClass: 'max-h-8',
     tagline: 'AI transformation partner for the US healthcare ecosystem',
     description: [
       'HXAI combines healthcare-specialized engineering teams, proprietary AI platforms, and an outcome-driven delivery model to help providers, payers, life sciences companies, and healthcare technology organizations modernize systems, deploy AI agents, and improve clinical, operational, and financial performance.',
