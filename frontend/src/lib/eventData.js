@@ -32,6 +32,7 @@ import sunnyKichlooPhoto from '../assets/AHT-Speaker-PIC/sunny-kichloo.webp'
 import jhanviShahPhoto from '../assets/AHT-Speaker-PIC/jhanvi-shah.webp'
 import sunandaJayaseelanPhoto from '../assets/AHT-Speaker-PIC/sunanda-jayaseelan.webp'
 import pradeepVamanaPhoto from '../assets/AHT-Speaker-PIC/pradeep-vamana.webp'
+import sudhirKavetiPhoto from '../assets/AHT-Speaker-PIC/sudhir-kaveti.webp'
 import prodocLogo from '../assets/Partner Logo/prodoc-logo.webp'
 import hxaiLogo from '../assets/Partner Logo/hxai-logo.webp'
 import tobeLogo from '../assets/Partner Logo/tobe-logo.webp'
@@ -675,18 +676,23 @@ const speakerRecords = [
     name: 'Sudhir Kaveti',
     title: 'Vice President, Global Sales',
     organization: 'Certinal',
-    tagline: '',
-    biography: '',
-    photoUrl: null,
+    tagline: 'Driving enterprise growth and SaaS adoption across global markets',
+    biography:
+      'Sudhir Kaveti is Vice President, Global Sales at Certinal, where he drives enterprise growth and accelerates revenue across global markets. With 19 years of experience in software sales and business development, he has led SaaS adoption and digital transformation initiatives for large enterprises. A proven sales strategist, he combines deep technical understanding with a customer-first mindset to build lasting partnerships. In healthcare and other complex industries, Sudhir focuses on delivering measurable value through scalable SaaS solutions, outcome-driven digital transformation, and sustained enterprise revenue growth.',
+    photoUrl: sudhirKavetiPhoto,
+    photoPosition: 'center top',
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 38,
-    expertise: [],
-    highlights: [],
+    expertise: ['Enterprise Sales', 'SaaS Adoption', 'Digital Transformation', 'Business Development'],
+    highlights: [
+      { label: 'Current', value: 'Vice President, Global Sales, Certinal' },
+      { label: 'Experience', value: '19 years in software sales & business development' },
+      { label: 'Focus', value: 'Enterprise SaaS adoption & digital transformation across healthcare and complex industries' },
+    ],
     education: [],
     awards: [],
-    agendaOnly: true,
   },
   {
     id: 'speaker-dr-vamsi-krishna',
@@ -872,7 +878,7 @@ const speakerRecords = [
     photoUrl: drKaranSureshPhoto,
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 33,
     expertise: ['Digital Health', 'AI / Digital Adoption', 'Patient Acquisition & Engagement', 'Healthcare Strategy', 'Entrepreneurship'],
     highlights: [
@@ -891,7 +897,7 @@ const speakerRecords = [
     photoUrl: sunnyKichlooPhoto,
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 34,
     expertise: ['Fertility & IVF', 'Paediatrics', 'Multi-Site Healthcare Operations', 'Growth Strategy'],
     highlights: [
@@ -955,7 +961,7 @@ const speakerRecords = [
     photoPosition: 'center top',
     linkedinUrl: '',
     twitterUrl: '',
-    isFeatured: false,
+    isFeatured: true,
     displayOrder: 37,
     expertise: ['Medical Device Development', 'Surgical Consumables', 'Healthcare Go-to-Market', 'Strategy & Sales'],
     highlights: [
