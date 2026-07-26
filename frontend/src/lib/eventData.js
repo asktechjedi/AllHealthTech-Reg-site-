@@ -1118,7 +1118,7 @@ const agendaRecords = [
   },
   // {
   //   id: 'session-sponsor-3',
-  //   displayOrder: 11,
+  //   displayOrder: 21,
   //   title: 'Partner Spotlight',
   //   startTime: '2026-07-27T14:00:00+05:30',
   //   endTime: '2026-07-27T14:10:00+05:30',
