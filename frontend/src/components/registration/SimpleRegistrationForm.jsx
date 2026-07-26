@@ -564,7 +564,7 @@ export default function SimpleRegistrationForm() {
         <div className="rounded-[var(--radius-card)] border border-[var(--color-mist)] bg-[var(--color-frost)] p-5">
           <p className="text-sm font-medium text-[var(--text-primary)]">Registration fee</p>
           <p className="mt-1 font-[var(--font-display)] text-2xl font-normal text-[var(--color-navy)]">
-            Rs. 2,999
+            Rs. 1,500
           </p>
           <p className="mt-2 text-xs text-[var(--text-muted)]">
             Confirmed only after successful payment via Razorpay.
@@ -624,7 +624,7 @@ export default function SimpleRegistrationForm() {
               ? 'Checking availability...'
               : isSubmitting
                 ? 'Processing...'
-                : 'Pay Rs. 2,999 & Complete Registration'}
+                : 'Pay Rs. 1,500 & Complete Registration'}
           </Button>
         </div>
 
