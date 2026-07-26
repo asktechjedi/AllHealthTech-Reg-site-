@@ -671,6 +671,24 @@ const speakerRecords = [
     awards: [],
   },
   {
+    id: 'speaker-sudhir-kaveti',
+    name: 'Sudhir Kaveti',
+    title: 'Vice President, Global Sales',
+    organization: 'Certinal',
+    tagline: '',
+    biography: '',
+    photoUrl: null,
+    linkedinUrl: '',
+    twitterUrl: '',
+    isFeatured: false,
+    displayOrder: 38,
+    expertise: [],
+    highlights: [],
+    education: [],
+    awards: [],
+    agendaOnly: true,
+  },
+  {
     id: 'speaker-dr-vamsi-krishna',
     name: 'Dr. Vamshi Krishna A',
     title: 'Chief Growth Officer',
@@ -1077,7 +1095,6 @@ const agendaRecords = [
       { speakerId: 'speaker-vs-venkatesh', name: 'VS Venkatesh', role: 'Panelist & Moderator' },
       { speakerId: 'speaker-vivek-rajagopal', name: 'Vivek Rajagopal', organization: 'Narayana Health' },
       { speakerId: 'speaker-dr-muthu-dhandapani' },
-      { speakerId: 'speaker-dr-amit-raj', name: 'Dr. Amit Raj', organization: 'Plexus AI' },
       { speakerId: 'speaker-dr-vamsi-krishna', name: 'Dr. Vamsi Krishna', organization: 'Apollo Radiology International' },
     ],
   },
@@ -1176,7 +1193,7 @@ const agendaRecords = [
     track: null,
     type: 'sponsor',
     description: 'Insights from an industry partner driving innovation in healthcare.',
-    speakerId: 'speaker-khanjan-kotecha',
+    speakerId: 'speaker-sudhir-kaveti',
     speakers: [],
   },
   {
@@ -1251,10 +1268,14 @@ function buildSpeakerMap(speakers) {
   return new Map(speakers.map((speaker) => [speaker.id, speaker]))
 }
 
+function resolveSpeaker(record) {
+  return record ? { ...record, role: record.title } : null
+}
+
 function attachSpeakersToAgenda(agendaItems, speakerMap) {
   return sortByDisplayOrder(agendaItems).map((item) => ({
     ...item,
-    speaker: item.speakerId ? speakerMap.get(item.speakerId) ?? null : null,
+    speaker: item.speakerId ? resolveSpeaker(speakerMap.get(item.speakerId)) : null,
     speakers: (item.speakers || []).map((s) => {
       if (!s.speakerId) return s
       const record = speakerMap.get(s.speakerId)

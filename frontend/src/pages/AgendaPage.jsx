@@ -99,6 +99,7 @@ function speakerHref(speaker) {
 
 function SpeakerChip({ speaker }) {
   const href = speakerHref(speaker)
+  const isModerator = speaker.role?.toLowerCase().includes('moderator')
 
   const content = (
     <>
@@ -116,15 +117,17 @@ function SpeakerChip({ speaker }) {
       <div className="min-w-0">
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-medium leading-tight text-[var(--text-primary)]">{speaker.name}</span>
-          {speaker.role && (
+          {isModerator && (
             <span className="rounded-[var(--radius-pill)] bg-[var(--color-magenta-tint)] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[var(--color-violet)]">
               {speaker.role}
             </span>
           )}
         </div>
-        {speaker.organization && (
-          <div className="text-[10px] leading-tight text-[var(--text-muted)]">{speaker.organization}</div>
-        )}
+        {speaker.title || speaker.organization ? (
+          <div className="text-[10px] leading-tight text-[var(--text-muted)]">
+            {[speaker.title, speaker.organization].filter(Boolean).join(' · ')}
+          </div>
+        ) : null}
       </div>
     </>
   )
