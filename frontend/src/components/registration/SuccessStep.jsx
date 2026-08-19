@@ -108,10 +108,10 @@ export default function SuccessStep() {
           <div className="flex items-center gap-2.5 text-[var(--text-primary)]">
             <MailIcon className="h-4 w-4 flex-shrink-0 text-[var(--color-bridge)]" />
             <a
-              href="mailto:maklabs@allhealthtech.com"
+              href="mailto:shankarram@allhealthtech.com"
               className="font-medium text-[var(--color-blue-deep)] transition-colors hover:text-[var(--color-navy)]"
             >
-              maklabs@allhealthtech.com
+              shankarram@allhealthtech.com
             </a>
           </div>
           <div className="flex items-center gap-2.5 text-[var(--text-primary)]">

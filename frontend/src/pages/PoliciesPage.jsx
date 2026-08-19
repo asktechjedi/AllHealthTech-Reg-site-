@@ -20,7 +20,7 @@ const POLICIES = [
     content: [
       <>{AHT} Events (&quot;we&quot;, &quot;us&quot;) is committed to protecting your personal information. When you register, we collect your name, email, phone number, and organisation. This data is used solely to process your registration, send event communications, and improve future events.</>,
       'We do not sell or share your personal data with third parties for marketing. We may share limited information with our payment processor (Razorpay) and email provider strictly to facilitate transactions. All data transfers are encrypted using TLS.',
-      'You may request access to, correction of, or deletion of your data at any time by emailing maklabs@allhealthtech.com. We retain registration data for 3 years for compliance purposes.',
+      'You may request access to, correction of, or deletion of your data at any time by emailing shankarram@allhealthtech.com. We retain registration data for 3 years for compliance purposes.',
     ],
   },
   {
@@ -39,7 +39,7 @@ const POLICIES = [
     updated: 'January 1, 2026',
     content: [
       'All ticket purchases for All Health X Tech Summit are final and non-refundable. Please review your details carefully before completing your registration.',
-      'Tickets are non-transferable and valid only for the registered attendee. To request a correction to your registration details, email maklabs@allhealthtech.com with your Ticket ID.',
+      'Tickets are non-transferable and valid only for the registered attendee. To request a correction to your registration details, email shankarram@allhealthtech.com with your Ticket ID.',
       <>If {AHT} Events cancels or significantly reschedules the conference, registered attendees will be notified of the available options by email.</>,
     ],
   },

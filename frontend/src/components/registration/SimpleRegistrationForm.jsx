@@ -369,7 +369,7 @@ export default function SimpleRegistrationForm() {
       ) {
         errorMessage = error.message.includes('phone')
           ? error.message
-          : 'This email is already registered for the event. Contact maklabs@allhealthtech.com if you need assistance.'
+          : 'This email is already registered for the event. Contact shankarram@allhealthtech.com if you need assistance.'
         if (error.message.includes('email')) {
           setErrors((prev) => ({
             ...prev,

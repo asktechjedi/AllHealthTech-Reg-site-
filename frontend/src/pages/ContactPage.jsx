@@ -7,7 +7,7 @@ import AnimatedSection from '../components/ui/AnimatedSection'
 import { MailIcon, PhoneIcon, MapPinIcon, ClockIcon, CheckIcon } from '../components/icons'
 
 const INFO = [
-  { icon: MailIcon, label: 'Email', value: 'maklabs@allhealthtech.com', href: 'mailto:maklabs@allhealthtech.com' },
+  { icon: MailIcon, label: 'Email', value: 'shankarram@allhealthtech.com', href: 'mailto:shankarram@allhealthtech.com' },
   { icon: PhoneIcon, label: 'Phone', value: '+91 99007 41100', href: 'tel:+919900741100' },
   { icon: MapPinIcon, label: 'Venue', value: 'Hotel Royal Orchid, Domlur, Bangalore', href: 'https://maps.google.com/?q=Hotel+Royal+Orchid,Domlur,Bangalore' },
   { icon: ClockIcon, label: 'Event Timing', value: '27 July 2026 · 9:45 AM – 9:30 PM IST', href: null },
@@ -92,7 +92,7 @@ export default function ContactPage() {
               <p className="mb-1 text-xs font-semibold text-[var(--color-blue-deep)]">Registration Queries</p>
               <p className="text-[11px] leading-relaxed text-[var(--text-secondary)]">
                 For ticket-related questions, contact us at{' '}
-                <strong className="text-[var(--text-primary)]">maklabs@allhealthtech.com</strong> with your Ticket ID.
+                <strong className="text-[var(--text-primary)]">shankarram@allhealthtech.com</strong> with your Ticket ID.
               </p>
             </div>
           </AnimatedSection>

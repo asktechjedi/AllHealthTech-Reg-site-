@@ -180,10 +180,10 @@ export default function PrivacyPolicyPage() {
           <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
             If you have any questions about this Privacy Policy, you can contact us at{' '}
             <a
-              href="mailto:maklabs@allhealthtech.com"
+              href="mailto:shankarram@allhealthtech.com"
               className="font-medium text-[var(--color-blue-core)] hover:text-[var(--color-blue-deep)]"
             >
-              maklabs@allhealthtech.com
+              shankarram@allhealthtech.com
             </a>
             .
           </p>
